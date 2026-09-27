@@ -17,7 +17,8 @@
     },
     "./ui.css": "./styles/ui.css",
     "./tailwind.css": "./styles/tailwind.css",
-    "./schema.json": "./schema.json"
+    "./schema.json": "./schema.json",
+    "./untitled-ui.css": "./styles/untitled-ui.css"
   },
   "files": [
     "dist",

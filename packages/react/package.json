@@ -30,7 +30,14 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@ui-system/core": "workspace:*"
+    "@dicebear/core": "^9.4.3",
+    "@dicebear/glass": "^9.4.2",
+    "@dicebear/lorelei-neutral": "^9.4.2",
+    "@dicebear/notionists-neutral": "^9.4.2",
+    "@dicebear/shapes": "^9.4.2",
+    "@dicebear/thumbs": "^9.4.2",
+    "@ui-system/core": "workspace:*",
+    "animejs": "^4.5.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.0",

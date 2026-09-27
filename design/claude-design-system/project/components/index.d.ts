@@ -13,6 +13,27 @@ type UIConfigInput = Record<string, unknown>;
 type BrandConfig = Record<string, unknown>;
 type Theme = Record<string, unknown>;
 
+// Avatar.d.ts
+export declare const AVATAR_STYLES: readonly ["notionists-neutral", "lorelei-neutral", "thumbs", "glass", "shapes", "initials"];
+/** SVG markup for a seed in a DiceBear style (memoized). */
+export declare function avatarSvg(seed: string, style?: Exclude<AvatarStyle, 'initials'>): string;
+export interface AvatarProps {
+    name?: string;
+    initials?: string;
+    /** A real photo. When absent the DiceBear style from the theme is drawn. */
+    src?: string;
+    /** Override the theme's avatar style for this avatar. */
+    avatarStyle?: AvatarStyle;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+    className?: string;
+    style?: React.CSSProperties;
+}
+export declare function Avatar({ name, initials, src, avatarStyle, size, className, style }: AvatarProps): React.JSX.Element;
+export declare function AvatarGroup({ people, size }: {
+    people: AvatarProps[];
+    size?: AvatarProps['size'];
+}): React.JSX.Element;
+
 // Icon.d.ts
 /** Stroke icons on a 24px grid, 1.75 stroke, round joins. All drawn for this system. */
 export declare const ICONS: {
@@ -124,6 +145,46 @@ export interface LogoProps {
 /** The brand logo in four arrangements: lockup, stacked, mark, wordmark. */
 export declare function Logo(props: LogoProps): React.JSX.Element;
 
+// Motion.d.ts
+/** anime.js, re-exported so projects and Claude Design (UIS.anime) use one engine. */
+export declare const anime: {
+    animate: typeof animate;
+    stagger: typeof stagger;
+    createTimeline: typeof createTimeline;
+    onScroll: typeof onScroll;
+    utils: typeof utils;
+    eases: typeof eases;
+};
+export type RevealEffect = 'fade-up' | 'fade' | 'scale-in' | 'slide-left' | 'slide-right' | 'blur-in';
+/** True when the theme allows motion and the visitor has not asked for less. */
+export declare function useMotionEnabled(): boolean;
+export interface RevealProps {
+    as?: 'div' | 'section' | 'ul' | 'span';
+    effect?: RevealEffect;
+    /** ms between children. When set, each direct child animates in turn. */
+    stagger?: number;
+    delay?: number;
+    duration?: number;
+    /** Start when scrolled into view (default) or immediately. */
+    trigger?: 'view' | 'mount';
+    className?: string;
+    style?: React.CSSProperties;
+    children?: React.ReactNode;
+}
+/** Entrance animation powered by anime.js. Follows config.motion and reduced motion. */
+export declare function Reveal({ as, effect, stagger: gap, delay, duration, trigger, className, style, children }: RevealProps): React.JSX.Element;
+/** Counts a number up when it comes into view (stats, prices, KPIs). */
+export declare function CountUp({ to, from, decimals, prefix, suffix, duration, className, style }: {
+    to: number;
+    from?: number;
+    decimals?: number;
+    prefix?: string;
+    suffix?: string;
+    duration?: number;
+    className?: string;
+    style?: React.CSSProperties;
+}): React.JSX.Element;
+
 // Root.d.ts
 /**
  * Flat props mirror ui.config.json so the same component works from code
@@ -159,6 +220,9 @@ export interface RootProps {
     wordmarkCase?: 'normal' | 'upper';
     wordmarkFont?: 'display' | 'body';
     markTone?: 'current' | 'primary';
+    avatarStyle?: AvatarStyle;
+    motion?: boolean;
+    motionIntensity?: MotionIntensity;
     frontNav?: FrontNav;
     backNav?: BackNav;
     /** Inject the Google Fonts stylesheet for the active fonts. Default true. */
@@ -299,11 +363,15 @@ export declare function NavStacked({ links, actions, logoPlacement, logoVariant,
 export interface NavMinimalProps extends BaseFrontProps {
     open?: boolean;
     menuLabel?: string;
+    /** Bar: 'classic' logo + CTA + Menu button, 'corners' text-only MENU / logo / CTA, 'capsule' centered floating Menu capsule. */
+    layout?: 'classic' | 'corners' | 'capsule';
+    /** Open menu: 'fullscreen' index, 'split' dark index + brand panel, 'drawer' side panel. */
+    menuStyle?: 'fullscreen' | 'split' | 'drawer';
     /** Content for the open menu's side column (contact, address). Children work too. */
     aside?: React.ReactNode;
     children?: React.ReactNode;
 }
-export declare function NavMinimal({ links, cta, logoPlacement, logoVariant, tone, open, menuLabel, aside, children, className, style }: NavMinimalProps): React.JSX.Element;
+export declare function NavMinimal({ links, cta, logoPlacement, logoVariant, tone, open, menuLabel, layout, menuStyle, aside, children, className, style }: NavMinimalProps): React.JSX.Element;
 export interface NavMobileProps extends BaseFrontProps {
     variant?: 'sheet' | 'tabbar' | 'floating';
     open?: boolean;
@@ -492,19 +560,6 @@ export interface TabsProps {
     style?: React.CSSProperties;
 }
 export declare function Tabs({ items, value, defaultValue, onChange, variant, className, style }: TabsProps): React.JSX.Element;
-export interface AvatarProps {
-    name?: string;
-    initials?: string;
-    src?: string;
-    size?: 'sm' | 'md' | 'lg' | 'xl';
-    className?: string;
-    style?: React.CSSProperties;
-}
-export declare function Avatar({ name, initials, src, size, className, style }: AvatarProps): React.JSX.Element;
-export declare function AvatarGroup({ people, size }: {
-    people: AvatarProps[];
-    size?: AvatarProps['size'];
-}): React.JSX.Element;
 export declare function Tooltip({ children, className, style }: {
     children?: React.ReactNode;
     className?: string;
@@ -615,4 +670,3 @@ export interface DialogProps {
     children?: React.ReactNode;
 }
 export declare function Dialog({ title, description, open, actions, onClose, className, style, children }: DialogProps): React.JSX.Element | null;
-export {};

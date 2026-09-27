@@ -1,4 +1,4 @@
-<!-- @dsCard group="Navigation: Frontend" height=380 -->
+<!-- @dsCard group="Navigation: Frontend" height=1000 -->
 <!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><title>NavMinimal: preview</title>
@@ -22,9 +22,9 @@ var workspace = { name: 'Studio', plan: 'Pro plan' };
 function hero(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'linear-gradient(160deg, var(--neutral-700), var(--neutral-950))' } }, child); }
 function stage(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'var(--bg)' } }, child); }
 function row() { return h.apply(null, ['div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', padding: 20 } }].concat([].slice.call(arguments))); }
-function page() { return h('div', { style: { padding: 24 } }, h(U.PageHeader, { title: 'Overview', description: 'Everything at a glance.', crumbs: ['Workspace', 'Overview'], actions: h(U.Button, { icon: 'plus' }, 'New project'), style: { padding: '8px 0 20px' } }), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 } }, h(U.Card, null, h(U.Stat, { label: 'Revenue', value: '[AMOUNT]', delta: '+12%' })), h(U.Card, null, h(U.Stat, { label: 'Projects', value: '24' })), h(U.Card, null, h(U.Stat, { label: 'Clients', value: '18' })))); }
+function page() { return h('div', { style: { padding: 24 } }, h(U.PageHeader, { title: 'Overview', description: 'Everything at a glance.', crumbs: ['Workspace', 'Overview'], actions: h(U.Button, { icon: 'plus' }, 'New project'), style: { padding: '8px 0 20px' } }), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 } }, h(U.Card, null, h(U.Stat, { label: 'Revenue', value: '[AMOUNT]', delta: '+12%' })), h(U.Card, null, h(U.Stat, { label: 'Projects', value: '24' })), h(U.Card, null, h(U.Stat, { label: 'Clients', value: '18' })))); }
 
-ReactDOM.createRoot(document.getElementById('root')).render(h(U.Root, { vars: false, page: false }, stage(h(U.NavMinimal, { links: links, cta: cta, open: true, aside: h('div', null, h('div', { className: 'uis-overline' }, 'Contact'), h('p', null, 'hello@[DOMAIN]')) }), 380)));
+ReactDOM.createRoot(document.getElementById('root')).render(h(U.Root, { vars: false, page: false }, h('div', { style: { display: 'flex', flexDirection: 'column', gap: 12 } }, stage(h(U.NavMinimal, { links: links, cta: cta, open: true, menuStyle: 'split', aside: h('div', null, h('div', { className: 'uis-overline', style: { color: 'inherit' } }, 'Contact'), h('p', null, 'hello@[DOMAIN]')) }), 420), hero(h(U.NavMinimal, { links: links, cta: cta, layout: 'corners', tone: 'image' }), 110), stage(h(U.NavMinimal, { links: links, cta: cta, layout: 'capsule' }), 110), stage(h(U.NavMinimal, { links: links, cta: cta, open: true, menuStyle: 'drawer', aside: h('p', null, 'hello@[DOMAIN]') }), 320))));
 </script>
 </body>
 </html>

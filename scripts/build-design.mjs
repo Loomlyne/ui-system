@@ -255,6 +255,21 @@ Mark the current page with \`active: true\` on its link. Keep 4–6 top-level li
 - Density sets control heights (\`control-sm|md|lg\`: 36/44/52 comfortable) and card padding. Touch targets stay at least 44px at comfortable.
 - Motion: panels ease out with \`cubic-bezier(0.16, 1, 0.3, 1)\` over 280ms; drawers slide over 500ms. Everything collapses under reduced motion.
 
+## People and avatars
+
+Never show stock or invented photos of people. \`UIS.Avatar\` shows a real photo when \`src\` exists; otherwise it draws a DiceBear avatar seeded by the name (same person, same face). Pick the style once with Root \`avatarStyle\`: \`notionists-neutral\` (default), \`lorelei-neutral\`, \`thumbs\`, \`glass\`, \`shapes\`, or \`initials\`. All CC0. Sample files are in Assets › Avatars.
+
+## Motion
+
+Use \`UIS.Reveal\` for entrances (fade-up, fade, scale-in, slide, blur-in, with \`stagger\`) and \`UIS.CountUp\` for real numbers; both run on anime.js v4 and respect \`motion\` / \`motionIntensity\` on Root and reduced motion. For anything custom call \`UIS.anime.animate\`, \`stagger\`, \`createTimeline\` or \`onScroll\`. Motion supports the content: one entrance per section, no looping decoration.
+
+## Beyond this library
+
+- **References first:** before designing a screen or section, look at real products on Mobbin (screens, flows, website sections) and cite what you borrowed.
+- **React Bits** (reactbits.dev): animated text, backgrounds and effects. Install the TS-TW or TS-CSS variant (\`npx shadcn@latest add @react-bits/<Name>-TS-TW\`) and replace its colors with \`var(--uis-*)\`.
+- **Untitled UI React** (MIT open-source components): install with its CLI, then import \`@ui-system/core/untitled-ui.css\` so its brand scale, greys and fonts follow this system.
+- Avatars come from DiceBear, animation from anime.js. Do not add a second icon set, avatar source or animation library.
+
 ## Iconography
 
 Use \`UIS.Icon\` by name: stroke icons on a 24px grid at 1.75 stroke with round joins, drawn for this system and inheriting text color. No emoji, no second icon set. Icon-only buttons always carry a \`label\`.
@@ -263,6 +278,20 @@ Use \`UIS.Icon\` by name: stroke icons on a 24px grid at 1.75 stroke with round 
 
 Sentence case for headings, buttons and labels. Buttons are verbs ("Book a table", "Send invoice"). Short, specific copy; the layout carries the meaning, not paragraphs. Numbers in tabular figures. Placeholders in brackets until real content exists.
 `);
+
+// ---------- asset groups (uploads recorded in design/assets.json by id) ----------
+const assetsPath = join(root, 'design/assets.json');
+const uploaded = existsSync(assetsPath) ? JSON.parse(readFileSync(assetsPath, 'utf8')) : {};
+const GROUP_README = {
+  Avatars: '# Avatars\n\nDiceBear samples for every bundled style (all CC0, no attribution). Components draw these live from a name with `UIS.Avatar`; these files are for decks, mockups and handoff. Never use stock or invented photos of people.\n',
+  Icons: '# Icons\n\nEvery UI System icon as a standalone 24px SVG, stroke 1.75, ink `#1C1B19` (an image cannot inherit text color). In components use `UIS.Icon` by name so icons follow the theme.\n',
+  Marks: '# Marks\n\nThe five generated logo marks in ink `#1C1B19`, for placeholders until the client logo exists. In components use `UIS.Logo` / `logoMark`; its monogram corners follow roundness.\n',
+};
+const assetGroups = {};
+for (const [group, files] of Object.entries(uploaded)) {
+  assetGroups[group] = { name: group, tile: group === 'Icons' ? 'xs' : group === 'Marks' ? 'm' : 's', order: Object.keys(files).sort(), files };
+  write(`assets/${group}/README.md`, GROUP_README[group] ?? `# ${group}\n`);
+}
 
 // ---------- index ----------
 const now = new Date().toISOString();
@@ -277,8 +306,8 @@ write('design-system.json', JSON.stringify({
     { name: 'react-dom', version: '18.3.1', global: 'ReactDOM', file: 'components/lib/react-dom.production.min.js' },
   ],
   sections: {},
-  groups: [],
-  assetGroups: {},
+  groups: Object.keys(assetGroups).sort((a, b) => ['Marks', 'Icons', 'Avatars'].indexOf(a) - ['Marks', 'Icons', 'Avatars'].indexOf(b)),
+  assetGroups,
   blobs: {},
   docs: { sections: [] },
   lastChange: { by: 'Koussay Zayani', at: now, via: 'Claude Code', note: process.env.DESIGN_NOTE || 'Built from github.com/Loomlyne/ui-system' },

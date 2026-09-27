@@ -6,3 +6,4 @@ export * from './primitives';
 export * from './nav/shared';
 export * from './nav/front';
 export * from './nav/back';
+export { Reveal, CountUp, anime, useMotionEnabled, type RevealProps, type RevealEffect } from './Motion';

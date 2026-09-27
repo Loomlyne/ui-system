@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   buildTheme, resolveConfig,
-  type BackNav, type Density, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
+  type AvatarStyle, type BackNav, type Density, type MotionIntensity, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
   type Mode, type Placement, type ShadowDepth, type UIConfigInput,
 } from '@ui-system/core';
 import { UISContext, cx } from './context';
@@ -45,6 +45,10 @@ export interface RootProps {
   wordmarkCase?: 'normal' | 'upper';
   wordmarkFont?: 'display' | 'body';
   markTone?: 'current' | 'primary';
+  // people and motion
+  avatarStyle?: AvatarStyle;
+  motion?: boolean;
+  motionIntensity?: MotionIntensity;
   // nav defaults
   frontNav?: FrontNav;
   backNav?: BackNav;
@@ -115,6 +119,12 @@ export function configFromProps(p: RootProps): UIConfigInput {
       border: def(p.border) ?? base.surface?.border,
     },
     nav: { ...base.nav, front: def(p.frontNav) ?? base.nav?.front, back: def(p.backNav) ?? base.nav?.back },
+    avatars: { ...base.avatars, style: def(p.avatarStyle) ?? base.avatars?.style },
+    motion: {
+      ...base.motion,
+      enabled: typeof p.motion === 'boolean' ? p.motion : p.motion !== undefined ? String(p.motion) === 'true' : base.motion?.enabled,
+      intensity: def(p.motionIntensity) ?? base.motion?.intensity,
+    },
   };
 }
 

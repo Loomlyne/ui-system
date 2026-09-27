@@ -3,7 +3,7 @@ import * as React from 'react';
 import { buildTheme, NEUTRAL_STEPS, SCALE_STEPS, contrast } from '@ui-system/core';
 import {
   Alert, AppShell, Avatar, AvatarGroup, Badge, Button, Card, Checkbox, Chips, Icon, Input, Kbd, Logo, Menu, NavMobile,
-  PageHeader, Popover, Progress, Root, Select, SiteNav, Stat, Switch, Table, Tabs, Textarea, Toast, Tooltip,
+  PageHeader, Popover, Progress, Reveal, Root, Select, SiteNav, Stat, Switch, Table, Tabs, Textarea, Toast, Tooltip,
 } from '@ui-system/react';
 import type { Config } from '@/lib/state';
 
@@ -87,7 +87,7 @@ export function SitePreview({ config, hero, device }: { config: Config; hero?: s
             </div>
             <Button variant="outline" iconRight="arrow-right">All services</Button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 20 }}>
+          <Reveal key={`${config.motion.enabled}-${config.motion.intensity}`} stagger={90} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 20 }}>
             {(['layers', 'sparkle', 'bolt'] as const).map((ic, i) => (
               <Card key={ic} interactive>
                 <div style={{ width: 46, height: 46, borderRadius: 'var(--uis-r-control)', background: 'var(--uis-primary-soft)', color: 'var(--uis-primary-soft-ink)', display: 'grid', placeItems: 'center', marginBottom: 16 }}><Icon name={ic} size={22} /></div>
@@ -95,7 +95,7 @@ export function SitePreview({ config, hero, device }: { config: Config; hero?: s
                 <p className="uis-body-s uis-muted" style={{ marginTop: 8 }}>One or two lines on the outcome the customer gets.</p>
               </Card>
             ))}
-          </div>
+          </Reveal>
         </section>
         <section style={{ margin: '0 72px', padding: 56, borderRadius: 'var(--uis-r-panel)', background: 'var(--uis-primary)', color: 'var(--uis-primary-ink)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 32 }}>
           <h2 className="uis-display-l" style={{ maxWidth: 640 }}>A closing line that asks for the action.</h2>

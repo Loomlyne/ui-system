@@ -1,0 +1,36 @@
+/*
+ * Untitled UI React adapter. Import after Untitled UI's own theme.css:
+ *   @import "./styles/theme.css";          (Untitled UI)
+ *   @import "@ui-system/core/untitled-ui.css";
+ * Its brand scale, grey scale and font roles then follow ui.config.json.
+ * Dark mode: Untitled UI uses .dark-mode; UI System sets data-uis-mode="dark".
+ */
+:root, .dark-mode, [data-uis-mode] {
+  --color-brand-25: var(--uis-primary-50);
+  --color-brand-50: var(--uis-primary-50);
+  --color-brand-100: var(--uis-primary-100);
+  --color-brand-200: var(--uis-primary-200);
+  --color-brand-300: var(--uis-primary-300);
+  --color-brand-400: var(--uis-primary-400);
+  --color-brand-500: var(--uis-primary-500);
+  --color-brand-600: var(--uis-primary-600);
+  --color-brand-700: var(--uis-primary-700);
+  --color-brand-800: var(--uis-primary-800);
+  --color-brand-900: var(--uis-primary-900);
+  --color-brand-950: var(--uis-primary-950);
+  --color-gray-25: var(--uis-neutral-25);
+  --color-gray-50: var(--uis-neutral-50);
+  --color-gray-100: var(--uis-neutral-100);
+  --color-gray-200: var(--uis-neutral-200);
+  --color-gray-300: var(--uis-neutral-300);
+  --color-gray-400: var(--uis-neutral-400);
+  --color-gray-500: var(--uis-neutral-500);
+  --color-gray-600: var(--uis-neutral-600);
+  --color-gray-700: var(--uis-neutral-700);
+  --color-gray-800: var(--uis-neutral-800);
+  --color-gray-900: var(--uis-neutral-900);
+  --color-gray-950: var(--uis-neutral-950);
+  --font-body: var(--uis-font-body);
+  --font-display: var(--uis-font-display);
+  --font-mono: var(--uis-font-mono);
+}

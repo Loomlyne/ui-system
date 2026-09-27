@@ -17,7 +17,7 @@ var workspace = { name: 'Studio', plan: 'Pro plan' };
 function hero(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'linear-gradient(160deg, var(--neutral-700), var(--neutral-950))' } }, child); }
 function stage(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'var(--bg)' } }, child); }
 function row() { return h.apply(null, ['div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', padding: 20 } }].concat([].slice.call(arguments))); }
-function page() { return h('div', { style: { padding: 24 } }, h(U.PageHeader, { title: 'Overview', description: 'Everything at a glance.', crumbs: ['Workspace', 'Overview'], actions: h(U.Button, { icon: 'plus' }, 'New project'), style: { padding: '8px 0 20px' } }), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 } }, h(U.Card, null, h(U.Stat, { label: 'Revenue', value: '[AMOUNT]', delta: '+12%' })), h(U.Card, null, h(U.Stat, { label: 'Projects', value: '24' })), h(U.Card, null, h(U.Stat, { label: 'Clients', value: '18' })))); }
+function page() { return h('div', { style: { padding: 24 } }, h(U.PageHeader, { title: 'Overview', description: 'Everything at a glance.', crumbs: ['Workspace', 'Overview'], actions: h(U.Button, { icon: 'plus' }, 'New project'), style: { padding: '8px 0 20px' } }), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 } }, h(U.Card, null, h(U.Stat, { label: 'Revenue', value: '[AMOUNT]', delta: '+12%' })), h(U.Card, null, h(U.Stat, { label: 'Projects', value: '24' })), h(U.Card, null, h(U.Stat, { label: 'Clients', value: '18' })))); }
 `;
 
 export const CATALOG = [
@@ -129,18 +129,22 @@ Always give a visible \`label\` in forms; a placeholder is not a label.`,
     preview: `h('div', null, row(h(U.Badge, null, 'Neutral'), h(U.Badge, { tone: 'primary' }, 'Primary'), h(U.Badge, { tone: 'accent' }, 'New'), h(U.Badge, { tone: 'success', dot: true }, 'Paid'), h(U.Badge, { tone: 'warning', dot: true }, 'Pending'), h(U.Badge, { tone: 'danger', dot: true }, 'Overdue'), h(U.Badge, { tone: 'info' }, 'Draft')), row(h(U.Badge, { tone: 'primary', solid: true }, 'Solid primary'), h(U.Badge, { tone: 'accent', solid: true }, 'Solid accent'), h(U.Badge, { outline: true }, 'Outline')))`,
   },
   {
-    name: 'Avatar', group: 'Display', height: 110,
-    readme: `A person or account. Square with softened corners at low roundness, a circle from 70% roundness or in pill mode.
+    name: 'Avatar', group: 'Display', height: 150,
+    readme: `A person or account. With a \`src\` it shows the real photo; without one it draws a DiceBear avatar seeded by the name, so the same person always gets the same face. Never a stock or invented photo.
 
-**Props:** \`name\` (initials derive from it), \`initials\`, \`src\`, \`size\` sm|md|lg|xl. \`AvatarGroup\` overlaps several.`,
-    preview: `row(h(U.Avatar, { name: 'Amira Haddad', size: 'sm' }), h(U.Avatar, { name: 'Omar Said' }), h(U.Avatar, { name: 'Lina Farah', size: 'lg' }), h(U.Avatar, { name: 'Sami Karim', size: 'xl' }), h(U.AvatarGroup, { people: [{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }] }))`,
+Styles (all CC0, no attribution): \`notionists-neutral\` (default), \`lorelei-neutral\`, \`thumbs\`, \`glass\`, \`shapes\`, or \`initials\` for themed letters. Set it once with Root \`avatarStyle\` (config \`avatars.style\`), or per avatar with \`avatarStyle\`.
+
+Shape follows roundness: softened square at low roundness, circle from 70 or in pill mode.
+
+**Props:** \`name\` (seed and label), \`src\`, \`initials\`, \`avatarStyle\`, \`size\` sm|md|lg|xl. \`AvatarGroup\` overlaps several. \`UIS.avatarSvg(seed, style)\` returns the SVG markup.`,
+    preview: `h('div', null, row(h(U.Avatar, { name: 'Amira Haddad', size: 'sm' }), h(U.Avatar, { name: 'Omar Said' }), h(U.Avatar, { name: 'Lina Farah', size: 'lg' }), h(U.Avatar, { name: 'Sami Karim', size: 'xl' }), h(U.AvatarGroup, { people: [{ name: 'Ava' }, { name: 'Noor' }, { name: 'Zaid' }, { name: 'Maya' }] })), row.apply(null, ['notionists-neutral', 'lorelei-neutral', 'thumbs', 'glass', 'shapes', 'initials'].map(function (st) { return h('span', { key: st, style: { display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--ink-3)' } }, h(U.Avatar, { name: 'Your Name', avatarStyle: st, size: 'lg' }), st); })))`,
   },
   {
     name: 'Card', group: 'Display', height: 190,
     readme: `A surface for grouped content. Padding follows density; corners follow \`--uis-r-card\`; the border follows the \`border\` setting.
 
-**Props:** \`variant\` default|flat|raised|sunken, \`interactive\` (hover lift), \`flush\` (no padding, for media), \`href\`, \`as\`.`,
-    preview: `h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, padding: 20 } }, h(U.Card, null, h('h3', { className: 'uis-h3' }, 'Default'), h('p', { className: 'uis-body-s uis-muted' }, 'Resting surface with a hairline.')), h(U.Card, { variant: 'raised', interactive: true }, h('h3', { className: 'uis-h3' }, 'Raised'), h('p', { className: 'uis-body-s uis-muted' }, 'Interactive, lifts on hover.')), h(U.Card, { variant: 'sunken' }, h('h3', { className: 'uis-h3' }, 'Sunken'), h('p', { className: 'uis-body-s uis-muted' }, 'For wells and empty states.')))`,
+**Props:** \`variant\` default|flat|raised|sunken, \`interactive\` (hover deepens the shadow and border, no movement), \`flush\` (no padding, for media), \`href\`, \`as\`.`,
+    preview: `h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, padding: 20 } }, h(U.Card, null, h('h3', { className: 'uis-h3' }, 'Default'), h('p', { className: 'uis-body-s uis-muted' }, 'Resting surface with a hairline.')), h(U.Card, { variant: 'raised', interactive: true }, h('h3', { className: 'uis-h3' }, 'Raised'), h('p', { className: 'uis-body-s uis-muted' }, 'Interactive: shadow deepens on hover.')), h(U.Card, { variant: 'sunken' }, h('h3', { className: 'uis-h3' }, 'Sunken'), h('p', { className: 'uis-body-s uis-muted' }, 'For wells and empty states.')))`,
   },
   {
     name: 'Stat', group: 'Display', height: 150,
@@ -174,6 +178,22 @@ Always give a visible \`label\` in forms; a placeholder is not a label.`,
     preview: `row(h(U.Kbd, null, '⌘K'), h(U.Kbd, null, 'Esc'), h(U.Kbd, null, '⇧ Enter'))`,
   },
   {
+    name: 'Reveal', group: 'Motion', height: 190,
+    readme: `Entrance animation powered by anime.js v4. Wrap a section or a list; with \`stagger\` each direct child animates in turn when it scrolls into view.
+
+Effects: \`fade-up\` (default), \`fade\`, \`scale-in\`, \`slide-left\`, \`slide-right\`, \`blur-in\`. Timing follows Root \`motionIntensity\` (subtle 620ms, expressive 950ms). Nothing moves when \`motion\` is false or the visitor prefers reduced motion.
+
+**Props:** \`effect\`, \`stagger\` (ms), \`delay\`, \`duration\`, \`trigger\` view|mount, \`as\`. Anything custom: \`UIS.anime.animate(targets, params)\`, \`stagger\`, \`createTimeline\`, \`onScroll\`.`,
+    preview: `h(U.Reveal, { stagger: 90, trigger: 'mount', style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, padding: 20 } }, h(U.Card, null, h('h3', { className: 'uis-h3' }, 'One')), h(U.Card, null, h('h3', { className: 'uis-h3' }, 'Two')), h(U.Card, null, h('h3', { className: 'uis-h3' }, 'Three')))`,
+  },
+  {
+    name: 'CountUp', group: 'Motion', height: 130,
+    readme: `Counts a number up when it scrolls into view (anime.js). For stats, prices and KPIs with real values only.
+
+**Props:** \`to\`, \`from\`, \`decimals\`, \`prefix\`, \`suffix\`, \`duration\`. Shows the final value immediately under reduced motion.`,
+    preview: `row(h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Projects shipped'), h(U.CountUp, { to: 128, className: 'uis-stat__value' }))), h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Conversion'), h(U.CountUp, { to: 4.8, decimals: 1, suffix: '%', className: 'uis-stat__value' }))))`,
+  },
+  {
     name: 'Alert', group: 'Feedback', height: 190,
     readme: `An inline message in the flow of a page. **Props:** \`tone\` info|success|warning|danger, \`title\`, \`icon\`, children.`,
     preview: `h('div', { style: { padding: 20, display: 'grid', gap: 10, maxWidth: 560 } }, h(U.Alert, { title: 'Heads up' }, 'Your trial ends in 3 days.'), h(U.Alert, { tone: 'success', title: 'Published' }, 'The site is live.'), h(U.Alert, { tone: 'danger', title: 'Payment failed' }, 'Update the card on file.'))`,
@@ -181,7 +201,7 @@ Always give a visible \`label\` in forms; a placeholder is not a label.`,
   {
     name: 'Toast', group: 'Feedback', height: 120,
     readme: `A short confirmation on the inverse surface, shown after an action. **Props:** \`title\`, \`icon\`, \`action\`, children. Keep it to one line of detail.`,
-    preview: `row(h(U.Toast, { title: 'Saved', action: h(U.Button, { size: 'sm', variant: 'ghost', style: { color: 'inherit' } }, 'Undo') }, 'Your changes are live.'))`,
+    preview: `row(h(U.Toast, { title: 'Saved', action: h(U.Button, { size: 'sm', variant: 'ghost' }, 'Undo') }, 'Your changes are live.'))`,
   },
   {
     name: 'Tooltip', group: 'Feedback', height: 80,
@@ -219,20 +239,20 @@ Place inside a positioned container (it fills it); set \`fixed\` on real pages.`
     preview: `hero(h(U.NavDock, { links: links, actions: actions, cta: cta, tone: 'image', open: true }), 380)`,
   },
   {
-    name: 'NavIsland', group: 'Navigation: Frontend', height: 200,
+    name: 'NavIsland', group: 'Navigation: Frontend', height: 140,
     readme: `Frontend nav: a detached floating bar at the top, centered with a max width.
 
-Best for modern marketing sites, SaaS and agencies. Logo placement: \`left\` (logo, links, actions), \`center\` (links, logo, actions), \`right\` (actions, links, logo).
+Best for modern marketing sites, SaaS and agencies. Logo placement: \`left\` (logo, links, actions) or \`center\` (links, logo, actions).
 
 **Props:** \`links\`, \`actions\`, \`cta\`, \`logoPlacement\`, \`logoVariant\`, \`tone\`, \`width\`, \`fixed\`.`,
-    preview: `hero(h(React.Fragment, null, h(U.NavIsland, { links: links, actions: actions, cta: cta }), h(U.NavIsland, { links: links, cta: cta, logoPlacement: 'center', style: { top: 100 } })), 200)`,
+    preview: `hero(h(U.NavIsland, { links: links, actions: actions, cta: cta }), 140)`,
   },
   {
-    name: 'NavBar', group: 'Navigation: Frontend', height: 250,
-    readme: `Frontend nav: the classic full-width top bar. \`transparent\` lays it over a hero image with light text.
+    name: 'NavBar', group: 'Navigation: Frontend', height: 300,
+    readme: `Frontend nav: the classic full-width top bar. \`transparent\` turns it into two frosted pills over a hero photo: brand and links on one side, actions and CTA on the other.
 
 Best for content-heavy sites, corporate and service businesses. **Props:** \`links\`, \`actions\`, \`cta\`, \`secondary\` (a second, quieter CTA), \`logoPlacement\` left|center|right, \`logoVariant\`, \`transparent\`, \`sticky\`.`,
-    preview: `h('div', null, stage(h(U.NavBar, { links: links, actions: actions, cta: cta, secondary: { label: 'Sign in' } }), 96), hero(h(U.NavBar, { links: links, cta: cta, transparent: true, logoPlacement: 'center' }), 150))`,
+    preview: `h('div', null, stage(h(U.NavBar, { links: links, actions: actions, cta: cta, secondary: { label: 'Sign in' } }), 96), hero(h(U.NavBar, { links: links.slice(0, 4), actions: [{ icon: 'search', label: 'Search' }], cta: cta, transparent: true }), 200))`,
   },
   {
     name: 'NavStacked', group: 'Navigation: Frontend', height: 200,
@@ -242,11 +262,16 @@ Best for Shopify stores, magazines and brands with many categories. **Props:** \
     preview: `stage(h(U.NavStacked, { links: links, actions: [{ icon: 'user', label: 'Account' }, { icon: 'bag', label: 'Bag', count: 2 }], logoPlacement: 'center', utility: { text: 'Free delivery over [AMOUNT]', links: [{ label: 'Help' }, { label: 'Track order' }, { label: 'EN / AR' }] } }), 200)`,
   },
   {
-    name: 'NavMinimal', group: 'Navigation: Frontend', height: 380,
-    readme: `Frontend nav: just the logo, a CTA and a Menu button that opens a full-screen menu set in the display face.
+    name: 'NavMinimal', group: 'Navigation: Frontend', height: 1000,
+    readme: `Frontend nav: the logo, one CTA and a Menu control. Three bar layouts and three open-menu styles.
 
-Best for studios, luxury, architecture and one-page sites. **Props:** \`links\`, \`cta\`, \`logoPlacement\`, \`logoVariant\`, \`tone\`, \`open\`, \`menuLabel\`, \`aside\` or children (contact block in the open menu).`,
-    preview: `stage(h(U.NavMinimal, { links: links, cta: cta, open: true, aside: h('div', null, h('div', { className: 'uis-overline' }, 'Contact'), h('p', null, 'hello@[DOMAIN]')) }), 380)`,
+Best for studios, luxury, architecture, hospitality and one-page sites.
+
+- \`layout\`: \`classic\` (logo, CTA, bordered Menu button), \`corners\` (text-only MENU, centered logo, underlined CTA: editorial), \`capsule\` (floating center capsule with Menu and one quick link).
+- \`menuStyle\`: \`fullscreen\` (numbered index in the display face), \`split\` (dark index beside a brand-color panel with the mark and contact), \`drawer\` (side panel over a scrim).
+
+**Props:** \`links\`, \`cta\`, \`layout\`, \`menuStyle\`, \`logoPlacement\`, \`logoVariant\`, \`tone\`, \`open\`, \`menuLabel\`, \`aside\` or children (contact block).`,
+    preview: `h('div', { style: { display: 'flex', flexDirection: 'column', gap: 12 } }, stage(h(U.NavMinimal, { links: links, cta: cta, open: true, menuStyle: 'split', aside: h('div', null, h('div', { className: 'uis-overline', style: { color: 'inherit' } }, 'Contact'), h('p', null, 'hello@[DOMAIN]')) }), 420), hero(h(U.NavMinimal, { links: links, cta: cta, layout: 'corners', tone: 'image' }), 110), stage(h(U.NavMinimal, { links: links, cta: cta, layout: 'capsule' }), 110), stage(h(U.NavMinimal, { links: links, cta: cta, open: true, menuStyle: 'drawer', aside: h('p', null, 'hello@[DOMAIN]') }), 320))`,
   },
   {
     name: 'NavMobile', group: 'Navigation: Frontend', height: 520,
@@ -266,7 +291,7 @@ Best for studios, luxury, architecture and one-page sites. **Props:** \`links\`,
   },
   {
     name: 'AppSidebar', group: 'Navigation: Backend', height: 520,
-    readme: `The full backend sidebar: logo, workspace switcher, search, grouped links with icons and counts, and the signed-in user.
+    readme: `The full backend sidebar: logo, search, grouped links with icons and counts, and one account block at the bottom. When a \`workspace\` is given with a \`user\`, they merge into that block (name, workspace · plan, switcher), so nothing is shown twice.
 
 **Props:** \`sections\`, \`workspace\`, \`search\` (true or placeholder), \`user\`, \`logoPlacement\` left|center|right, \`logoVariant\`, \`footer\`.`,
     preview: `h('div', { style: { display: 'grid', gridTemplateColumns: '264px 1fr', height: 520 } }, h(U.AppSidebar, { sections: sections, workspace: workspace, user: user }), h('div', { style: { background: 'var(--bg)' } }))`,

@@ -76,6 +76,8 @@ ui.config.json  ──►  @ui-system/core  ──►  theme.css · tailwind.css
 | `surface.float` | `solid`, `glass` | Floating navs, docks and popovers. |
 | `surface.shadow` / `border` | `none`…`deep` / `hairline`, `none` | Depth and card borders. |
 | `brand.*` | wordmark, caption, mark, variant, placement, logoSrc, markSrc… | The logo everywhere, see below. |
+| `avatars.style` | `notionists-neutral`, `lorelei-neutral`, `thumbs`, `glass`, `shapes`, `initials` | DiceBear style for people without a photo. |
+| `motion.enabled` / `intensity` | boolean / `subtle`, `expressive` | anime.js entrances and counters. |
 | `nav.front` / `nav.back` | `island`, `bar`, `stacked`, `dock`, `minimal` / `sidebar`, `rail`, `inset`, `topbar`, `dock` | Default website nav and app shell. |
 
 Full reference: [docs/config.md](docs/config.md).
@@ -105,6 +107,14 @@ Four arrangements (`lockup`, `stacked`, `mark`, `wordmark`), five generated mark
 
 [docs/navigation.md](docs/navigation.md)
 
+## Avatars, motion and outside libraries
+
+- **Avatars:** people without a photo get a [DiceBear](https://github.com/dicebear/dicebear) avatar seeded by their name (CC0 styles, set with `avatars.style`). Never stock or invented photos.
+- **Motion:** [anime.js v4](https://github.com/juliangarnier/anime) powers `Reveal` and `CountUp`, and is exported as `anime` for custom animation (`motion.enabled`, `motion.intensity`).
+- **React Bits** for animated text and backgrounds, **Untitled UI React** for extra app components (`@ui-system/core/untitled-ui.css` maps its theme to yours), **Mobbin** for references before designing.
+
+See [docs/libraries.md](docs/libraries.md).
+
 ## Commands
 
 ```bash
@@ -112,6 +122,7 @@ pnpm install          # once
 pnpm build            # core + react (+ browser bundle)
 pnpm dev              # playground on http://localhost:3000
 pnpm design           # regenerate design/claude-design-system from the packages
+node scripts/build-assets.mjs   # regenerate icon, mark and avatar SVGs for the design system
 pnpm theme            # build ./ui.config.json into ./ui-theme
 pnpm typecheck
 ```

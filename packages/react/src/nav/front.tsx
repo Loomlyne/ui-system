@@ -90,22 +90,32 @@ export function NavIsland({ links, actions, cta, logoPlacement, logoVariant, ton
   );
 }
 
-/* ---------- Bar: classic full-width top bar ---------- */
+/* ---------- Bar: classic full-width top bar; transparent = split frosted pills over a hero ---------- */
 export interface NavBarProps extends BaseFrontProps { transparent?: boolean; sticky?: boolean; secondary?: NavCta | null }
 export function NavBar({ links, actions, cta, secondary, logoPlacement, logoVariant, tone, transparent, sticky, className, style }: NavBarProps) {
   const placement = usePlacement(logoPlacement);
   const L = arr(links), Ac = arr(actions);
   const imageTone = transparent || tone === 'image';
-  const logo = <Logo variant={logoVariant === 'stacked' ? 'lockup' : logoVariant} href="#" />;
+  const logo = <Logo variant={logoVariant === 'stacked' ? 'lockup' : logoVariant} size={transparent ? 'sm' : 'md'} href="#" />;
   const end = (
     <>
       <Actions actions={Ac} />
-      {secondary ? <Button size="sm" variant={imageTone ? 'glass' : 'ghost'} href={secondary.href ?? '#'}>{secondary.label}</Button> : null}
+      {secondary ? <Button size="sm" variant={transparent ? 'ghost' : imageTone ? 'glass' : 'ghost'} href={secondary.href ?? '#'}>{secondary.label}</Button> : null}
       <Cta cta={cta} tone={imageTone ? 'image' : undefined} />
     </>
   );
+  if (transparent) {
+    // Two frosted pills: brand + links on one side, actions on the other.
+    const brandLinks = <div className="uis-bar__pill"><span className="uis-bar__brand">{logo}</span><span className="uis-navsep" /><Links links={L} /></div>;
+    const endPill = <div className="uis-bar__pill">{end}</div>;
+    return (
+      <header className={cx('uis-bar', className)} style={style} data-transparent data-sticky={sticky || undefined} data-tone="image" data-placement={placement}>
+        {placement === 'right' ? <>{endPill}<span />{brandLinks}</> : placement === 'center' ? <><div className="uis-bar__pill"><Links links={L} /></div><span className="uis-bar__brand uis-bar__brand--center">{logo}</span>{endPill}</> : <>{brandLinks}<span />{endPill}</>}
+      </header>
+    );
+  }
   return (
-    <header className={cx('uis-bar', className)} style={style} data-transparent={transparent || undefined} data-sticky={sticky || undefined} data-tone={imageTone ? 'image' : undefined}>
+    <header className={cx('uis-bar', className)} style={style} data-sticky={sticky || undefined} data-tone={imageTone ? 'image' : undefined}>
       {placement === 'left' && <><div>{logo}</div><nav aria-label="Main"><Links links={L} /></nav><div>{end}</div></>}
       {placement === 'center' && <><nav aria-label="Main"><Links links={L} /></nav><div>{logo}</div><div>{end}</div></>}
       {placement === 'right' && <><nav aria-label="Main"><Links links={L} /></nav><div /><div>{end}{logo}</div></>}
@@ -141,44 +151,101 @@ export function NavStacked({ links, actions, logoPlacement, logoVariant, utility
   );
 }
 
-/* ---------- Minimal: logo + menu button, full-screen menu ---------- */
+/* ---------- Minimal: logo + Menu, three bar layouts and three open-menu styles ---------- */
 export interface NavMinimalProps extends BaseFrontProps {
   open?: boolean;
   menuLabel?: string;
+  /** Bar: 'classic' logo + CTA + Menu button, 'corners' text-only MENU / logo / CTA, 'capsule' centered floating Menu capsule. */
+  layout?: 'classic' | 'corners' | 'capsule';
+  /** Open menu: 'fullscreen' index, 'split' dark index + brand panel, 'drawer' side panel. */
+  menuStyle?: 'fullscreen' | 'split' | 'drawer';
   /** Content for the open menu's side column (contact, address). Children work too. */
   aside?: React.ReactNode;
   children?: React.ReactNode;
 }
-export function NavMinimal({ links, cta, logoPlacement, logoVariant, tone, open, menuLabel = 'Menu', aside, children, className, style }: NavMinimalProps) {
+export function NavMinimal({ links, cta, logoPlacement, logoVariant, tone, open, menuLabel = 'Menu', layout = 'classic', menuStyle = 'fullscreen', aside, children, className, style }: NavMinimalProps) {
   const placement = usePlacement(logoPlacement);
   const [isOpen, setOpen] = React.useState(!!open);
   React.useEffect(() => setOpen(!!open), [open]);
   const L = arr(links);
+  const side = aside ?? children;
   const logo = <Logo variant={logoVariant === 'stacked' ? 'lockup' : logoVariant} href="#" />;
-  const menuBtn = (
-    <button type="button" className="uis-menubtn" onClick={() => setOpen(!isOpen)} aria-expanded={isOpen}>
-      <Icon name={isOpen ? 'x' : 'menu'} />{isOpen ? 'Close' : menuLabel}
-    </button>
+  const toggle = () => setOpen(!isOpen);
+  const barTone = !isOpen || menuStyle === 'drawer' ? tone : menuStyle === 'split' ? 'image' : undefined;
+  const index = (cls: string) => (
+    <nav className={cls} aria-label="Main">
+      {L.map((l, i) => <A key={i} link={l} className=""><span>{String(i + 1).padStart(2, '0')}</span>{l.label}<Icon name="arrow-up-right" /></A>)}
+    </nav>
   );
-  return (
-    <>
-      {isOpen ? (
-        <div className="uis-overlaymenu">
-          <nav className="uis-overlaymenu__links" aria-label="Main">
-            {L.map((l, i) => <A key={i} link={l} className=""><span>{String(i + 1).padStart(2, '0')}</span>{l.label}</A>)}
-          </nav>
-          <div className="uis-overlaymenu__aside">{aside ?? children}</div>
+
+  let bar: React.ReactNode;
+  if (layout === 'corners') {
+    bar = (
+      <header className={cx('uis-minimal', 'uis-minimal--corners', className)} style={style} data-tone={barTone === 'image' ? 'image' : undefined}>
+        <button type="button" className="uis-textbtn" onClick={toggle} aria-expanded={isOpen}>{isOpen ? 'Close' : menuLabel}</button>
+        {logo}
+        {cta ? <A link={{ label: cta.label, href: cta.href }} className="uis-textbtn uis-textbtn--line">{cta.label}</A> : <span />}
+      </header>
+    );
+  } else if (layout === 'capsule') {
+    bar = (
+      <header className={cx('uis-minimal', 'uis-minimal--capsule', className)} style={style} data-tone={barTone === 'image' ? 'image' : undefined}>
+        {logo}
+        <div className="uis-float uis-capsule">
+          <button type="button" className="uis-capsule__menu" onClick={toggle} aria-expanded={isOpen}><Icon name={isOpen ? 'x' : 'menu'} />{isOpen ? 'Close' : menuLabel}</button>
+          {L.slice(0, 1).map((l, i) => <A key={i} link={l} className="uis-capsule__chip">{l.label}</A>)}
         </div>
-      ) : null}
-      <header className={cx('uis-minimal', className)} style={style} data-placement={placement} data-tone={!isOpen && tone === 'image' ? 'image' : undefined}>
+        <div className="uis-minimal__actions"><Cta cta={cta} size="sm" /></div>
+      </header>
+    );
+  } else {
+    const menuBtn = (
+      <button type="button" className="uis-menubtn" onClick={toggle} aria-expanded={isOpen}>
+        <Icon name={isOpen ? 'x' : 'menu'} />{isOpen ? 'Close' : menuLabel}
+      </button>
+    );
+    bar = (
+      <header className={cx('uis-minimal', className)} style={style} data-placement={placement} data-tone={barTone === 'image' ? 'image' : undefined}>
         {placement === 'center' ? (
-          <><div>{menuBtn}</div>{logo}<div className="uis-minimal__actions"><Cta cta={cta} size="md" tone={!isOpen ? tone : undefined} /></div></>
+          <><div>{menuBtn}</div>{logo}<div className="uis-minimal__actions"><Cta cta={cta} size="md" tone={barTone} /></div></>
         ) : (
-          <>{logo}<div className="uis-minimal__actions"><Cta cta={cta} size="md" tone={!isOpen ? tone : undefined} />{menuBtn}</div></>
+          <>{logo}<div className="uis-minimal__actions"><Cta cta={cta} size="md" tone={barTone} />{menuBtn}</div></>
         )}
       </header>
-    </>
-  );
+    );
+  }
+
+  let menu: React.ReactNode = null;
+  if (isOpen && menuStyle === 'split') {
+    menu = (
+      <div className="uis-overlaymenu uis-overlaymenu--split">
+        <div className="uis-overlaymenu__main">{index('uis-overlaymenu__links')}</div>
+        <div className="uis-overlaymenu__panel">
+          <Logo variant="mark" size="xl" />
+          <div className="uis-overlaymenu__aside">{side}</div>
+        </div>
+      </div>
+    );
+  } else if (isOpen && menuStyle === 'drawer') {
+    menu = (
+      <>
+        <Scrim onClick={() => setOpen(false)} />
+        <div className="uis-overlaymenu uis-overlaymenu--drawer" role="dialog" aria-label="Menu">
+          <div className="uis-overlaymenu__top"><span className="uis-overline">{menuLabel}</span><IconButton icon="x" label="Close menu" onClick={() => setOpen(false)} /></div>
+          {index('uis-overlaymenu__links')}
+          <div className="uis-overlaymenu__aside">{side}{cta ? <Button block variant={cta.variant ?? 'primary'} href={cta.href ?? '#'}>{cta.label}</Button> : null}</div>
+        </div>
+      </>
+    );
+  } else if (isOpen) {
+    menu = (
+      <div className="uis-overlaymenu">
+        {index('uis-overlaymenu__links')}
+        <div className="uis-overlaymenu__aside">{side}</div>
+      </div>
+    );
+  }
+  return <>{menu}{bar}</>;
 }
 
 /* ---------- Mobile: top bar + sheet, or bottom tab bar ---------- */

@@ -14,6 +14,8 @@ export type FloatSurface = 'solid' | 'glass';
 export type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';
 export type FrontNav = 'dock' | 'island' | 'bar' | 'stacked' | 'minimal';
 export type BackNav = 'sidebar' | 'rail' | 'inset' | 'topbar' | 'dock';
+export type AvatarStyle = 'notionists-neutral' | 'lorelei-neutral' | 'thumbs' | 'glass' | 'shapes' | 'initials';
+export type MotionIntensity = 'subtle' | 'expressive';
 export type RadiusRole = 'chip' | 'control' | 'field' | 'card' | 'panel' | 'media' | 'shell';
 
 export interface BrandConfig {
@@ -90,6 +92,17 @@ export interface NavConfig {
   back: BackNav;
 }
 
+export interface AvatarConfig {
+  /** DiceBear style for people without a photo (all CC0). 'initials' uses themed letters instead. */
+  style: AvatarStyle;
+}
+
+export interface MotionConfig {
+  /** Entrance and interaction animations (anime.js). Always off under prefers-reduced-motion. */
+  enabled: boolean;
+  intensity: MotionIntensity;
+}
+
 export interface UIConfig {
   /** Project name, used by exports and docs. */
   name: string;
@@ -100,6 +113,8 @@ export interface UIConfig {
   density: Density;
   surface: SurfaceConfig;
   nav: NavConfig;
+  avatars: AvatarConfig;
+  motion: MotionConfig;
 }
 
 export type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
@@ -132,6 +147,8 @@ export const DEFAULT_CONFIG: UIConfig = {
   density: 'comfortable',
   surface: { float: 'solid', shadow: 'medium', border: 'hairline' },
   nav: { front: 'island', back: 'sidebar' },
+  avatars: { style: 'notionists-neutral' },
+  motion: { enabled: true, intensity: 'subtle' },
 };
 
 /** Named starting points for shape. Pick one, then fine-tune roundness. */

@@ -200,19 +200,8 @@ export function Tabs({ items, value, defaultValue, onChange, variant = 'segmente
   );
 }
 
-/* ---------- Avatar ---------- */
-export interface AvatarProps { name?: string; initials?: string; src?: string; size?: 'sm' | 'md' | 'lg' | 'xl'; className?: string; style?: React.CSSProperties }
-export function Avatar({ name = '', initials, src, size = 'md', className, style }: AvatarProps) {
-  const ini = initials ?? name.replace(/[^\p{L}\p{N}\s]/gu, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
-  return (
-    <span className={cx('uis-avatar', size !== 'md' && `uis-avatar--${size}`, className)} style={style} title={name || undefined}>
-      {src ? <img src={src} alt={name} /> : ini}
-    </span>
-  );
-}
-export function AvatarGroup({ people, size = 'sm' }: { people: AvatarProps[]; size?: AvatarProps['size'] }) {
-  return <span className="uis-avatars">{people.map((p, i) => <Avatar key={i} size={size} {...p} />)}</span>;
-}
+/* ---------- Avatar (DiceBear) lives in Avatar.tsx ---------- */
+export { Avatar, AvatarGroup, avatarSvg, AVATAR_STYLES, type AvatarProps } from './Avatar';
 
 /* ---------- Feedback ---------- */
 export function Tooltip({ children, className, style }: { children?: React.ReactNode; className?: string; style?: React.CSSProperties }) {

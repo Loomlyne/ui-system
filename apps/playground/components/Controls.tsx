@@ -1,6 +1,7 @@
 'use client';
 import * as React from 'react';
 import { FONT_PRESETS, RADIUS_PRESETS, type FontPresetId } from '@ui-system/core';
+import { AVATAR_STYLES } from '@ui-system/react';
 import { ColorField, Field, RangeField, Segmented, SelectField, TextField, UploadField } from './fields';
 import { STARTERS, type Config } from '@/lib/state';
 
@@ -86,6 +87,15 @@ export default function Controls({ config: c, onChange, onStarter }: Props) {
         <Field label="Floating surfaces"><Segmented value={c.surface.float} options={['solid', 'glass'] as const} onChange={(v) => up('surface', { float: v })} /></Field>
         <Field label="Shadows"><Segmented value={c.surface.shadow} options={['none', 'soft', 'medium', 'deep'] as const} onChange={(v) => up('surface', { shadow: v })} /></Field>
         <Field label="Card borders"><Segmented value={c.surface.border} options={['hairline', 'none'] as const} onChange={(v) => up('surface', { border: v })} /></Field>
+      </section>
+
+      <section className="pg-section">
+        <h2>People and motion</h2>
+        <SelectField label="Avatar style (DiceBear)" value={c.avatars.style} options={AVATAR_STYLES.map((v) => ({ value: v, label: v }))} onChange={(v) => up('avatars', { style: v })} />
+        <div className="pg-row">
+          <Field label="Motion"><Segmented value={c.motion.enabled ? 'on' : 'off'} options={['on', 'off'] as const} onChange={(v) => up('motion', { enabled: v === 'on' })} /></Field>
+          <Field label="Intensity"><Segmented value={c.motion.intensity} options={['subtle', 'expressive'] as const} onChange={(v) => up('motion', { intensity: v })} /></Field>
+        </div>
       </section>
 
       <section className="pg-section">

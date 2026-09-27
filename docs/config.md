@@ -71,3 +71,18 @@ See [radius.md](radius.md).
 | `back` | `sidebar` | `sidebar` `rail` `inset` `topbar` `dock` |
 
 `<SiteNav>` and `<AppShell>` read these when no `variant` is passed.
+
+## avatars
+| Key | Values | Default |
+| --- | --- | --- |
+| `style` | `notionists-neutral`, `lorelei-neutral`, `thumbs`, `glass`, `shapes`, `initials` | `notionists-neutral` |
+
+People without a photo get a DiceBear avatar seeded by their name (CC0). Pass `src` for a real photo. See [libraries.md](libraries.md).
+
+## motion
+| Key | Values | Default |
+| --- | --- | --- |
+| `enabled` | boolean | `true` |
+| `intensity` | `subtle`, `expressive` | `subtle` |
+
+Drives `Reveal` and `CountUp` (anime.js). Visitors with reduced motion always see the final state.

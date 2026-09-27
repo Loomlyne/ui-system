@@ -4,73 +4,275 @@
   "description": "One file per project. Every key is optional; missing keys fall back to the neutral defaults.",
   "type": "object",
   "properties": {
-    "$schema": { "type": "string" },
-    "name": { "type": "string", "description": "Project name." },
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": "Project name."
+    },
     "brand": {
       "type": "object",
       "properties": {
-        "wordmark": { "type": "string" },
-        "caption": { "type": "string", "description": "Empty hides it." },
-        "initials": { "type": "string", "maxLength": 2 },
-        "mark": { "enum": ["monogram", "ring", "spark", "stack", "orbit", "none", "custom"] },
-        "logoSrc": { "type": "string", "description": "Full logo image URL; replaces the generated lockup." },
-        "markSrc": { "type": "string", "description": "Mark-only image URL for rails, docks, favicons." },
-        "markSvg": { "type": "string", "description": "Inline SVG markup for a custom mark (use currentColor)." },
-        "variant": { "enum": ["lockup", "stacked", "mark", "wordmark"] },
-        "placement": { "enum": ["left", "center", "right"] },
-        "wordmarkCase": { "enum": ["normal", "upper"] },
-        "wordmarkFont": { "enum": ["display", "body"] },
-        "markTone": { "enum": ["current", "primary"] }
+        "wordmark": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string",
+          "description": "Empty hides it."
+        },
+        "initials": {
+          "type": "string",
+          "maxLength": 2
+        },
+        "mark": {
+          "enum": [
+            "monogram",
+            "ring",
+            "spark",
+            "stack",
+            "orbit",
+            "none",
+            "custom"
+          ]
+        },
+        "logoSrc": {
+          "type": "string",
+          "description": "Full logo image URL; replaces the generated lockup."
+        },
+        "markSrc": {
+          "type": "string",
+          "description": "Mark-only image URL for rails, docks, favicons."
+        },
+        "markSvg": {
+          "type": "string",
+          "description": "Inline SVG markup for a custom mark (use currentColor)."
+        },
+        "variant": {
+          "enum": [
+            "lockup",
+            "stacked",
+            "mark",
+            "wordmark"
+          ]
+        },
+        "placement": {
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "wordmarkCase": {
+          "enum": [
+            "normal",
+            "upper"
+          ]
+        },
+        "wordmarkFont": {
+          "enum": [
+            "display",
+            "body"
+          ]
+        },
+        "markTone": {
+          "enum": [
+            "current",
+            "primary"
+          ]
+        }
       }
     },
     "color": {
       "type": "object",
       "properties": {
-        "primary": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" },
-        "accent": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" },
-        "neutral": { "type": "string", "description": "Hex, or 'auto' to borrow the primary's hue." },
-        "success": { "type": "string" },
-        "warning": { "type": "string" },
-        "danger": { "type": "string" },
-        "info": { "type": "string" },
-        "mode": { "enum": ["light", "dark"] }
+        "primary": {
+          "type": "string",
+          "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+        },
+        "neutral": {
+          "type": "string",
+          "description": "Hex, or 'auto' to borrow the primary's hue."
+        },
+        "success": {
+          "type": "string"
+        },
+        "warning": {
+          "type": "string"
+        },
+        "danger": {
+          "type": "string"
+        },
+        "info": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "light",
+            "dark"
+          ]
+        }
       }
     },
     "radius": {
       "type": "object",
       "properties": {
-        "roundness": { "type": "number", "minimum": 0, "maximum": 100, "description": "0 = sharp, 100 = fully rounded." },
-        "pill": { "type": "boolean", "description": "Full pills for controls, chips, inputs and nav shells." },
+        "roundness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "0 = sharp, 100 = fully rounded."
+        },
+        "pill": {
+          "type": "boolean",
+          "description": "Full pills for controls, chips, inputs and nav shells."
+        },
         "overrides": {
           "type": "object",
-          "properties": { "chip": { "type": "number" }, "control": { "type": "number" }, "field": { "type": "number" }, "card": { "type": "number" }, "panel": { "type": "number" }, "media": { "type": "number" }, "shell": { "type": "number" } }
+          "properties": {
+            "chip": {
+              "type": "number"
+            },
+            "control": {
+              "type": "number"
+            },
+            "field": {
+              "type": "number"
+            },
+            "card": {
+              "type": "number"
+            },
+            "panel": {
+              "type": "number"
+            },
+            "media": {
+              "type": "number"
+            },
+            "shell": {
+              "type": "number"
+            }
+          }
         }
       }
     },
     "type": {
       "type": "object",
       "properties": {
-        "preset": { "enum": ["modern", "geometric", "editorial", "grotesk", "humanist", "classic"] },
-        "display": { "type": "string", "description": "Any Google Fonts family." },
-        "body": { "type": "string" },
-        "mono": { "type": "string" },
-        "buttonCase": { "enum": ["normal", "upper"] }
+        "preset": {
+          "enum": [
+            "modern",
+            "geometric",
+            "editorial",
+            "grotesk",
+            "humanist",
+            "classic"
+          ]
+        },
+        "display": {
+          "type": "string",
+          "description": "Any Google Fonts family."
+        },
+        "body": {
+          "type": "string"
+        },
+        "mono": {
+          "type": "string"
+        },
+        "buttonCase": {
+          "enum": [
+            "normal",
+            "upper"
+          ]
+        }
       }
     },
-    "density": { "enum": ["compact", "comfortable", "spacious"] },
+    "density": {
+      "enum": [
+        "compact",
+        "comfortable",
+        "spacious"
+      ]
+    },
     "surface": {
       "type": "object",
       "properties": {
-        "float": { "enum": ["solid", "glass"] },
-        "shadow": { "enum": ["none", "soft", "medium", "deep"] },
-        "border": { "enum": ["hairline", "none"] }
+        "float": {
+          "enum": [
+            "solid",
+            "glass"
+          ]
+        },
+        "shadow": {
+          "enum": [
+            "none",
+            "soft",
+            "medium",
+            "deep"
+          ]
+        },
+        "border": {
+          "enum": [
+            "hairline",
+            "none"
+          ]
+        }
       }
     },
     "nav": {
       "type": "object",
       "properties": {
-        "front": { "enum": ["dock", "island", "bar", "stacked", "minimal"] },
-        "back": { "enum": ["sidebar", "rail", "inset", "topbar", "dock"] }
+        "front": {
+          "enum": [
+            "dock",
+            "island",
+            "bar",
+            "stacked",
+            "minimal"
+          ]
+        },
+        "back": {
+          "enum": [
+            "sidebar",
+            "rail",
+            "inset",
+            "topbar",
+            "dock"
+          ]
+        }
+      }
+    },
+    "avatars": {
+      "type": "object",
+      "properties": {
+        "style": {
+          "enum": [
+            "notionists-neutral",
+            "lorelei-neutral",
+            "thumbs",
+            "glass",
+            "shapes",
+            "initials"
+          ],
+          "description": "DiceBear style (CC0) for people without a photo."
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "intensity": {
+          "enum": [
+            "subtle",
+            "expressive"
+          ]
+        }
       }
     }
   }

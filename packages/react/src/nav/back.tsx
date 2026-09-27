@@ -3,7 +3,8 @@ import type { BackNav, LogoVariant, Placement } from '@ui-system/core';
 import { cx, pick, usePlacement, useUIS } from '../context';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';
-import { Avatar, IconButton, Input } from '../primitives';
+import { IconButton, Input } from '../primitives';
+import { Avatar } from '../Avatar';
 import { A, arr, type AppUser, type NavAction, type NavLink, type NavSection, type Workspace } from './shared';
 
 interface BaseBackProps {
@@ -33,7 +34,7 @@ export function AppSidebar({ sections, user, workspace, search = true, logoPlace
         <Logo variant={variant} size="sm" href="#" />
         {placement !== 'center' ? <IconButton icon="sidebar" label="Collapse sidebar" /> : null}
       </div>
-      {workspace ? (
+      {workspace && !user ? (
         <button type="button" className="uis-workspace">
           <span className="uis-workspace__glyph">{workspace.initials ?? initialsOf(workspace.name)}</span>
           <span className="uis-workspace__meta">
@@ -57,11 +58,14 @@ export function AppSidebar({ sections, user, workspace, search = true, logoPlace
       ))}
       {footer}
       {user ? (
-        <div className="uis-sidebar__foot">
+        <button type="button" className="uis-sidebar__foot uis-account" aria-label="Account and workspace">
           <Avatar size="sm" name={user.name} initials={user.initials} src={user.src} />
-          <span className="uis-user"><span className="uis-user__name">{user.name}</span>{user.meta ? <span className="uis-user__meta">{user.meta}</span> : null}</span>
-          <IconButton icon="more" label="Account menu" />
-        </div>
+          <span className="uis-user">
+            <span className="uis-user__name">{user.name}</span>
+            <span className="uis-user__meta">{workspace ? [workspace.name, workspace.plan].filter(Boolean).join(' · ') : user.meta}</span>
+          </span>
+          <Icon name="chevrons-updown" size={16} style={{ color: 'var(--uis-ink-3)' }} />
+        </button>
       ) : null}
     </aside>
   );

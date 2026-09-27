@@ -17,6 +17,14 @@ Brand-agnostic design system. One `ui.config.json` per project drives colors, ra
 - Text roles must keep 4.5:1 contrast in both themes (`contrast()` in core).
 - When a component or prop changes: update `design-catalog.mjs` (README + preview), run `pnpm build && pnpm design`, then sync the Claude Design System.
 
+## Libraries (see docs/libraries.md)
+- People without a photo: `Avatar` (DiceBear, CC0). Never stock or invented photos.
+- Animation: anime.js v4 through `Reveal`, `CountUp`, `anime`. Respect `config.motion` and reduced motion.
+- Extra effects: React Bits (`npx shadcn@latest add @react-bits/<Name>-TS-TW`), recolored with `--uis-*`.
+- Extra app components: Untitled UI React + `@ui-system/core/untitled-ui.css`.
+- Search Mobbin for references before designing a new screen or section; cite the links.
+- `node scripts/build-assets.mjs` regenerates design/assets (icons, marks, avatars); new files must be uploaded as design-system assets and recorded in design/assets.json.
+
 ## Claude Design
 - Design system: "UI System" (namespace `UIS`, canvas folder `uis`). Publish changed files from `design/claude-design-system/project`; the index `design-system.json` goes last, keeping `createdOnFiles` from the live copy and updating `lastChange`.
 - Canvas: "UI System", 20 boards. Each board wraps content in `UIS.Root` with the shared Tweaks (primary, accent, neutral, mode, roundness, pill, fontPreset, buttonCase, surface, density, wordmark, caption, logoMark, logoVariant, logoPlacement, logoSrc, markSrc). After a design system update, re-copy `tokens.json`, `components/bundle.js`, `components/bundle.css` into `project/ds/uis/` and bump the `designSystems` record.

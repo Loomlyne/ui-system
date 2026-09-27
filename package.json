@@ -10,6 +10,7 @@
     "typecheck": "pnpm -r run typecheck",
     "theme": "node packages/core/dist/cli.js build ui.config.json --out ui-theme",
     "design": "node scripts/build-design.mjs",
+    "assets": "node scripts/build-assets.mjs",
     "dev": "pnpm --filter playground dev",
     "playground:build": "pnpm --filter playground build"
   },
