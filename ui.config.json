@@ -1,0 +1,42 @@
+{
+  "$schema": "./packages/core/schema.json",
+  "name": "New Project",
+  "brand": {
+    "wordmark": "Brand",
+    "caption": "Tagline",
+    "mark": "monogram",
+    "variant": "lockup",
+    "placement": "left",
+    "wordmarkCase": "normal",
+    "wordmarkFont": "display",
+    "markTone": "current"
+  },
+  "color": {
+    "primary": "#1C1B19",
+    "accent": "#E0562B",
+    "neutral": "#77736B",
+    "success": "#1E8E4E",
+    "warning": "#C27803",
+    "danger": "#D0342C",
+    "info": "#2F6BD8",
+    "mode": "light"
+  },
+  "radius": {
+    "roundness": 60,
+    "pill": false
+  },
+  "type": {
+    "preset": "modern",
+    "buttonCase": "normal"
+  },
+  "density": "comfortable",
+  "surface": {
+    "float": "solid",
+    "shadow": "medium",
+    "border": "hairline"
+  },
+  "nav": {
+    "front": "island",
+    "back": "sidebar"
+  }
+}

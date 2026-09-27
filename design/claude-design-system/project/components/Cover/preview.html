@@ -1,0 +1,50 @@
+<!-- @dsCard height=340 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>UI System: cover</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&display=swap">
+<style>
+  html, body { margin: 0; }
+  body { width: 960px; height: 340px; position: relative; overflow: hidden; background: var(--bg); font-family: var(--font-body); }
+  svg { position: absolute; left: 480px; top: 0; width: 480px; height: 340px; }
+  .ink { fill: var(--primary); }
+  .signal { fill: var(--accent); }
+  .tint { fill: var(--primary-soft); }
+  .ground2 { fill: var(--surface-3); }
+  .cut { fill: var(--bg); }
+  .r0 { rx: 0; } .r1 { rx: var(--radius-chip); } .r2 { rx: var(--radius-control); } .r3 { rx: var(--radius-media); }
+  .r4 { rx: var(--radius-card); } .r5 { rx: var(--radius-panel); } .disc { rx: 20px; }
+  .text { position: absolute; left: 48px; bottom: 44px; width: 420px; }
+  h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 120px; line-height: 0.93; letter-spacing: -0.035em; color: var(--ink); }
+  p { margin: 18px 0 0; font-size: 14px; line-height: 1.4; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<!--
+  blocks: primary slab 216x356 bleeding off top and bottom, accent block 96x96 bleeding off the top-right, primary-soft 120x152, surface-3 strip 480x72
+  arrangement: one tall slab with satellites, all right of x = 480
+  pattern: the roundness dial, because the README opens with "one value moves the interface from sharp to round": eight 40px tiles in reading order, corners stepping 0, radius-chip, radius-control, radius-media, radius-card, radius-panel, then two discs
+  steps and radii: spacing 8/16/24/48; tile 40, gap 16; radii 0, radius-chip, radius-control, radius-media, radius-card, radius-panel, disc = half the tile
+-->
+<svg viewBox="0 0 480 340" aria-hidden="true">
+  <rect class="ground2" x="0" y="268" width="480" height="72" />
+  <rect class="tint" x="24" y="48" width="120" height="152" />
+  <rect class="ink" x="168" y="-8" width="216" height="356" />
+  <rect class="signal" x="384" y="0" width="96" height="96" />
+  <g>
+    <rect class="cut r0" x="48" y="96" width="40" height="40" />
+    <rect class="cut r1" x="184" y="40" width="40" height="40" />
+    <rect class="cut r2" x="240" y="40" width="40" height="40" />
+    <rect class="cut r3" x="296" y="40" width="40" height="40" />
+    <rect class="cut r4" x="184" y="96" width="40" height="40" />
+    <rect class="cut r5" x="240" y="96" width="40" height="40" />
+    <rect class="cut disc" x="296" y="96" width="40" height="40" />
+    <rect class="signal disc" x="240" y="152" width="40" height="40" />
+  </g>
+</svg>
+<div class="text">
+  <h1>UI<br>System</h1>
+  <p>One config for brand colors, radius, logos and navigation.</p>
+</div>
+</body>
+</html>

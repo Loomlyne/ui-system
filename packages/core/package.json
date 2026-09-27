@@ -1,0 +1,37 @@
+{
+  "name": "@ui-system/core",
+  "version": "0.1.0",
+  "description": "UI System engine: config, OKLCH color scales, radius engine, fonts, CSS/Tailwind/Claude Design exports.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "ui-system": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ui.css": "./styles/ui.css",
+    "./tailwind.css": "./styles/tailwind.css",
+    "./schema.json": "./schema.json"
+  },
+  "files": [
+    "dist",
+    "styles",
+    "schema.json"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "node build.mjs && tsc -p tsconfig.json --emitDeclarationOnly",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "22"
+  }
+}

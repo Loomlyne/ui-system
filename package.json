@@ -1,0 +1,22 @@
+{
+  "name": "ui-system",
+  "private": true,
+  "version": "0.1.0",
+  "description": "One config for brand colors, radius, logos and navigation. Tokens, CSS, Tailwind v4, React and a live playground.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "build": "pnpm --filter @ui-system/core run build && pnpm --filter @ui-system/react run build",
+    "typecheck": "pnpm -r run typecheck",
+    "theme": "node packages/core/dist/cli.js build ui.config.json --out ui-theme",
+    "design": "node scripts/build-design.mjs",
+    "dev": "pnpm --filter playground dev",
+    "playground:build": "pnpm --filter playground build"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0",
+    "react-umd": "npm:react@18.3.1",
+    "react-dom-umd": "npm:react-dom@18.3.1"
+  }
+}

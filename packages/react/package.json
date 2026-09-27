@@ -1,0 +1,40 @@
+{
+  "name": "@ui-system/react",
+  "version": "0.1.0",
+  "description": "UI System React components: Root theme provider, Logo, primitives, frontend navs and backend app shells.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ui.css": "./dist/ui.css",
+    "./bundle": "./dist/uis.bundle.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "node build.mjs && tsc -p tsconfig.json --emitDeclarationOnly",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@ui-system/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}

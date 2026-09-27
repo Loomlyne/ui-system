@@ -1,0 +1,30 @@
+<!-- @dsCard group="Forms" height=170 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Textarea: preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap">
+<style>body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); }</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+
+var U = window.UIS, h = React.createElement;
+var links = [{ label: 'Home', active: true }, { label: 'Work' }, { label: 'Services' }, { label: 'About' }, { label: 'Contact' }];
+var actions = [{ icon: 'search', label: 'Search' }, { icon: 'bag', label: 'Cart', count: 2 }];
+var cta = { label: 'Get started' };
+var sections = [
+  { items: [{ label: 'Overview', icon: 'home', active: true }, { label: 'Projects', icon: 'folder', badge: 12 }, { label: 'Clients', icon: 'users' }, { label: 'Invoices', icon: 'file' }, { label: 'Calendar', icon: 'calendar' }] },
+  { label: 'Workspace', items: [{ label: 'Reports', icon: 'chart' }, { label: 'Settings', icon: 'settings' }] }
+];
+var user = { name: 'Your Name', meta: 'Owner' };
+var workspace = { name: 'Studio', plan: 'Pro plan' };
+function hero(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'linear-gradient(160deg, var(--neutral-700), var(--neutral-950))' } }, child); }
+function stage(child, height) { return h('div', { style: { position: 'relative', height: height || 360, overflow: 'hidden', background: 'var(--bg)' } }, child); }
+function row() { return h.apply(null, ['div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', padding: 20 } }].concat([].slice.call(arguments))); }
+function page() { return h('div', { style: { padding: 24 } }, h(U.PageHeader, { title: 'Overview', description: 'Everything at a glance.', crumbs: ['Workspace', 'Overview'], actions: h(U.Button, { icon: 'plus' }, 'New project'), style: { padding: '8px 0 20px' } }), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 } }, h(U.Card, null, h(U.Stat, { label: 'Revenue', value: '[AMOUNT]', delta: '+12%' })), h(U.Card, null, h(U.Stat, { label: 'Projects', value: '24' })), h(U.Card, null, h(U.Stat, { label: 'Clients', value: '18' })))); }
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(U.Root, { vars: false, page: false }, row(h(U.Textarea, { label: 'Message', placeholder: 'Tell us about the project', style: { width: 420 } }))));
+</script>
+</body>
+</html>
