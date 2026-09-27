@@ -12,6 +12,9 @@ const out = join(root, 'design/claude-design-system/project');
 const TITLE = 'UI System';
 const NS = 'UIS';
 
+// Keep the index's identity across rebuilds: Claude Design expects createdOnFiles to stay put.
+const indexPath = join(out, 'design-system.json');
+const previous = existsSync(indexPath) ? JSON.parse(readFileSync(indexPath, 'utf8')) : null;
 if (existsSync(join(root, 'design/claude-design-system'))) rmSync(join(root, 'design/claude-design-system'), { recursive: true });
 const write = (rel, text) => {
   const p = join(out, rel);
@@ -266,7 +269,7 @@ const now = new Date().toISOString();
 write('design-system.json', JSON.stringify({
   v: 3,
   layout: 'files',
-  createdOnFiles: { v: 1, at: now },
+  createdOnFiles: previous?.createdOnFiles ?? { v: 1, at: now },
   title: TITLE,
   namespace: NS,
   libraries: [
@@ -278,7 +281,7 @@ write('design-system.json', JSON.stringify({
   assetGroups: {},
   blobs: {},
   docs: { sections: [] },
-  lastChange: { by: 'Koussay Zayani', at: now, via: 'Claude Code', note: 'Built from github.com/Loomlyne/ui-system' },
+  lastChange: { by: 'Koussay Zayani', at: now, via: 'Claude Code', note: process.env.DESIGN_NOTE || 'Built from github.com/Loomlyne/ui-system' },
 }, null, 2) + '\n');
 
 console.log(`Claude Design System written to ${out} (${CATALOG.length} components)`);

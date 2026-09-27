@@ -3,7 +3,7 @@
   "layout": "files",
   "createdOnFiles": {
     "v": 1,
-    "at": "2026-09-27T13:02:13.698Z"
+    "at": "2026-09-27T12:37:05.436Z"
   },
   "title": "UI System",
   "namespace": "UIS",
@@ -30,8 +30,8 @@
   },
   "lastChange": {
     "by": "Koussay Zayani",
-    "at": "2026-09-27T13:02:13.698Z",
+    "at": "2026-09-27T13:03:20.752Z",
     "via": "Claude Code",
-    "note": "Built from github.com/Loomlyne/ui-system"
+    "note": "Dock layout overlays content, initials ignore brackets, upload and copy icons"
   }
 }
