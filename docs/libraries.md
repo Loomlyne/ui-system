@@ -8,7 +8,8 @@ UI System stays the source of truth for tokens (color, radius, type). These are 
 | Animation | [anime.js v4](https://github.com/juliangarnier/anime), built into `Reveal`, `CountUp`, `anime` | MIT |
 | Animated text, backgrounds, effects | [React Bits](https://github.com/DavidHDev/react-bits) | MIT + Commons Clause |
 | Extra app components (date pickers, file upload, charts…) | [Untitled UI React](https://github.com/untitleduico/react) open-source set | MIT |
-| Design references | Mobbin (connected in Claude) | Reference only |
+| Web references (sites, sections, flows) | Mobbin (connected in Claude) | Reference only |
+| Mobile app references (screens, onboarding, paywalls) | [Appllama](https://appllama.io) MCP + skills | Pro plan, credits |
 
 ## Avatars (DiceBear)
 - `<Avatar name="Amira Haddad" />` draws a deterministic avatar: same name, same face, on every page and device.
@@ -36,5 +37,11 @@ anime.animate('.hero h1', { opacity: [0, 1], translateY: [24, 0], ease: 'out(3)'
 2. After its `theme.css`, import `@ui-system/core/untitled-ui.css`: brand scale → `primary`, greys → `neutral`, fonts → the preset.
 3. Use UI System components first; reach for Untitled UI for what this library does not have.
 
+## Scope
+UI System is dashboard-first. Websites and mobile apps take their structure from Mobbin (web) and Appllama (mobile) references, then apply UI System tokens, avatars and motion.
+
 ## Mobbin
 Before designing a new screen, flow or website section, search Mobbin (screens, flows, sections) for 5–10 real examples, pick one pattern, and cite the Mobbin links in the design notes. Adapt the pattern with UI System components; never copy a product's branding.
+
+## Appllama
+Mobile app research: top-grossing apps' real screens, flows and paywalls. MCP at `https://mcp.appllama.io/mcp` (streamable HTTP, OAuth). Skills: `appllama-usage` (research playbooks) and `appllama-app-design-skill` (Expo / React Native build rules). Start every session with `get_credits` (free); every other call costs 1 credit, credits reset on the 1st (UTC).

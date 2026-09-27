@@ -2,6 +2,11 @@
 
 Brand-agnostic design system. One `ui.config.json` per project drives colors, radius, type, logo and navigation. Nothing client-specific is ever baked into the defaults.
 
+## Scope
+
+- **Dashboards and back-office apps:** built from UI System components end to end.
+- **Websites and mobile apps:** layout, flows and motion come from real references, Mobbin for web and Appllama for mobile. UI System supplies the tokens (color, radius, type, logo), avatars and motion engine, and its components where they fit.
+
 ## Layout
 - `packages/core`: engine (`config.ts` defaults, `color.ts` OKLCH scales, `radius.ts`, `type.ts` font presets, `theme.ts` buildTheme, `exports.ts` CSS/Tailwind/Claude Design tokens, `cli.ts`). `styles/ui.css` holds every component as `uis-*` classes reading `--uis-*` variables. `styles/tailwind.css` is generated.
 - `packages/react`: components (`Root`, `Logo`, `primitives.tsx`, `nav/front.tsx`, `nav/back.tsx`). `build.mjs` emits the ESM library and `dist/uis.bundle.js` (IIFE, `window.UIS`, React from `window.React`).

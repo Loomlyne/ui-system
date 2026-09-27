@@ -2,6 +2,8 @@
 
 One config for brand colors, radius, logos and navigation. Every project starts from the same system and gets its own brand: set a few values and the whole interface follows, from sharp to round, light to dark, solid to glass.
 
+**Built for dashboards first.** Websites and mobile apps take their structure from Mobbin (web) and Appllama (mobile) references and use UI System for tokens, avatars and motion. See [docs/libraries.md](docs/libraries.md).
+
 **Live playground:** https://loomlyne.github.io/ui-system/
 
 ```
