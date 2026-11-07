@@ -236,6 +236,7 @@ export const TEXT_PAIRS: Array<[fg: string, bg: string]> = [
   ['inverse-ink', 'inverse'],
   ['ink-2', 'nav-bg'],
   ['ink-3', 'nav-bg'],
+  ['ink-3', 'nav-active-bg'],
   ['nav-active-ink', 'nav-active-bg'],
   ...['primary', 'accent', 'success', 'warning', 'danger', 'info'].flatMap((r) => [
     [`${r}-ink`, r], [`${r}-soft-ink`, `${r}-soft`], [`${r}-text`, 'bg'],

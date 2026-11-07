@@ -301,7 +301,7 @@ The panel is \`--uis-nav-bg\`; the current page is \`--uis-nav-active-bg\` with 
   },
   {
     name: 'AppRail', group: 'Navigation: Backend', height: 460,
-    readme: `The collapsed icon rail: mark on top, icon links with hover tooltips, dots for unread items, user at the bottom. Reads the same \`--uis-nav-*\` roles as AppSidebar.
+    readme: `The collapsed icon rail: mark on top, icon links with hover tooltips, dots for unread items, user at the bottom. Reads the same \`--uis-nav-*\` roles as AppSidebar (AppDock items keep \`primary-soft\`).
 
 **Props:** \`sections\`, \`footerItems\`, \`user\`, \`tip\` (pin one tooltip open, for mockups).`,
     preview: `h('div', { style: { display: 'grid', gridTemplateColumns: '76px 1fr', height: 460 } }, h(U.AppRail, { sections: sections, user: user, tip: 'Projects' }), h('div', { style: { background: 'var(--bg)' } }))`,

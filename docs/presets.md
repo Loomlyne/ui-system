@@ -55,7 +55,7 @@ Label "Retail editorial (Senorita)". Source: Senorita Store Phase 1 storefront a
 
 ### Color (dark, designed)
 
-The source has no dark mode. These values were designed for the preset and signed off on 2026-11-07 (canvas "UI System · Retail preset options", option A). Every text pair passes 4.5:1; field edges 3.64:1.
+The source has no dark mode. These values were designed for the preset and signed off on 2026-11-07 (canvas "UI System · Retail preset options", option A). Every text pair passes 4.5:1; field edges 3.64:1 (the resting search pill excepted, see Known gaps).
 
 | Role | Value |
 | --- | --- |
@@ -68,7 +68,7 @@ The source has no dark mode. These values were designed for the preset and signe
 | `warning-soft` / `-ink` | `#2B211C` / `#E6C9B9` |
 | `danger-text` | `#F07068` |
 | `info-soft` / `-ink`, `search-bg` | `#2A2724` / `#F3EFEA` |
-| `nav-bg`, `nav-active-bg`, `nav-active-ink`, `nav-active-bar` | `#1B1916`, `#2A2724`, `#F3EFEA`, `#F3EFEA` |
+| `nav-bg`, `nav-active-bg`, `nav-active-ink`, `nav-active-bar` | `#1B1916`, `#36322E` (one step above the `#2A2724` hover), `#F3EFEA`, `#F3EFEA` |
 | `wordmark` | `#D27A89` (burgundy lifted to 6.13:1) |
 
 ### Shape
@@ -100,4 +100,5 @@ Website nav `bar`, app nav `sidebar`, wordmark-only logo, `initials` avatars.
 
 ### Known gaps
 
+- The resting search pill has no edge (`search-border: transparent`, as in the source): fill to page is 1.10:1 light, 1.26:1 dark, under WCAG 1.4.11. Placeholder, icon and shape identify it; hover shows the 3:1 edge.
 - The source's product grid, mega menu, size boxes and drawers are layouts, not engine components. Build them from these tokens.

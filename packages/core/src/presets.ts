@@ -101,7 +101,7 @@ export const PRESETS: Record<PresetId, Preset> = {
           'search-border': 'transparent',
           'search-border-hover': '#77716A',
           'nav-bg': '#1B1916',
-          'nav-active-bg': '#2A2724',
+          'nav-active-bg': '#36322E',
           'nav-active-ink': '#F3EFEA',
           'nav-active-bar': '#F3EFEA',
           wordmark: '#D27A89',
