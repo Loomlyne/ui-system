@@ -112,9 +112,9 @@
 .uis-control--icon .uis-input { padding-left: 42px; }
 .uis-control--kbd .uis-input { padding-right: 52px; }
 .uis-input--sm { height: var(--uis-h-sm); font-size: 14px; }
-.uis-input--invalid { border-color: var(--uis-danger); }
 .uis-input--search { border-radius: var(--uis-r-search); background: var(--uis-search-bg); border-color: var(--uis-search-border); }
 .uis-input--search:hover:not(:focus) { border-color: var(--uis-search-border-hover); }
+.uis-input--invalid { border-color: var(--uis-danger); }
 .uis-select { padding-right: 42px; cursor: pointer; }
 .uis-control > .uis-select + .uis-icon { left: auto; right: 14px; }
 .uis-textarea { height: auto; min-height: 104px; padding: 12px 16px; line-height: 1.5; resize: vertical; border-radius: min(var(--uis-r-field), 20px); }

@@ -1,4 +1,5 @@
 import { resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
+import { PRESETS } from './presets';
 import {
   alpha, bestOn, contrast, hexToOklch, isHex, mix, neutralFrom, scaleFrom, stepWithContrast,
   type NeutralScale, type Scale, type ScaleStep,
@@ -46,6 +47,32 @@ function role(seed: string, scale: Scale & { anchor: ScaleStep }, bg: string, su
   return { base, hover, ink, soft, softInk, text };
 }
 
+/** Roles each seed generates; a pin on one of them was measured against the preset's seed. */
+const SEEDS = ['primary', 'accent', 'success', 'warning', 'danger', 'info'] as const;
+const NEUTRAL_ROLES = new Set(['bg', 'surface', 'surface-2', 'surface-3', 'line', 'line-strong', 'ink', 'ink-2', 'ink-3', 'inverse', 'inverse-ink', 'scrim', 'float-border', 'search-bg', 'search-border', 'search-border-hover', 'nav-bg']);
+
+/**
+ * A preset's pins only hold while its seeds do. When a project changes a seed (primary, accent,
+ * neutral…), the preset's own pins on that seed's roles are dropped so the engine derives them
+ * again (a cream primary must not keep white text). Pins the project wrote itself always stay.
+ */
+function activePins(config: UIConfig, pins: Partial<Record<string, string>>, key: 'pin' | 'pinDark'): Partial<Record<string, string>> {
+  const preset = config.preset ? PRESETS[config.preset] : undefined;
+  const pc = preset?.config.color;
+  if (!pc) return pins;
+  const same = (a?: string, b?: string) => (a ?? '').toLowerCase() === (b ?? '').toLowerCase();
+  const changed = SEEDS.filter((s) => pc[s] !== undefined && !same(config.color[s], pc[s]));
+  const neutralChanged = pc.neutral !== undefined && !same(config.color.neutral, pc.neutral);
+  const presetPins = (pc[key] ?? {}) as Record<string, string | undefined>;
+  const out: Partial<Record<string, string>> = {};
+  for (const [k, val] of Object.entries(pins)) {
+    const reseeded = changed.some((s) => k === s || k.startsWith(`${s}-`)) || (neutralChanged && NEUTRAL_ROLES.has(k));
+    if (reseeded && same(val, presetPins[k])) continue;
+    out[k] = val;
+  }
+  return out;
+}
+
 const DENSITY = {
   compact: { sm: 32, md: 38, lg: 46, pad: 16, gap: 12 },
   comfortable: { sm: 36, md: 44, lg: 52, pad: 24, gap: 16 },
@@ -86,7 +113,7 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
   const n = scales.neutral;
   const white = n[0], black = n[975];
 
-  const pins = { light: c.pin ?? {}, dark: c.pinDark ?? {} };
+  const pins = { light: activePins(config, c.pin ?? {}, 'pin'), dark: activePins(config, c.pinDark ?? {}, 'pinDark') };
   const wordmarkSeed = isHex(config.brand.wordmarkColor) ? safe(config.brand.wordmarkColor, '#000000') : undefined;
 
   const build = (mode: Mode): Vars => {
@@ -94,7 +121,11 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     // Pins are exact values per mode; anything unpinned is derived from the scales.
     const pin: Partial<Record<string, string>> = pins[mode];
     const v: Vars = {};
-    const set = (k: string, value: string) => { v[k] = pin[k] ?? value; };
+    const set = (k: string, value: string) => {
+      const p = pin[k];
+      if (p !== undefined && !(isHex(p) || p === 'transparent' || /^rgba?\(/.test(p))) throw new Error(`color.${dark ? 'pinDark' : 'pin'}: "${k}" must be a hex, rgb()/rgba() or transparent, got "${p}"`);
+      v[k] = p ?? value;
+    };
     set('bg', dark ? n[975] : n[25]);
     set('surface', dark ? n[950] : n[0]);
     const bg = v.bg, surface = v.surface;
@@ -193,11 +224,11 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     'wordmark-stretch': type.wordmark?.stretch ?? '100%',
     'focus-ring-width': pxOr(config.sizes?.ring, 4),
     'check-border': pxOr(config.sizes?.check, 1.5),
-    'h-sm': `${d.sm}px`,
-    'h-md': `${d.md}px`,
-    'h-lg': `${d.lg}px`,
-    'pad-card': `${d.pad}px`,
-    gap: `${d.gap}px`,
+    'h-sm': pxOr(d.sm, DENSITY.comfortable.sm),
+    'h-md': pxOr(d.md, DENSITY.comfortable.md),
+    'h-lg': pxOr(d.lg, DENSITY.comfortable.lg),
+    'pad-card': pxOr(d.pad, DENSITY.comfortable.pad),
+    gap: pxOr(d.gap, DENSITY.comfortable.gap),
     'float-blur': glass ? 'blur(20px) saturate(180%)' : 'none',
     'ease-out': tm.easeOut || 'cubic-bezier(0.16, 1, 0.3, 1)',
     'ease-in-out': tm.easeInOut || 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -233,6 +264,8 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
 export const TEXT_PAIRS: Array<[fg: string, bg: string]> = [
   ...['ink', 'ink-2', 'ink-3'].flatMap((fg) => ['bg', 'surface', 'surface-2'].map((bg) => [fg, bg] as [string, string])),
   ['ink', 'surface-3'],
+  ['ink-3', 'surface-3'],
+  ['ink-3', 'search-bg'],
   ['inverse-ink', 'inverse'],
   ['ink-2', 'nav-bg'],
   ['ink-3', 'nav-bg'],
