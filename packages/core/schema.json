@@ -125,7 +125,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "Exact light-mode values on generated roles (bg, line, ink-2, primary-hover, focus-field, search-bg...). Dark stays derived."
+          "description": "Exact light-mode values on generated roles (bg, line, ink-2, primary-hover, focus-field, search-bg, nav-bg...)."
+        },
+        "pinDark": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Exact dark-mode values on the same roles. Unpinned dark roles are derived."
         }
       }
     },
@@ -360,9 +367,12 @@
         },
         "ring": {
           "type": "number"
+        },
+        "check": {
+          "type": "number"
         }
       },
-      "description": "Pin control heights, card padding/gap and field focus ring width in px."
+      "description": "Pin control heights, card padding/gap, field focus ring width and checkbox edge width in px."
     },
     "space": {
       "type": "array",

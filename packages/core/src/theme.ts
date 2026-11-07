@@ -86,13 +86,13 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
   const n = scales.neutral;
   const white = n[0], black = n[975];
 
-  const pins = c.pin ?? {};
+  const pins = { light: c.pin ?? {}, dark: c.pinDark ?? {} };
   const wordmarkSeed = isHex(config.brand.wordmarkColor) ? safe(config.brand.wordmarkColor, '#000000') : undefined;
 
   const build = (mode: Mode): Vars => {
     const dark = mode === 'dark';
-    // Pins are exact light-mode values; dark mode is always derived from the scales.
-    const pin: Partial<Record<string, string>> = dark ? {} : pins;
+    // Pins are exact values per mode; anything unpinned is derived from the scales.
+    const pin: Partial<Record<string, string>> = pins[mode];
     const v: Vars = {};
     const set = (k: string, value: string) => { v[k] = pin[k] ?? value; };
     set('bg', dark ? n[975] : n[25]);
@@ -130,9 +130,15 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     set('card-border', config.surface.border === 'none' ? 'transparent' : v.line);
     set('search-bg', v.surface);
     set('search-border', v['line-strong']);
+    set('search-border-hover', v['ink-3']);
+    // App side navigation: panel, active item fill and text, and the start bar (transparent = none).
+    set('nav-bg', v.surface);
+    set('nav-active-bg', v['primary-soft']);
+    set('nav-active-ink', v['primary-soft-ink']);
+    set('nav-active-bar', 'transparent');
     const ws = wordmarkSeed && scaleFrom(wordmarkSeed);
     set('wordmark', !ws ? 'currentColor' : dark ? stepWithContrast(ws, bg, 4.5, ws.anchor, -1) : wordmarkSeed!);
-    for (const k of Object.keys(pin)) if (!(k in v)) throw new Error(`color.pin: unknown role "${k}"`);
+    for (const k of Object.keys(pin)) if (!(k in v)) throw new Error(`color.${dark ? 'pinDark' : 'pin'}: unknown role "${k}"`);
     const sh = shadows(config.surface.shadow, n[975], mode);
     if (!dark) for (const [k, val] of Object.entries(config.surface.shadows ?? {})) if (val) sh[`shadow-${k}`] = val;
     Object.assign(v, sh);
@@ -186,6 +192,7 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     'wordmark-weight': String(type.wordmark?.weight ?? 650),
     'wordmark-stretch': type.wordmark?.stretch ?? '100%',
     'focus-ring-width': pxOr(config.sizes?.ring, 4),
+    'check-border': pxOr(config.sizes?.check, 1.5),
     'h-sm': `${d.sm}px`,
     'h-md': `${d.md}px`,
     'h-lg': `${d.lg}px`,
@@ -227,6 +234,9 @@ export const TEXT_PAIRS: Array<[fg: string, bg: string]> = [
   ...['ink', 'ink-2', 'ink-3'].flatMap((fg) => ['bg', 'surface', 'surface-2'].map((bg) => [fg, bg] as [string, string])),
   ['ink', 'surface-3'],
   ['inverse-ink', 'inverse'],
+  ['ink-2', 'nav-bg'],
+  ['ink-3', 'nav-bg'],
+  ['nav-active-ink', 'nav-active-bg'],
   ...['primary', 'accent', 'success', 'warning', 'danger', 'info'].flatMap((r) => [
     [`${r}-ink`, r], [`${r}-soft-ink`, `${r}-soft`], [`${r}-text`, 'bg'],
   ] as Array<[string, string]>),

@@ -12,7 +12,8 @@ Presets live in `packages/core/src/presets.ts` (`PRESETS`). They use only normal
 
 | Key | What it pins |
 | --- | --- |
-| `color.pin` | Exact light-mode values on generated roles (`line`, `ink-2`, `primary-hover`, `focus-field`, `search-bg`…). Dark mode is always derived from the scales. |
+| `color.pin` | Exact light-mode values on generated roles (`line`, `ink-2`, `primary-hover`, `focus-field`, `search-bg`, `nav-bg`…). |
+| `color.pinDark` | Exact dark-mode values on the same roles. Unpinned dark roles are derived from the scales. |
 | `radius.overrides` | Any radius role in px, including `search` and `avatar`. 999 = full pill or circle. |
 | `type.preset` | The font pairing; a pairing can carry heading, button and wordmark metrics. |
 | `sizes` | Control heights `sm`/`md`/`lg`, card `pad` and `gap`, field focus `ring` width, in px. |
@@ -24,9 +25,9 @@ Every preset passes the contrast gate in `pnpm design`: `contrastReport()` check
 
 ## retail-editorial
 
-Label "Retail editorial (Senorita)". Source: Senorita Store Phase 1 storefront and admin CSS (`_s_css.html`, `_s_err.html`, `_a_css.html`) and `01-UI-SPEC.md`, 2026-11-07. No value was invented. Where the source has no value, the engine default stays.
+Label "Retail editorial (Senorita)". Source: Senorita Store Phase 1 storefront and admin CSS (`_s_css.html`, `_s_err.html`, `_a_css.html`) and `01-UI-SPEC.md`, 2026-11-07. Light values come from the source; none was invented. Two choices were designed where the source has none (info tone, dark mode) and signed off on 2026-11-07.
 
-### Color (light; dark is derived)
+### Color (light)
 
 | Role | Value | Source use |
 | --- | --- | --- |
@@ -47,7 +48,28 @@ Label "Retail editorial (Senorita)". Source: Senorita Store Phase 1 storefront a
 | `warning-soft`, `warning-soft-ink` | `#F6ECE5`, `#7A5444` | Warn pills |
 | `scrim` | `#2D2A2699` | Drawer overlay, ink at 60% |
 | `brand.wordmarkColor` | `#7E1F33` | Burgundy, wordmark only. Follows the text on photos and inverse panels. |
-| `info` | engine default | The source has no info color. |
+| `info`, `info-soft-ink` / `info-soft` | `#2D2A26` / `#F4F4F4` | The source has no info color: info is ink on grey, apart from tan warning (signed off 2026-11-07). |
+| `search-border-hover` | `#8F8B86` | Search pill edge on hover |
+| `nav-bg` | `#FAF8F5` | Admin side nav |
+| `nav-active-bg`, `nav-active-ink`, `nav-active-bar` | `#FFFFFF`, `#2D2A26`, `#2D2A26` | Current page: white item, ink text, 2px ink start bar |
+
+### Color (dark, designed)
+
+The source has no dark mode. These values were designed for the preset and signed off on 2026-11-07 (canvas "UI System · Retail preset options", option A). Every text pair passes 4.5:1; field edges 3.64:1.
+
+| Role | Value |
+| --- | --- |
+| `bg`, `surface`, `surface-2`, `surface-3` | `#141210`, `#1B1916`, `#221F1C`, `#2A2724` |
+| `line`, `line-strong` | `#35312D`, `#77716A` |
+| `ink`, `ink-2`, `ink-3` | `#F3EFEA`, `#C2BBB3`, `#A39C94` |
+| `primary` / `-ink` / `-hover`, `inverse`, `focus` | `#F3EFEA` / `#1B1916` / `#C59A83` |
+| `accent` / `-ink`, `accent-text`, `focus-field`, `focus-ring` | `#B4876F` / `#1B1916`, `#C59A83` |
+| `accent-soft` / `-ink` | `#B49A87` / `#2D2A26` (sand stays sand) |
+| `warning-soft` / `-ink` | `#2B211C` / `#E6C9B9` |
+| `danger-text` | `#F07068` |
+| `info-soft` / `-ink`, `search-bg` | `#2A2724` / `#F3EFEA` |
+| `nav-bg`, `nav-active-bg`, `nav-active-ink`, `nav-active-bar` | `#1B1916`, `#2A2724`, `#F3EFEA`, `#F3EFEA` |
+| `wordmark` | `#D27A89` (burgundy lifted to 6.13:1) |
 
 ### Shape
 
@@ -65,7 +87,7 @@ Font preset `retail`: Archivo (wdth 75–125, wght 700–900) for display, h1–
 
 - Controls: `sm` 44 (icon buttons, tabs, size boxes, search), `md` 52 (buttons, inputs), `lg` 56. Card padding 16, gap 16.
 - Spacing scale: 2 4 8 12 16 20 24 32 40 56 72. `space-1` (2px) is the gap between product tiles.
-- Borders 1px everywhere. Field focus: tan edge plus a 1px tan ring. Keyboard focus: 2px ink outline, 2px offset.
+- Borders 1px everywhere, checkbox edge included (`sizes.check: 1`). Field focus: tan edge plus a 1px tan ring. Keyboard focus: 2px ink outline, 2px offset.
 
 ### Shadows and motion
 
@@ -78,8 +100,4 @@ Website nav `bar`, app nav `sidebar`, wordmark-only logo, `initials` avatars.
 
 ### Known gaps
 
-- Search hover edge uses the shared input hover (`ink-3`, `#6F6C69`); the source uses `#8F8B86`.
-- Checkbox edge is 1.5px in the engine; the source uses 1px.
-- App sidebar: the source is off-white (`surface-2`) with a white active item and a 2px ink start bar; the engine `sidebar` is `surface` with a `primary-soft` active item.
-- `info` alerts stay engine blue.
 - The source's product grid, mega menu, size boxes and drawers are layouts, not engine components. Build them from these tokens.

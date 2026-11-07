@@ -1,5 +1,5 @@
 # Checkbox
 
-A checkbox for form choices.
+A checkbox for form choices. The edge is `--uis-check-border` wide in `--uis-line-strong` (1.5px by default, 1px in retail-editorial; set `sizes.check`).
 
 **Props:** `label`, `checked`, `defaultChecked`, `onChange(checked)`.

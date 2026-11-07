@@ -21,7 +21,7 @@ export type BackNav = 'sidebar' | 'rail' | 'inset' | 'topbar' | 'dock';
 export type AvatarStyle = 'notionists-neutral' | 'lorelei-neutral' | 'thumbs' | 'glass' | 'shapes' | 'initials';
 export type MotionIntensity = 'subtle' | 'expressive';
 export type RadiusRole = 'chip' | 'control' | 'field' | 'search' | 'card' | 'panel' | 'media' | 'shell';
-export type SizeKey = 'sm' | 'md' | 'lg' | 'pad' | 'gap' | 'ring';
+export type SizeKey = 'sm' | 'md' | 'lg' | 'pad' | 'gap' | 'ring' | 'check';
 export type ShadowKey = 'sm' | 'md' | 'lg' | 'float';
 
 export interface BrandConfig {
@@ -69,9 +69,11 @@ export interface ColorConfig {
   /**
    * Pin exact light-mode values on generated roles, e.g. { "line": "#E5E2DE" }.
    * Keys are the role names without --uis- (bg, ink-2, primary-hover, focus, search-bg…).
-   * Dark mode is always derived from the scales. Text pairs are checked by contrastReport().
+   * Text pairs are checked by contrastReport().
    */
   pin?: Partial<Record<string, string>>;
+  /** Same as `pin`, for dark mode. Unpinned dark roles are derived from the scales. */
+  pinDark?: Partial<Record<string, string>>;
 }
 
 export interface RadiusConfig {
@@ -141,7 +143,7 @@ export interface UIConfig {
   radius: RadiusConfig;
   type: TypeConfig;
   density: Density;
-  /** Pin control heights, card padding/gap and the field focus ring width in px over the density values. */
+  /** Pin control heights, card padding/gap, field focus ring width and checkbox edge width in px over the density values. */
   sizes?: Partial<Record<SizeKey, number>>;
   /** Spacing scale in px for token exports. Default 4 8 12 16 20 24 32 40 48 64 80 96. */
   space?: number[];

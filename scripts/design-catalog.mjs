@@ -89,7 +89,7 @@ Use \`light\` and \`glass\` only on photography. One \`primary\` per view. Label
     name: 'Input', group: 'Forms', height: 130,
     readme: `A text field with optional label, hint, error, leading icon and keyboard hint.
 
-Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\` and \`--uis-search-border\` (a grey pill in retail-editorial). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
+Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\`, \`--uis-search-border\` and \`--uis-search-border-hover\` (a grey pill in retail-editorial). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
 
 Always give a visible \`label\` in forms; a placeholder is not a label.`,
     preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }))`,
@@ -117,7 +117,7 @@ Always give a visible \`label\` in forms; a placeholder is not a label.`,
   },
   {
     name: 'Checkbox', group: 'Forms', height: 80,
-    readme: `A checkbox for form choices.
+    readme: `A checkbox for form choices. The edge is \`--uis-check-border\` wide in \`--uis-line-strong\` (1.5px by default, 1px in retail-editorial; set \`sizes.check\`).
 
 **Props:** \`label\`, \`checked\`, \`defaultChecked\`, \`onChange(checked)\`.`,
     preview: `row(h(U.Checkbox, { label: 'Remember me', defaultChecked: true }), h(U.Checkbox, { label: 'Send me updates' }))`,
@@ -196,7 +196,7 @@ Effects: \`fade-up\` (default), \`fade\`, \`scale-in\`, \`slide-left\`, \`slide-
   },
   {
     name: 'Alert', group: 'Feedback', height: 190,
-    readme: `An inline message in the flow of a page. **Props:** \`tone\` info|success|warning|danger, \`title\`, \`icon\`, children.`,
+    readme: `An inline message in the flow of a page. Each tone reads its \`-soft\` and \`-soft-ink\` pair; retail-editorial pins \`info\` to ink on grey. **Props:** \`tone\` info|success|warning|danger, \`title\`, \`icon\`, children.`,
     preview: `h('div', { style: { padding: 20, display: 'grid', gap: 10, maxWidth: 560 } }, h(U.Alert, { title: 'Heads up' }, 'Your trial ends in 3 days.'), h(U.Alert, { tone: 'success', title: 'Published' }, 'The site is live.'), h(U.Alert, { tone: 'danger', title: 'Payment failed' }, 'Update the card on file.'))`,
   },
   {
@@ -294,12 +294,14 @@ Best for studios, luxury, architecture, hospitality and one-page sites.
     name: 'AppSidebar', group: 'Navigation: Backend', height: 520,
     readme: `The full backend sidebar: logo, search, grouped links with icons and counts, and one account block at the bottom. When a \`workspace\` is given with a \`user\`, they merge into that block (name, workspace · plan, switcher), so nothing is shown twice.
 
+The panel is \`--uis-nav-bg\`; the current page is \`--uis-nav-active-bg\` with \`--uis-nav-active-ink\` and a 2px start bar in \`--uis-nav-active-bar\` (transparent by default; off-white panel, white item, ink bar in retail-editorial).
+
 **Props:** \`sections\`, \`workspace\`, \`search\` (true or placeholder), \`user\`, \`logoPlacement\` left|center|right, \`logoVariant\`, \`footer\`.`,
     preview: `h('div', { style: { display: 'grid', gridTemplateColumns: '264px 1fr', height: 520 } }, h(U.AppSidebar, { sections: sections, workspace: workspace, user: user }), h('div', { style: { background: 'var(--bg)' } }))`,
   },
   {
     name: 'AppRail', group: 'Navigation: Backend', height: 460,
-    readme: `The collapsed icon rail: mark on top, icon links with hover tooltips, dots for unread items, user at the bottom.
+    readme: `The collapsed icon rail: mark on top, icon links with hover tooltips, dots for unread items, user at the bottom. Reads the same \`--uis-nav-*\` roles as AppSidebar.
 
 **Props:** \`sections\`, \`footerItems\`, \`user\`, \`tip\` (pin one tooltip open, for mockups).`,
     preview: `h('div', { style: { display: 'grid', gridTemplateColumns: '76px 1fr', height: 460 } }, h(U.AppRail, { sections: sections, user: user, tip: 'Projects' }), h('div', { style: { background: 'var(--bg)' } }))`,

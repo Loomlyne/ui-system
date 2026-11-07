@@ -4,7 +4,8 @@ import type { Preset, PresetId } from './config';
  * Named design languages. A preset only sets values: `{ "preset": "retail-editorial" }`
  * in ui.config.json fills everything below, and any key you write yourself still wins.
  * Pins (`color.pin`, `surface.shadows`, `sizes`, `motion.timing`) hold exact light-mode
- * values measured from the source; dark mode is always derived by the engine.
+ * values measured from the source. `color.pinDark` holds a designed dark mode where a
+ * preset has one; anything it leaves out is derived by the engine.
  */
 export const PRESETS: Record<PresetId, Preset> = {
   'retail-editorial': {
@@ -22,6 +23,7 @@ export const PRESETS: Record<PresetId, Preset> = {
         success: '#1F7A4D',
         warning: '#8C6250',
         danger: '#CD2D2D',
+        info: '#2D2A26',
         mode: 'light',
         pin: {
           bg: '#FFFFFF',
@@ -56,12 +58,59 @@ export const PRESETS: Record<PresetId, Preset> = {
           'float-border': '#E5E2DE',
           'search-bg': '#F4F4F4',
           'search-border': 'transparent',
+          'search-border-hover': '#8F8B86',
+          'info-soft': '#F4F4F4',
+          'info-soft-ink': '#2D2A26',
+          'nav-bg': '#FAF8F5',
+          'nav-active-bg': '#FFFFFF',
+          'nav-active-ink': '#2D2A26',
+          'nav-active-bar': '#2D2A26',
+        },
+        // Designed dark (signed off 2026-11-07; the source has no dark mode). Warm ink ground,
+        // sand badge kept as in light, burgundy wordmark lifted to 4.5:1, field edges 3:1+.
+        pinDark: {
+          bg: '#141210',
+          surface: '#1B1916',
+          'surface-2': '#221F1C',
+          'surface-3': '#2A2724',
+          line: '#35312D',
+          'line-strong': '#77716A',
+          ink: '#F3EFEA',
+          'ink-2': '#C2BBB3',
+          'ink-3': '#A39C94',
+          inverse: '#F3EFEA',
+          'inverse-ink': '#1B1916',
+          primary: '#F3EFEA',
+          'primary-hover': '#C59A83',
+          'primary-ink': '#1B1916',
+          accent: '#B4876F',
+          'accent-ink': '#1B1916',
+          'accent-text': '#C59A83',
+          'accent-soft': '#B49A87',
+          'accent-soft-ink': '#2D2A26',
+          'warning-soft': '#2B211C',
+          'warning-soft-ink': '#E6C9B9',
+          'danger-text': '#F07068',
+          'info-soft': '#2A2724',
+          'info-soft-ink': '#F3EFEA',
+          focus: '#F3EFEA',
+          'focus-field': '#C59A83',
+          'focus-ring': '#C59A83',
+          'float-border': '#35312D',
+          'search-bg': '#2A2724',
+          'search-border': 'transparent',
+          'search-border-hover': '#77716A',
+          'nav-bg': '#1B1916',
+          'nav-active-bg': '#2A2724',
+          'nav-active-ink': '#F3EFEA',
+          'nav-active-bar': '#F3EFEA',
+          wordmark: '#D27A89',
         },
       },
       radius: { roundness: 0, pill: false, overrides: { chip: 2, control: 2, field: 2, search: 999, panel: 2, shell: 2, avatar: 999 } },
       type: { preset: 'retail', buttonCase: 'upper' },
       density: 'comfortable',
-      sizes: { sm: 44, md: 52, lg: 56, pad: 16, gap: 16, ring: 1 },
+      sizes: { sm: 44, md: 52, lg: 56, pad: 16, gap: 16, ring: 1, check: 1 },
       space: [2, 4, 8, 12, 16, 20, 24, 32, 40, 56, 72],
       surface: {
         float: 'solid',
