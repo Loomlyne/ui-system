@@ -37,7 +37,7 @@ for (const key of Object.keys(light)) {
   const k = key.replace(/^--uis-/, '');
   let v;
   if (colorNames.has(k)) v = `var(--${k})`;
-  else if (k.startsWith('r-') && ['chip', 'control', 'field', 'card', 'panel', 'media', 'shell', 'inner'].includes(k.slice(2))) v = `var(--radius-${k.slice(2)})`;
+  else if (k.startsWith('r-') && ['chip', 'control', 'field', 'search', 'card', 'panel', 'media', 'shell', 'inner'].includes(k.slice(2))) v = `var(--radius-${k.slice(2)})`;
   else if (k === 'font-display' || k === 'font-body' || k === 'font-mono') v = `var(--${k})`;
   else if (k === 'h-sm' || k === 'h-md' || k === 'h-lg') v = `var(--control-${k.slice(2)})`;
   else if (k.startsWith('shadow-')) v = `var(--${k})`;
@@ -81,7 +81,8 @@ type Mode = 'light' | 'dark';
 type Placement = 'left' | 'center' | 'right';
 type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
-type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic';
+type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
+type PresetId = 'retail-editorial';
 type Density = 'compact' | 'comfortable' | 'spacious';
 type FloatSurface = 'solid' | 'glass';
 type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';
@@ -169,7 +170,14 @@ write('components/Cover/preview.html', `<!-- @dsCard height=340 -->
 </html>
 `);
 
+// ---------- contrast gate: defaults and every preset, both modes ----------
+for (const [label, cfg] of [['defaults', core.DEFAULT_CONFIG], ...Object.values(core.PRESETS).map((p) => [p.id, { preset: p.id }])]) {
+  const fails = core.contrastReport(core.buildTheme(cfg)).filter((c) => !c.pass);
+  if (fails.length) throw new Error(`Contrast below 4.5:1 in ${label}: ${fails.map((f) => `${f.mode} ${f.fg} on ${f.bg} ${f.ratio}`).join(', ')}`);
+}
+
 // ---------- README (brand book for agents) ----------
+const designPresetRows = Object.values(core.PRESETS).map((p) => `| \`${p.id}\` | ${p.label} | ${p.note} |`).join('\n');
 const presetRows = Object.values(core.FONT_PRESETS).map((p) => `| \`${p.id}\` | ${p.display} | ${p.body} | ${p.mono} | ${p.note} |`).join('\n');
 write('README.md', `UI System is a brand-agnostic design system. It ships structure, not a brand: every project sets its own colors, shape, type and logo through one config, and every component follows. Nothing from a previous client is prebuilt.
 
@@ -179,7 +187,8 @@ write('README.md', `UI System is a brand-agnostic design system. It ships struct
    \`<x-import component-from-global-scope="UIS.Root" primary="#…" accent="#…" roundness="{{60}}" pill="{{false}}" font-preset="modern" wordmark="Client" logo-mark="monogram" logo-placement="left">…</x-import>\`
 2. Build screens from the real components (\`UIS.NavIsland\`, \`UIS.AppShell\`, \`UIS.Button\`…). Style your own markup with the \`--uis-*\` variables Root writes (\`var(--uis-primary)\`, \`var(--uis-ink-2)\`, \`var(--uis-r-card)\`), never raw hex.
 3. Load fonts with one Google Fonts link in \`<helmet>\`: \`${core.allPresetFontsUrl()}\` (every preset), or the single-preset URL \`theme.fontsUrl\` returns.
-4. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
+4. To start from a named design language, add \`preset="retail-editorial"\` on Root (see Presets); any other prop still wins.
+5. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
 
 The same config drives code: \`ui.config.json\` in the repo builds theme.css, a Tailwind v4 theme and this tokens.json (\`ui-system build\`).
 
@@ -207,6 +216,7 @@ One \`roundness\` value (0–100) scales every radius role together; \`pill\` tu
 | chip | \`radius-chip\` | badges, tags | 0 | 10 |
 | control | \`radius-control\` | buttons, nav items, tabs | 0 | 14 (pill: 999) |
 | field | \`radius-field\` | inputs, selects | 0 | 14 (pill: 999) |
+| search | \`radius-search\` | search fields | 0 | 14 (pill: 999) |
 | card | \`radius-card\` | cards, tables | 0 | 24 |
 | panel | \`radius-panel\` | popovers, drawers, dialogs, inset panels | 0 | 32 |
 | media | \`radius-media\` | images, video | 0 | 22 |
@@ -223,6 +233,16 @@ Pick a preset with \`fontPreset\` (all Google Fonts), or override \`displayFont\
 ${presetRows}
 
 Styles: \`display-2xl\` 80, \`display-xl\` 64, \`display-l\` 48, \`display-m\` 36 in the display face (they shrink on small screens); \`h1\` 30, \`h2\` 24, \`h3\` 20, \`body-l\` 18, \`body\` 16, \`body-s\` 14, \`label\` 13, \`caption\` 12, \`overline\` 11 uppercase. CSS classes carry the same names with a \`uis-\` prefix. \`buttonCase="upper"\` sets buttons and the menu button in spaced capitals. Sentence case everywhere else.
+
+## Presets
+
+A preset is a whole design language (color pins, shape, type, sizes, shadows, motion). A project opts in with \`preset\` on Root or \`"preset"\` in ui.config.json; every other prop still wins, and the defaults never change. Pins are exact light-mode values; dark mode is derived by the engine.
+
+| preset | label | look |
+|---|---|---|
+${designPresetRows}
+
+\`retail-editorial\`: ink \`#2D2A26\` on white, hairlines \`#E5E2DE\` (decorative only), control borders \`#8F8B86\`, grey \`#F4F4F4\` photo wells and search pill, off-white \`#FAF8F5\` panels, tan \`#8C6250\` tags and hover, sand \`#B49A87\` (accent-soft) with ink text, never white, sale red \`#CD2D2D\`, green \`#1F7A4D\` for WhatsApp and success, burgundy \`#7E1F33\` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (\`space-1\`). No card shadows. 150/200/300ms motion, press scales to 0.96.
 
 ## Logo
 

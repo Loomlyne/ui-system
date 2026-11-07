@@ -134,6 +134,7 @@
   --radius-chip: var(--uis-r-chip);
   --radius-control: var(--uis-r-control);
   --radius-field: var(--uis-r-field);
+  --radius-search: var(--uis-r-search);
   --radius-card: var(--uis-r-card);
   --radius-panel: var(--uis-r-panel);
   --radius-media: var(--uis-r-media);

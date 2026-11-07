@@ -44,7 +44,7 @@ export function AppSidebar({ sections, user, workspace, search = true, logoPlace
           <Icon name="chevrons-updown" size={16} style={{ color: 'var(--uis-ink-3)' }} />
         </button>
       ) : null}
-      {search ? <Input size="sm" icon="search" placeholder={typeof search === 'string' ? search : 'Search'} kbd="⌘K" aria-label="Search" /> : null}
+      {search ? <Input size="sm" variant="search" icon="search" placeholder={typeof search === 'string' ? search : 'Search'} kbd="⌘K" aria-label="Search" /> : null}
       {arr(sections).map((s, i) => (
         <nav key={i} className="uis-navgroup" aria-label={s.label ?? 'Navigation'}>
           {s.label ? <span className="uis-navgroup__label">{s.label}</span> : null}
@@ -117,7 +117,7 @@ export function AppTopbar({ links, sections, actions, user, search = true, logoP
   const nav = <nav className="uis-topbar__nav" aria-label="Main">{L.map((l, i) => <A key={i} link={l} className="uis-navlink">{l.label}</A>)}</nav>;
   const end = (
     <div className="uis-topbar__end">
-      {search ? <Input className="uis-topbar__search" size="sm" icon="search" placeholder={typeof search === 'string' ? search : 'Search'} kbd="⌘K" aria-label="Search" /> : null}
+      {search ? <Input className="uis-topbar__search" size="sm" variant="search" icon="search" placeholder={typeof search === 'string' ? search : 'Search'} kbd="⌘K" aria-label="Search" /> : null}
       {arr(actions).map((a, i) => <IconButton key={i} icon={a.icon} label={a.label} count={a.count} dot={a.dot} href={a.href} />)}
       {user ? <Avatar size="sm" name={user.name} initials={user.initials} src={user.src} style={{ marginLeft: 6 }} /> : null}
     </div>

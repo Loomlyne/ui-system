@@ -5,8 +5,9 @@ UI System is a brand-agnostic design system. It ships structure, not a brand: ev
 1. Mount the bundle and wrap each artboard or page in `UIS.Root`. Pass the project's brand as props on Root, never on individual components:
    `<x-import component-from-global-scope="UIS.Root" primary="#…" accent="#…" roundness="{{60}}" pill="{{false}}" font-preset="modern" wordmark="Client" logo-mark="monogram" logo-placement="left">…</x-import>`
 2. Build screens from the real components (`UIS.NavIsland`, `UIS.AppShell`, `UIS.Button`…). Style your own markup with the `--uis-*` variables Root writes (`var(--uis-primary)`, `var(--uis-ink-2)`, `var(--uis-r-card)`), never raw hex.
-3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every preset), or the single-preset URL `theme.fontsUrl` returns.
-4. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
+3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Archivo:wdth,wght@75..125,700..900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every preset), or the single-preset URL `theme.fontsUrl` returns.
+4. To start from a named design language, add `preset="retail-editorial"` on Root (see Presets); any other prop still wins.
+5. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
 
 The same config drives code: `ui.config.json` in the repo builds theme.css, a Tailwind v4 theme and this tokens.json (`ui-system build`).
 
@@ -34,6 +35,7 @@ One `roundness` value (0–100) scales every radius role together; `pill` turns 
 | chip | `radius-chip` | badges, tags | 0 | 10 |
 | control | `radius-control` | buttons, nav items, tabs | 0 | 14 (pill: 999) |
 | field | `radius-field` | inputs, selects | 0 | 14 (pill: 999) |
+| search | `radius-search` | search fields | 0 | 14 (pill: 999) |
 | card | `radius-card` | cards, tables | 0 | 24 |
 | panel | `radius-panel` | popovers, drawers, dialogs, inset panels | 0 | 32 |
 | media | `radius-media` | images, video | 0 | 22 |
@@ -52,9 +54,20 @@ Pick a preset with `fontPreset` (all Google Fonts), or override `displayFont`/`b
 | `editorial` | Fraunces | Inter | JetBrains Mono | Soft serif headlines over a neutral sans. Hospitality, food, lifestyle. |
 | `grotesk` | Space Grotesk | Inter | Space Mono | Characterful grotesk. Tech, creative studios, launches. |
 | `humanist` | Manrope | Manrope | JetBrains Mono | Friendly and open. Consumer apps, services. |
+| `retail` | Archivo | Inter | JetBrains Mono | Heavy uppercase width-axis grotesk over Inter. Fashion and retail storefronts. |
 | `classic` | Instrument Serif | Instrument Sans | JetBrains Mono | Elegant high-contrast serif. Luxury, real estate, fashion. |
 
 Styles: `display-2xl` 80, `display-xl` 64, `display-l` 48, `display-m` 36 in the display face (they shrink on small screens); `h1` 30, `h2` 24, `h3` 20, `body-l` 18, `body` 16, `body-s` 14, `label` 13, `caption` 12, `overline` 11 uppercase. CSS classes carry the same names with a `uis-` prefix. `buttonCase="upper"` sets buttons and the menu button in spaced capitals. Sentence case everywhere else.
+
+## Presets
+
+A preset is a whole design language (color pins, shape, type, sizes, shadows, motion). A project opts in with `preset` on Root or `"preset"` in ui.config.json; every other prop still wins, and the defaults never change. Pins are exact light-mode values; dark mode is derived by the engine.
+
+| preset | label | look |
+|---|---|---|
+| `retail-editorial` | Retail editorial (Senorita) | Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts. |
+
+`retail-editorial`: ink `#2D2A26` on white, hairlines `#E5E2DE` (decorative only), control borders `#8F8B86`, grey `#F4F4F4` photo wells and search pill, off-white `#FAF8F5` panels, tan `#8C6250` tags and hover, sand `#B49A87` (accent-soft) with ink text, never white, sale red `#CD2D2D`, green `#1F7A4D` for WhatsApp and success, burgundy `#7E1F33` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (`space-1`). No card shadows. 150/200/300ms motion, press scales to 0.96.
 
 ## Logo
 

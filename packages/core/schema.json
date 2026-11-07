@@ -80,6 +80,10 @@
             "current",
             "primary"
           ]
+        },
+        "wordmarkColor": {
+          "type": "string",
+          "description": "Wordmark hex. Unset follows the text color."
         }
       }
     },
@@ -115,6 +119,13 @@
             "light",
             "dark"
           ]
+        },
+        "pin": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Exact light-mode values on generated roles (bg, line, ink-2, primary-hover, focus-field, search-bg...). Dark stays derived."
         }
       }
     },
@@ -154,6 +165,12 @@
             },
             "shell": {
               "type": "number"
+            },
+            "search": {
+              "type": "number"
+            },
+            "avatar": {
+              "type": "number"
             }
           }
         }
@@ -169,7 +186,8 @@
             "editorial",
             "grotesk",
             "humanist",
-            "classic"
+            "classic",
+            "retail"
           ]
         },
         "display": {
@@ -219,6 +237,24 @@
             "hairline",
             "none"
           ]
+        },
+        "shadows": {
+          "type": "object",
+          "properties": {
+            "sm": {
+              "type": "string"
+            },
+            "md": {
+              "type": "string"
+            },
+            "lg": {
+              "type": "string"
+            },
+            "float": {
+              "type": "string"
+            }
+          },
+          "description": "Exact light-mode box-shadows."
         }
       }
     },
@@ -272,8 +308,68 @@
             "subtle",
             "expressive"
           ]
+        },
+        "timing": {
+          "type": "object",
+          "properties": {
+            "fast": {
+              "type": "number"
+            },
+            "base": {
+              "type": "number"
+            },
+            "slow": {
+              "type": "number"
+            },
+            "easeOut": {
+              "type": "string"
+            },
+            "easeInOut": {
+              "type": "string"
+            },
+            "press": {
+              "type": "string"
+            }
+          }
         }
       }
+    },
+    "preset": {
+      "enum": [
+        "retail-editorial"
+      ],
+      "description": "Named design language applied between the defaults and your keys. See docs/presets.md."
+    },
+    "sizes": {
+      "type": "object",
+      "properties": {
+        "sm": {
+          "type": "number"
+        },
+        "md": {
+          "type": "number"
+        },
+        "lg": {
+          "type": "number"
+        },
+        "pad": {
+          "type": "number"
+        },
+        "gap": {
+          "type": "number"
+        },
+        "ring": {
+          "type": "number"
+        }
+      },
+      "description": "Pin control heights, card padding/gap and field focus ring width in px."
+    },
+    "space": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Spacing scale in px for token exports."
     }
   }
 }

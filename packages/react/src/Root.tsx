@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   buildTheme, resolveConfig,
   type AvatarStyle, type BackNav, type Density, type MotionIntensity, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
-  type Mode, type Placement, type ShadowDepth, type UIConfigInput,
+  type Mode, type Placement, type PresetId, type ShadowDepth, type UIConfigInput,
 } from '@ui-system/core';
 import { UISContext, cx } from './context';
 
@@ -13,6 +13,8 @@ import { UISContext, cx } from './context';
  */
 export interface RootProps {
   config?: UIConfigInput;
+  /** Named design language (e.g. 'retail-editorial'). Other props still win over it. */
+  preset?: PresetId;
   // color
   primary?: string;
   accent?: string;
@@ -76,6 +78,7 @@ export function configFromProps(p: RootProps): UIConfigInput {
   const base = p.config ?? {};
   return {
     ...base,
+    preset: def(p.preset) ?? base.preset,
     name: def(p.projectName) ?? base.name,
     brand: {
       ...base.brand,

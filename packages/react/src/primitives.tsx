@@ -92,13 +92,15 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   icon?: IconName | string;
   kbd?: string;
   size?: 'sm' | 'md';
+  /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in retail-editorial). */
+  variant?: 'default' | 'search';
 }
-export function Input({ label, hint, error, icon, kbd, size = 'md', id, className, style, ...rest }: InputProps) {
+export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, className, style, ...rest }: InputProps) {
   const fid = useFieldId(id);
   const control = (
     <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd')}>
       {icon ? <Icon name={icon} /> : null}
-      <input id={fid} className={cx('uis-input', size === 'sm' && 'uis-input--sm', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
+      <input id={fid} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
       {kbd ? <span className="uis-kbd">{kbd}</span> : null}
     </div>
   );

@@ -28,9 +28,10 @@ export const CATALOG = [
 Every other component reads its CSS variables and brand context. Root computes the whole theme (color scales, contrast-safe text colors, radius roles, fonts, shadows) from a handful of inputs, so one change restyles everything.
 
 **Props (all optional, defaults in brackets)**
+- Preset: \`preset\` retail-editorial (a whole design language; every other prop still wins)
 - Color: \`primary\` [#1C1B19], \`accent\` [#E0562B], \`neutral\` [#77736B, or 'auto'], \`mode\` light|dark [light]
 - Shape: \`roundness\` 0–100 [60], \`pill\` boolean [false]
-- Type: \`fontPreset\` modern|geometric|editorial|grotesk|humanist|classic [modern], \`displayFont\`, \`bodyFont\` (any Google Fonts family), \`buttonCase\` normal|upper
+- Type: \`fontPreset\` modern|geometric|editorial|grotesk|humanist|classic|retail [modern], \`displayFont\`, \`bodyFont\` (any Google Fonts family), \`buttonCase\` normal|upper
 - Feel: \`density\` compact|comfortable|spacious, \`surface\` solid|glass (floating navs and popovers), \`shadow\` none|soft|medium|deep, \`border\` hairline|none
 - Brand: \`wordmark\`, \`caption\`, \`initials\`, \`logoMark\` monogram|ring|spark|stack|orbit|none|custom, \`logoVariant\` lockup|stacked|mark|wordmark, \`logoPlacement\` left|center|right, \`logoSrc\`, \`markSrc\`, \`markSvg\`, \`wordmarkCase\`, \`markTone\` current|primary
 - Nav defaults: \`frontNav\` dock|island|bar|stacked|minimal, \`backNav\` sidebar|rail|inset|topbar|dock
@@ -70,7 +71,7 @@ Use by name: \`<Icon name="search" />\`. Names: menu, x, search, bell, home, gri
     name: 'Button', group: 'Actions', height: 150,
     readme: `The button: \`primary\` for the one main action on a screen, \`secondary\`/\`outline\`/\`ghost\` for the rest.
 
-Height follows density (\`--uis-h-sm|md|lg\`), corners follow \`--uis-r-control\` (full pill when Root \`pill\` is on), letter case follows \`buttonCase\`.
+Height follows density (\`--uis-h-sm|md|lg\`), corners follow \`--uis-r-control\` (full pill when Root \`pill\` is on), letter case follows \`buttonCase\`. Face, weight, size and width come from the font preset (\`--uis-btn-font\`, \`--uis-btn-weight\`, \`--uis-btn-size\`); the press effect is \`--uis-press\`.
 
 **Props:** \`variant\` primary|accent|secondary|outline|ghost|soft|danger|light|glass, \`size\` sm|md|lg, \`icon\`, \`iconRight\`, \`iconOnly\` (+ \`label\`), \`block\`, \`href\` (renders a link), \`disabled\`.
 
@@ -88,10 +89,10 @@ Use \`light\` and \`glass\` only on photography. One \`primary\` per view. Label
     name: 'Input', group: 'Forms', height: 130,
     readme: `A text field with optional label, hint, error, leading icon and keyboard hint.
 
-Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus\` border and a soft ring. **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, plus any native input attribute.
+Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\` and \`--uis-search-border\` (a grey pill in retail-editorial). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
 
 Always give a visible \`label\` in forms; a placeholder is not a label.`,
-    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }))`,
+    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }))`,
   },
   {
     name: 'Select', group: 'Forms', height: 110,

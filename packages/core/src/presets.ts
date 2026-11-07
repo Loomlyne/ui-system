@@ -1,0 +1,86 @@
+import type { Preset, PresetId } from './config';
+
+/**
+ * Named design languages. A preset only sets values: `{ "preset": "retail-editorial" }`
+ * in ui.config.json fills everything below, and any key you write yourself still wins.
+ * Pins (`color.pin`, `surface.shadows`, `sizes`, `motion.timing`) hold exact light-mode
+ * values measured from the source; dark mode is always derived by the engine.
+ */
+export const PRESETS: Record<PresetId, Preset> = {
+  'retail-editorial': {
+    id: 'retail-editorial',
+    label: 'Retail editorial (Senorita)',
+    note: 'Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts.',
+    source: 'Senorita Store Phase 1 storefront and admin CSS (_s_css, _s_err, _a_css) and 01-UI-SPEC.md, 2026-11-07.',
+    config: {
+      preset: 'retail-editorial',
+      brand: { mark: 'none', variant: 'wordmark', wordmarkCase: 'upper', wordmarkFont: 'display', wordmarkColor: '#7E1F33', caption: '' },
+      color: {
+        primary: '#2D2A26',
+        accent: '#8C6250',
+        neutral: '#6F6C69',
+        success: '#1F7A4D',
+        warning: '#8C6250',
+        danger: '#CD2D2D',
+        mode: 'light',
+        pin: {
+          bg: '#FFFFFF',
+          surface: '#FFFFFF',
+          'surface-2': '#FAF8F5',
+          'surface-3': '#F4F4F4',
+          line: '#E5E2DE',
+          'line-strong': '#8F8B86',
+          ink: '#2D2A26',
+          'ink-2': '#6F6C69',
+          'ink-3': '#6F6C69',
+          inverse: '#2D2A26',
+          'inverse-ink': '#FFFFFF',
+          scrim: '#2D2A2699',
+          'primary-hover': '#8C6250',
+          'primary-ink': '#FFFFFF',
+          'accent-text': '#8C6250',
+          'accent-soft': '#B49A87',
+          'accent-soft-ink': '#2D2A26',
+          'success-hover': '#18633E',
+          'success-soft': '#E7F2EB',
+          'success-soft-ink': '#1A6B43',
+          'warning-soft': '#F6ECE5',
+          'warning-soft-ink': '#7A5444',
+          'danger-hover': '#A82424',
+          'danger-text': '#CD2D2D',
+          'danger-soft': '#FCEDED',
+          'danger-soft-ink': '#B42626',
+          focus: '#2D2A26',
+          'focus-field': '#8C6250',
+          'focus-ring': '#8C6250',
+          'float-border': '#E5E2DE',
+          'search-bg': '#F4F4F4',
+          'search-border': 'transparent',
+        },
+      },
+      radius: { roundness: 0, pill: false, overrides: { chip: 2, control: 2, field: 2, search: 999, panel: 2, shell: 2, avatar: 999 } },
+      type: { preset: 'retail', buttonCase: 'upper' },
+      density: 'comfortable',
+      sizes: { sm: 44, md: 52, lg: 56, pad: 16, gap: 16, ring: 1 },
+      space: [2, 4, 8, 12, 16, 20, 24, 32, 40, 56, 72],
+      surface: {
+        float: 'solid',
+        shadow: 'soft',
+        border: 'hairline',
+        shadows: {
+          sm: 'none',
+          md: '0 8px 24px rgba(0, 0, 0, 0.08)',
+          lg: '0 8px 24px rgba(0, 0, 0, 0.18)',
+          float: '0 6px 18px rgba(0, 0, 0, 0.2)',
+        },
+      },
+      nav: { front: 'bar', back: 'sidebar' },
+      avatars: { style: 'initials' },
+      motion: {
+        enabled: true,
+        intensity: 'subtle',
+        timing: { fast: 150, base: 200, slow: 300, easeOut: 'cubic-bezier(0, 0, 0.2, 1)', easeInOut: 'cubic-bezier(0.42, 0, 0.58, 1)', press: 'scale(0.96)' },
+      },
+    },
+  },
+};

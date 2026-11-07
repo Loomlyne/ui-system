@@ -4,11 +4,15 @@
  * point with no brand baked in.
  */
 
+import { PRESETS } from './presets';
+
 export type Mode = 'light' | 'dark';
 export type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 export type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 export type Placement = 'left' | 'center' | 'right';
-export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic';
+export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
+/** Named design languages (see presets.ts). Opt-in: the defaults never change. */
+export type PresetId = 'retail-editorial';
 export type Density = 'compact' | 'comfortable' | 'spacious';
 export type FloatSurface = 'solid' | 'glass';
 export type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';
@@ -16,7 +20,9 @@ export type FrontNav = 'dock' | 'island' | 'bar' | 'stacked' | 'minimal';
 export type BackNav = 'sidebar' | 'rail' | 'inset' | 'topbar' | 'dock';
 export type AvatarStyle = 'notionists-neutral' | 'lorelei-neutral' | 'thumbs' | 'glass' | 'shapes' | 'initials';
 export type MotionIntensity = 'subtle' | 'expressive';
-export type RadiusRole = 'chip' | 'control' | 'field' | 'card' | 'panel' | 'media' | 'shell';
+export type RadiusRole = 'chip' | 'control' | 'field' | 'search' | 'card' | 'panel' | 'media' | 'shell';
+export type SizeKey = 'sm' | 'md' | 'lg' | 'pad' | 'gap' | 'ring';
+export type ShadowKey = 'sm' | 'md' | 'lg' | 'float';
 
 export interface BrandConfig {
   /** Text of the wordmark. */
@@ -43,6 +49,8 @@ export interface BrandConfig {
   wordmarkFont: 'display' | 'body';
   /** Mark color: follow the text color, or the brand primary. */
   markTone: 'current' | 'primary';
+  /** Wordmark color (hex). Unset follows the text color. Dark mode derives a 4.5:1 step from its scale. */
+  wordmarkColor?: string;
 }
 
 export interface ColorConfig {
@@ -58,6 +66,12 @@ export interface ColorConfig {
   info: string;
   /** Which mode Root renders by default. */
   mode: Mode;
+  /**
+   * Pin exact light-mode values on generated roles, e.g. { "line": "#E5E2DE" }.
+   * Keys are the role names without --uis- (bg, ink-2, primary-hover, focus, search-bg…).
+   * Dark mode is always derived from the scales. Text pairs are checked by contrastReport().
+   */
+  pin?: Partial<Record<string, string>>;
 }
 
 export interface RadiusConfig {
@@ -65,8 +79,8 @@ export interface RadiusConfig {
   roundness: number;
   /** Buttons, chips, inputs and nav shells become full pills regardless of roundness. */
   pill: boolean;
-  /** Pin any single role to an exact px value. */
-  overrides?: Partial<Record<RadiusRole, number>>;
+  /** Pin any single role (or avatar) to an exact px value; 999 means a full pill or circle. */
+  overrides?: Partial<Record<RadiusRole | 'avatar', number>>;
 }
 
 export interface TypeConfig {
@@ -85,6 +99,8 @@ export interface SurfaceConfig {
   shadow: ShadowDepth;
   /** Hairline borders on cards and panels. */
   border: 'hairline' | 'none';
+  /** Pin exact light-mode shadows (CSS box-shadow, rgba colors). Dark mode follows `shadow`. */
+  shadows?: Partial<Record<ShadowKey, string>>;
 }
 
 export interface NavConfig {
@@ -101,20 +117,47 @@ export interface MotionConfig {
   /** Entrance and interaction animations (anime.js). Always off under prefers-reduced-motion. */
   enabled: boolean;
   intensity: MotionIntensity;
+  /** Pin durations (ms), easings and the press effect. Unset keys keep the engine values. */
+  timing?: MotionTiming;
+}
+
+export interface MotionTiming {
+  fast?: number;
+  base?: number;
+  slow?: number;
+  easeOut?: string;
+  easeInOut?: string;
+  /** Transform on :active for buttons, e.g. "scale(0.96)". */
+  press?: string;
 }
 
 export interface UIConfig {
   /** Project name, used by exports and docs. */
   name: string;
+  /** Start from a named design language; every key below still wins over it. */
+  preset?: PresetId;
   brand: BrandConfig;
   color: ColorConfig;
   radius: RadiusConfig;
   type: TypeConfig;
   density: Density;
+  /** Pin control heights, card padding/gap and the field focus ring width in px over the density values. */
+  sizes?: Partial<Record<SizeKey, number>>;
+  /** Spacing scale in px for token exports. Default 4 8 12 16 20 24 32 40 48 64 80 96. */
+  space?: number[];
   surface: SurfaceConfig;
   nav: NavConfig;
   avatars: AvatarConfig;
   motion: MotionConfig;
+}
+
+export interface Preset {
+  id: PresetId;
+  label: string;
+  note: string;
+  /** Where each value came from. */
+  source: string;
+  config: UIConfigInput;
 }
 
 export type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
@@ -172,9 +215,10 @@ function merge<T>(base: T, patch: unknown): T {
   return out as T;
 }
 
-/** Fill a partial config with defaults. Safe to call on user JSON. */
+/** Fill a partial config with defaults, then the named preset, then the input. Safe to call on user JSON. */
 export function resolveConfig(input?: UIConfigInput): UIConfig {
-  return merge(DEFAULT_CONFIG, input ?? {});
+  const preset = input?.preset ? PRESETS[input.preset as PresetId] : undefined;
+  return merge(merge(DEFAULT_CONFIG, preset?.config), input ?? {});
 }
 
 /** Identity helper for typed config files: export default defineConfig({...}). */

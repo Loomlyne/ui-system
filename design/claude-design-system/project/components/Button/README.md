@@ -2,7 +2,7 @@
 
 The button: `primary` for the one main action on a screen, `secondary`/`outline`/`ghost` for the rest.
 
-Height follows density (`--uis-h-sm|md|lg`), corners follow `--uis-r-control` (full pill when Root `pill` is on), letter case follows `buttonCase`.
+Height follows density (`--uis-h-sm|md|lg`), corners follow `--uis-r-control` (full pill when Root `pill` is on), letter case follows `buttonCase`. Face, weight, size and width come from the font preset (`--uis-btn-font`, `--uis-btn-weight`, `--uis-btn-size`); the press effect is `--uis-press`.
 
 **Props:** `variant` primary|accent|secondary|outline|ghost|soft|danger|light|glass, `size` sm|md|lg, `icon`, `iconRight`, `iconOnly` (+ `label`), `block`, `href` (renders a link), `disabled`.
 
