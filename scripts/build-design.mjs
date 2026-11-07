@@ -171,7 +171,8 @@ write('components/Cover/preview.html', `<!-- @dsCard height=340 -->
 `);
 
 // ---------- contrast gate: defaults and every preset, both modes ----------
-for (const [label, cfg] of [['defaults', core.DEFAULT_CONFIG], ...Object.values(core.PRESETS).map((p) => [p.id, { preset: p.id }])]) {
+// Each preset also runs with a pale and a saturated primary, so pins that a new seed invalidates are caught.
+for (const [label, cfg] of [['defaults', core.DEFAULT_CONFIG], ...Object.values(core.PRESETS).flatMap((p) => [[p.id, { preset: p.id }], [`${p.id} + primary #F2E8A0`, { preset: p.id, color: { primary: '#F2E8A0' } }], [`${p.id} + primary #2F6BD8`, { preset: p.id, color: { primary: '#2F6BD8' } }]])]) {
   const fails = core.contrastReport(core.buildTheme(cfg)).filter((c) => !c.pass);
   if (fails.length) throw new Error(`Contrast below 4.5:1 in ${label}: ${fails.map((f) => `${f.mode} ${f.fg} on ${f.bg} ${f.ratio}`).join(', ')}`);
 }

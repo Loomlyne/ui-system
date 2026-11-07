@@ -6,7 +6,12 @@ A preset is a whole design language: colors, shape, type, control sizes, spacing
 { "preset": "retail-editorial", "brand": { "wordmark": "Client" } }
 ```
 
-Order: defaults, then the preset, then every key you write. Anything you set wins over the preset. In React and Claude Design: `<Root preset="retail-editorial">`. In the playground: **Start from › Retail editorial (Senorita)**.
+Order: defaults, then the preset, then every key you write. Anything you set wins over the preset.
+
+Two rules follow from that order:
+
+- **New seed, new roles.** Change a seed (`primary`, `accent`, `neutral`, `success`, `warning`, `danger`, `info`) and the preset's pins on that seed's roles (`primary-hover`, `primary-ink`…, or every grey for `neutral`) are dropped, so the engine derives them for your colour and the contrast gate still holds. Pins you write yourself always stay.
+- **Radius pins stay.** The preset pins radius roles in `radius.overrides`, and those beat `roundness` and `pill`. To reshape a preset, write your own `radius.overrides` (e.g. `{ "control": 999 }` for pill buttons). In React and Claude Design: `<Root preset="retail-editorial">`. In the playground: **Start from › Retail editorial (Senorita)**.
 
 Presets live in `packages/core/src/presets.ts` (`PRESETS`). They use only normal config keys, so a preset is also a readable example of the pin options:
 
