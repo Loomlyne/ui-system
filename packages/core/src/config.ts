@@ -12,7 +12,7 @@ export type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none
 export type Placement = 'left' | 'center' | 'right';
 export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
 /** Named design languages (see presets.ts). Opt-in: the defaults never change. */
-export type PresetId = 'retail-editorial';
+export type PresetId = 'retail-editorial' | 'ledger';
 export type Density = 'compact' | 'comfortable' | 'spacious';
 export type FloatSurface = 'solid' | 'glass';
 export type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';

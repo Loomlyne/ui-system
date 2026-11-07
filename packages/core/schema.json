@@ -336,7 +336,8 @@
     },
     "preset": {
       "enum": [
-        "retail-editorial"
+        "retail-editorial",
+        "ledger"
       ],
       "description": "Named design language applied between the defaults and your keys. See docs/presets.md."
     },

@@ -66,8 +66,13 @@ A preset is a whole design language (color pins, shape, type, sizes, shadows, mo
 | preset | label | look |
 |---|---|---|
 | `retail-editorial` | Retail editorial (Senorita) | Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts. |
+| `ledger` | Ledger (Invios) | Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. Money and back-office web apps. |
 
 `retail-editorial`: ink `#2D2A26` on white, hairlines `#E5E2DE` (decorative only), control borders `#8F8B86`, grey `#F4F4F4` photo wells and search pill, off-white `#FAF8F5` panels, tan `#8C6250` tags and hover, sand `#B49A87` (accent-soft) with ink text, never white, sale red `#CD2D2D`, green `#1F7A4D` for WhatsApp and success, burgundy `#7E1F33` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (`space-1`). No card shadows. 150/200/300ms motion, press scales to 0.96.
+
+`ledger`: near-black ink `#0d0d0d` on warm off-white `#FBF9F6`, gold `#eab308` for the one primary action per page, warm greys from `#78736a`, green, orange and red status shown as dot plus word. Radius preset round: pill controls, 22px cards, 29px panels. Poppins 400/500/600 with Geist Mono for tabular money. Comfortable 36/44/52 controls, hairlines, no shadows, motion off. Pins nothing, so dark mode is derived.
+
+`ledger`: near-black ink `#0d0d0d` on warm off-white `#FBF9F6`, gold `#eab308` for the one primary action per page, warm greys from `#78736a`, green, orange and red status as dot plus word. Radius preset round: pill controls, 22px cards, 29px panels. Poppins 400/500/600 with Geist Mono for tabular money. Comfortable 36/44/52 controls, hairlines, no shadows, motion off. Pins nothing: dark mode is derived.
 
 ## Logo
 

@@ -88,3 +88,33 @@ Website nav `bar`, app nav `sidebar`, wordmark-only logo, `initials` avatars.
 - App sidebar: the source is off-white (`surface-2`) with a white active item and a 2px ink start bar; the engine `sidebar` is `surface` with a `primary-soft` active item.
 - `info` alerts stay engine blue.
 - The source's product grid, mega menu, size boxes and drawers are layouts, not engine components. Build them from these tokens.
+
+## ledger
+
+Label "Ledger (Invios)". Source: Invios decisions D-05 (ui-system round radius, light and dark both live) and D-12 (Poppins, numbers tabular), 2026-10-05, plus the signed sketch `.planning/sketches/ui-system-redesign/ui.config.json`. It pins nothing: every value comes from seeds through the engine, so dark mode follows the same rules as the light one. Checked against the sketch's generated `ui-theme/theme.json`: 334 of 340 variables identical in light and dark; the 6 that differ are the fonts (Poppins per D-12 replaces the sketch's Geist).
+
+### Seeds
+
+| Seed | Value | Use |
+| --- | --- | --- |
+| `primary` | `#0d0d0d` | Ink buttons, active states |
+| `accent` | `#eab308` | Gold: the one primary action per page |
+| `neutral` | `#78736a` | Warm greys: bg `#FBF9F6`, surface `#FFFEFD`, line `#E1DDD7`, ink `#11100D` |
+| `success` / `warning` / `danger` | `#16803c` / `#c2540c` / `#c0311a` | Paid, sent, overdue (dot plus word, never colour alone) |
+| `info` | `#2F6BD8` | Viewed |
+
+### Shape, type, feel
+
+- Radius preset `round`: roundness 90 with pill controls, fields and chips (999), cards 22, panels 29.
+- Poppins 400/500/600 for display and body, Geist Mono for tabular money; buttons in sentence case.
+- Comfortable density (36/44/52), solid surfaces, hairline borders, no shadows, motion off.
+- Navigation: website `bar`, app `sidebar`.
+
+### Way of working
+
+Back-office for the money cycle (quote, invoice, paid) with client pay and share pages. One header per page (back, title, one-line helper, create). Every page explains itself. Mobile first. Money right-aligned in tabular numbers. Sentence case, no emoji.
+
+### Known gaps
+
+- The sketch has no active nav colour of its own; the engine's sidebar active state applies.
+- Poppins is self-hosted in the product (D-12); UI System loads it from Google Fonts.

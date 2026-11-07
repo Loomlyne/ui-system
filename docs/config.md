@@ -6,7 +6,7 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 Project name. Used by exports.
 
 ## preset
-Optional named design language, applied between the defaults and your keys: `retail-editorial`. See [presets.md](presets.md).
+Optional named design language, applied between the defaults and your keys: `retail-editorial`, `ledger`. See [presets.md](presets.md).
 
 ## brand
 
