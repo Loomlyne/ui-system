@@ -91,7 +91,7 @@ Website nav `bar`, app nav `sidebar`, wordmark-only logo, `initials` avatars.
 
 ## ledger
 
-Label "Ledger (Invios)". Source: Invios decisions D-05 (ui-system round radius, light and dark both live) and D-12 (Poppins, numbers tabular), 2026-10-05, plus the signed sketch `.planning/sketches/ui-system-redesign/ui.config.json`. It pins nothing: every value comes from seeds through the engine, so dark mode follows the same rules as the light one. Checked against the sketch's generated `ui-theme/theme.json`: 334 of 340 variables identical in light and dark; the 6 that differ are the fonts (Poppins per D-12 replaces the sketch's Geist).
+Label "Ledger (Invios, Clickit)". One way of working for two products: Invios uses it now; Clickit moves onto it when its design is rebuilt, keeping its own brand seeds (yellow `#ffcc00`, dark mode) on top. A changed seed drops nothing here because the preset pins nothing. Source: Invios decisions D-05 (ui-system round radius, light and dark both live) and D-12 (Poppins, numbers tabular), 2026-10-05, plus the signed sketch `.planning/sketches/ui-system-redesign/ui.config.json`. It pins nothing: every value comes from seeds through the engine, so dark mode follows the same rules as the light one. Checked against the sketch's generated `ui-theme/theme.json`: 334 of 340 variables identical in light and dark; the 6 that differ are the fonts (Poppins per D-12 replaces the sketch's Geist).
 
 ### Seeds
 

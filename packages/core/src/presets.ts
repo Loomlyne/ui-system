@@ -85,8 +85,8 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   ledger: {
     id: 'ledger',
-    label: 'Ledger (Invios)',
-    note: 'Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. Money and back-office web apps.',
+    label: 'Ledger (Invios, Clickit)',
+    note: 'Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. Money and back-office web apps, and the admin side of media platforms. Used by Invios now, Clickit when it is rebuilt.',
     source: 'Invios decisions D-05 (round radius, light and dark) and D-12 (Poppins), 2026-10-05; .planning/sketches/ui-system-redesign/ui.config.json and ui-theme/theme.json.',
     config: {
       preset: 'ledger',
