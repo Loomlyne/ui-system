@@ -92,7 +92,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   icon?: IconName | string;
   kbd?: string;
   size?: 'sm' | 'md';
-  /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in retail-editorial). */
+  /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in atelier). */
   variant?: 'default' | 'search';
 }
 export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, type, className, style, ...rest }: InputProps) {

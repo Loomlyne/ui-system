@@ -11,8 +11,16 @@ export type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 export type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 export type Placement = 'left' | 'center' | 'right';
 export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
-/** Named design languages (see presets.ts). Opt-in: the defaults never change. */
-export type PresetId = 'retail-editorial';
+/**
+ * Presets are ways of designing, not products (see presets.ts): `ledger` is round and clean,
+ * `atelier` is sharp and editorial. Opt-in: the defaults never change.
+ */
+export type PresetId = 'atelier' | 'ledger';
+/** Old preset names that still resolve. `retail-editorial` was renamed `atelier` on 2026-11-09. */
+export type LegacyPresetId = 'retail-editorial';
+export const PRESET_ALIASES: Record<LegacyPresetId, PresetId> = { 'retail-editorial': 'atelier' };
+/** What you build, picked separately from the preset: it brings a page set and the questions to ask (see kinds.ts). */
+export type KindId = 'shop' | 'app' | 'website' | 'booking' | 'portfolio';
 export type Density = 'compact' | 'comfortable' | 'spacious';
 export type FloatSurface = 'solid' | 'glass';
 export type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';
@@ -136,8 +144,10 @@ export interface MotionTiming {
 export interface UIConfig {
   /** Project name, used by exports and docs. */
   name: string;
-  /** Start from a named design language; every key below still wins over it. */
-  preset?: PresetId;
+  /** Start from a preset (a way of designing); every key below still wins over it. Old names resolve through PRESET_ALIASES. */
+  preset?: PresetId | LegacyPresetId;
+  /** What you build: shop, app, website, booking or portfolio. Sets no values; tools read it for the page set and questions. */
+  kind?: KindId;
   brand: BrandConfig;
   color: ColorConfig;
   radius: RadiusConfig;
@@ -155,8 +165,18 @@ export interface UIConfig {
 
 export interface Preset {
   id: PresetId;
+  /** The code name, shown as the label. */
   label: string;
+  /** How it looks and feels, in one or two sentences. */
   note: string;
+  /** Products that use this preset as their base (examples only; they may override anything). */
+  seenIn: string[];
+  /** Rules to keep while designing in this preset. */
+  rules: string[];
+  /** What never to do in this preset. */
+  never: string[];
+  /** Questions this preset asks before any design. */
+  questions: string[];
   /** Where each value came from. */
   source: string;
   config: UIConfigInput;
@@ -219,8 +239,18 @@ function merge<T>(base: T, patch: unknown): T {
 
 /** Fill a partial config with defaults, then the named preset, then the input. Safe to call on user JSON. */
 export function resolveConfig(input?: UIConfigInput): UIConfig {
-  const preset = input?.preset ? PRESETS[input.preset as PresetId] : undefined;
-  return merge(merge(DEFAULT_CONFIG, preset?.config), input ?? {});
+  const id = presetId(input?.preset);
+  const out = merge(merge(DEFAULT_CONFIG, id ? PRESETS[id].config : undefined), input ?? {});
+  if (id) out.preset = id;
+  else delete out.preset;
+  return out;
+}
+
+/** The current id for a preset name (old names map through PRESET_ALIASES); undefined when unknown. */
+export function presetId(name?: string): PresetId | undefined {
+  if (!name) return undefined;
+  if (name in PRESET_ALIASES) return PRESET_ALIASES[name as LegacyPresetId];
+  return name in PRESETS ? (name as PresetId) : undefined;
 }
 
 /** Identity helper for typed config files: export default defineConfig({...}). */

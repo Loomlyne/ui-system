@@ -343,9 +343,21 @@
     },
     "preset": {
       "enum": [
+        "ledger",
+        "atelier",
         "retail-editorial"
       ],
-      "description": "Named design language applied between the defaults and your keys. See docs/presets.md."
+      "description": "Preset: a way of designing, applied between the defaults and your keys. ledger = round and clean, atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/presets.md."
+    },
+    "kind": {
+      "enum": [
+        "shop",
+        "app",
+        "website",
+        "booking",
+        "portfolio"
+      ],
+      "description": "What you build, picked separately from the preset. Sets no values; tools read it for the page set and questions. See docs/kinds.md."
     },
     "sizes": {
       "type": "object",

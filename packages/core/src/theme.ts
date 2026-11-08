@@ -1,4 +1,4 @@
-import { resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
+import { presetId, resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
 import { PRESETS } from './presets';
 import {
   alpha, bestOn, contrast, hexToOklch, isHex, mix, neutralFrom, scaleFrom, stepWithContrast,
@@ -57,7 +57,8 @@ const NEUTRAL_ROLES = new Set(['bg', 'surface', 'surface-2', 'surface-3', 'line'
  * again (a cream primary must not keep white text). Pins the project wrote itself always stay.
  */
 function activePins(config: UIConfig, pins: Partial<Record<string, string>>, key: 'pin' | 'pinDark'): Partial<Record<string, string>> {
-  const preset = config.preset ? PRESETS[config.preset] : undefined;
+  const id = presetId(config.preset);
+  const preset = id ? PRESETS[id] : undefined;
   const pc = preset?.config.color;
   if (!pc) return pins;
   const same = (a?: string, b?: string) => (a ?? '').toLowerCase() === (b ?? '').toLowerCase();

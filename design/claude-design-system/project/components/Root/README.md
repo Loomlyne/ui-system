@@ -5,7 +5,7 @@ The theme provider: wrap every page or artboard in it and pass the project's bra
 Every other component reads its CSS variables and brand context. Root computes the whole theme (color scales, contrast-safe text colors, radius roles, fonts, shadows) from a handful of inputs, so one change restyles everything.
 
 **Props (all optional, defaults in brackets)**
-- Preset: `preset` retail-editorial (a whole design language; every other prop still wins)
+- Preset: `preset` retail-editorial|ledger (a whole design language; every other prop still wins)
 - Color: `primary` [#1C1B19], `accent` [#E0562B], `neutral` [#77736B, or 'auto'], `mode` light|dark [light]
 - Shape: `roundness` 0–100 [60], `pill` boolean [false]
 - Type: `fontPreset` modern|geometric|editorial|grotesk|humanist|classic|retail [modern], `displayFont`, `bodyFont` (any Google Fonts family), `buttonCase` normal|upper
