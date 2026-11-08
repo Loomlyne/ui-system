@@ -210,7 +210,7 @@ export function Tooltip({ children, className, style }: { children?: React.React
   return <span role="tooltip" className={cx('uis-tooltip', className)} style={style}>{children}</span>;
 }
 
-export function Toast({ title, children, icon = 'check', action, className, style }: { title?: string; children?: React.ReactNode; icon?: IconName | string; action?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+export function Toast({ title, children, icon = 'check-circle', action, className, style }: { title?: string; children?: React.ReactNode; icon?: IconName | string; action?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
     <div role="status" className={cx('uis-toast', className)} style={style}>
       <Icon name={icon} className="uis-toast__icon" />
@@ -221,7 +221,7 @@ export function Toast({ title, children, icon = 'check', action, className, styl
 }
 
 export function Alert({ tone = 'info', title, children, icon, className, style }: { tone?: 'info' | 'success' | 'warning' | 'danger'; title?: string; children?: React.ReactNode; icon?: IconName | string; className?: string; style?: React.CSSProperties }) {
-  const ic = icon ?? (tone === 'success' ? 'check' : tone === 'info' ? 'help' : 'bolt');
+  const ic = icon ?? { info: 'info', success: 'check-circle', warning: 'warning', danger: 'x-circle' }[tone];
   return (
     <div role={tone === 'danger' ? 'alert' : 'status'} className={cx('uis-alert', tone !== 'info' && `uis-alert--${tone}`, className)} style={style}>
       <Icon name={ic} size={18} style={{ marginTop: 2 }} />

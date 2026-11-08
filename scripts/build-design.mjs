@@ -8,8 +8,9 @@ import { CATALOG, PRELUDE } from './design-catalog.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const core = await import(join(root, 'packages/core/dist/index.js'));
+const ICON_COUNT = Object.keys((await import(join(root, 'packages/react/dist/index.js'))).ICONS).length;
 const out = join(root, 'design/claude-design-system/project');
-const TITLE = 'UI System';
+const TITLE = 'UI System · Design System';
 const NS = 'UIS';
 
 // Keep the index's identity across rebuilds: Claude Design expects createdOnFiles to stay put.
@@ -182,6 +183,18 @@ const designPresetRows = Object.values(core.PRESETS).map((p) => `| \`${p.id}\` |
 const presetRows = Object.values(core.FONT_PRESETS).map((p) => `| \`${p.id}\` | ${p.display} | ${p.body} | ${p.mono} | ${p.note} |`).join('\n');
 write('README.md', `UI System is a brand-agnostic design system. It ships structure, not a brand: every project sets its own colors, shape, type and logo through one config, and every component follows. Nothing from a previous client is prebuilt.
 
+## What is inside
+
+| part | what it gives you | where |
+|---|---|---|
+| Engine | Three color seeds, a roundness dial, a font preset and a density become every \`--uis-*\` variable, light and dark, contrast-checked at 4.5:1. | Root props, \`ui.config.json\` |
+| Presets | Whole design languages on top of the engine: \`retail-editorial\` today (fashion storefront and admin). | Root \`preset\` |
+| ${CATALOG.length} components | Buttons, forms, feedback, data, overlays, 6 website navs, 5 app shells, motion. | Components in this design system |
+| Icons | Hugeicons free stroke-rounded set (MIT), ${ICON_COUNT} named icons. | \`UIS.Icon\`, Assets › Icons |
+| Marks and avatars | Placeholder logo marks until the client's logo exists; DiceBear avatars for people without a photo. | Assets › Marks, Avatars |
+
+The working canvas is **UI System · Canvas**: pages for Start here, Foundations, Components, Navigation, Use cases and Presets, every board driven by the same Tweaks. Retail preset decisions (sidebar, info tone, dark mode, signed 2026-11-07) live on its Presets page.
+
 ## Start every design here
 
 1. Mount the bundle and wrap each artboard or page in \`UIS.Root\`. Pass the project's brand as props on Root, never on individual components:
@@ -237,13 +250,15 @@ Styles: \`display-2xl\` 80, \`display-xl\` 64, \`display-l\` 48, \`display-m\` 3
 
 ## Presets
 
-A preset is a whole design language (color pins, shape, type, sizes, shadows, motion). A project opts in with \`preset\` on Root or \`"preset"\` in ui.config.json; every other prop still wins, and the defaults never change. Pins are exact light-mode values; dark mode is derived by the engine.
+A preset is a whole design language (color pins, shape, type, sizes, shadows, motion). A project opts in with \`preset\` on Root or \`"preset"\` in ui.config.json; every other prop still wins, and the defaults never change. \`color.pin\` holds exact light-mode values and \`color.pinDark\` exact dark-mode values; roles a preset leaves unpinned are derived. A new seed drops the preset's pins for that seed's roles, so the contrast gate still holds.
 
 | preset | label | look |
 |---|---|---|
 ${designPresetRows}
 
 \`retail-editorial\`: ink \`#2D2A26\` on white, hairlines \`#E5E2DE\` (decorative only), control borders \`#8F8B86\`, grey \`#F4F4F4\` photo wells and search pill, off-white \`#FAF8F5\` panels, tan \`#8C6250\` tags and hover, sand \`#B49A87\` (accent-soft) with ink text, never white, sale red \`#CD2D2D\`, green \`#1F7A4D\` for WhatsApp and success, burgundy \`#7E1F33\` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (\`space-1\`). No card shadows. 150/200/300ms motion, press scales to 0.96.
+
+Retail decisions (signed 2026-11-07): app sidebar on off-white \`#FAF8F5\` with a white current item and a 2px ink start bar; info is ink on grey \`#F4F4F4\` (the source has no info color, warning stays tan); a designed dark mode (ground \`#141210\`, ink \`#F3EFEA\`, sand stays sand, wordmark \`#D27A89\`); search pill edge \`#8F8B86\` on hover; 1px checkbox edge like every other control.
 
 ## Logo
 
@@ -289,11 +304,11 @@ Use \`UIS.Reveal\` for entrances (fade-up, fade, scale-in, slide, blur-in, with 
 - **References first:** before designing a screen or section, look at real products on Mobbin (screens, flows, website sections) and cite what you borrowed.
 - **React Bits** (reactbits.dev): animated text, backgrounds and effects. Install the TS-TW or TS-CSS variant (\`npx shadcn@latest add @react-bits/<Name>-TS-TW\`) and replace its colors with \`var(--uis-*)\`.
 - **Untitled UI React** (MIT open-source components): install with its CLI, then import \`@ui-system/core/untitled-ui.css\` so its brand scale, greys and fonts follow this system.
-- Avatars come from DiceBear, animation from anime.js. Do not add a second icon set, avatar source or animation library.
+- Avatars come from DiceBear, animation from anime.js. Icons come from Hugeicons only. Do not add a second icon set, avatar source or animation library.
 
 ## Iconography
 
-Use \`UIS.Icon\` by name: stroke icons on a 24px grid at 1.75 stroke with round joins, drawn for this system and inheriting text color. No emoji, no second icon set. Icon-only buttons always carry a \`label\`.
+Every icon comes from **Hugeicons** (hugeicons.com), the free stroke-rounded set (MIT, \`@hugeicons/core-free-icons\`). Use \`UIS.Icon\` by name: 24px grid, 1.5 stroke, round caps and joins, inheriting text color. Sizes: 16 in tables and badges, 18 in buttons and nav items, 20–24 standalone. Status tones carry their own icon (\`info\`, \`check-circle\`, \`warning\`, \`x-circle\`). Need a new one? Pick the closest Hugeicons glyph and add a name; never draw a path, use emoji or mix in another set. Icon-only buttons always carry a \`label\`.
 
 ## Content fundamentals
 
@@ -305,7 +320,7 @@ const assetsPath = join(root, 'design/assets.json');
 const uploaded = existsSync(assetsPath) ? JSON.parse(readFileSync(assetsPath, 'utf8')) : {};
 const GROUP_README = {
   Avatars: '# Avatars\n\nDiceBear samples for every bundled style (all CC0, no attribution). Components draw these live from a name with `UIS.Avatar`; these files are for decks, mockups and handoff. Never use stock or invented photos of people.\n',
-  Icons: '# Icons\n\nEvery UI System icon as a standalone 24px SVG, stroke 1.75, ink `#1C1B19` (an image cannot inherit text color). In components use `UIS.Icon` by name so icons follow the theme.\n',
+  Icons: '# Icons\n\nEvery UI System icon (Hugeicons free stroke-rounded, MIT) as a standalone 24px SVG, stroke 1.5, ink `#1C1B19` (an image cannot inherit text color). In components use `UIS.Icon` by name so icons follow the theme.\n',
   Marks: '# Marks\n\nThe five generated logo marks in ink `#1C1B19`, for placeholders until the client logo exists. In components use `UIS.Logo` / `logoMark`; its monogram corners follow roundness.\n',
 };
 const assetGroups = {};

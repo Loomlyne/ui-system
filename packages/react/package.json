@@ -36,6 +36,7 @@
     "@dicebear/notionists-neutral": "^9.4.2",
     "@dicebear/shapes": "^9.4.2",
     "@dicebear/thumbs": "^9.4.2",
+    "@hugeicons/core-free-icons": "4.4.0",
     "@ui-system/core": "workspace:*",
     "animejs": "^4.5.0"
   },

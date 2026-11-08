@@ -78,6 +78,9 @@ importers:
       '@dicebear/thumbs':
         specifier: ^9.4.2
         version: 9.4.2(@dicebear/core@9.4.3)
+      '@hugeicons/core-free-icons':
+        specifier: 4.4.0
+        version: 4.4.0
       '@ui-system/core':
         specifier: workspace:*
         version: link:../core
@@ -289,6 +292,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@hugeicons/core-free-icons@4.4.0':
+    resolution: {integrity: sha512-7Mz8bmGoY6tZ6l3C2TXwNMLVSr0I8HPwjjFIERAuJFj3rWwLxdF2ZLkDqdrVuEE1dx5b/VXyIsP4WoSU6Q40KQ==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -752,6 +758,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
+
+  '@hugeicons/core-free-icons@4.4.0': {}
 
   '@img/colour@1.1.0':
     optional: true

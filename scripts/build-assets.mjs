@@ -1,5 +1,5 @@
 // Builds the asset files for the Claude Design System "Assets" section:
-//   Icons   every UI System icon as a standalone SVG (ink #1C1B19, 24px grid)
+//   Icons   every UI System icon (Hugeicons free stroke-rounded, MIT) as a standalone SVG (ink #1C1B19, 24px grid)
 //   Marks   the generated logo marks as SVG templates
 //   Avatars DiceBear samples for each bundled style (CC0)
 // Output: design/assets/<Group>/<file>.svg (uploaded to the design system as assets)
@@ -8,14 +8,16 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const { ICONS, avatarSvg, AVATAR_STYLES } = await import(join(root, 'packages/react/dist/index.js'));
+const { ICONS, ICON_STROKE, avatarSvg, AVATAR_STYLES } = await import(join(root, 'packages/react/dist/index.js'));
 const out = join(root, 'design/assets');
 if (existsSync(out)) rmSync(out, { recursive: true });
 const put = (rel, text) => { const p = join(out, rel); mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, text); };
 const INK = '#1C1B19';
 
-for (const [name, d] of Object.entries(ICONS)) {
-  put(`Icons/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${INK}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>\n`);
+const kebab = (k) => k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
+const node = ([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k, v]) => `${kebab(k)}="${v}"`).join(' ')}/>`;
+for (const [name, nodes] of Object.entries(ICONS)) {
+  put(`Icons/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${INK}" stroke-width="${ICON_STROKE}" stroke-linecap="round" stroke-linejoin="round">${nodes.map(node).join('')}</svg>\n`);
 }
 
 const mark = (body) => `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 32 32">${body}</svg>\n`;
