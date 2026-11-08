@@ -11,6 +11,16 @@ LATO = 'family=Lato:wght@400;700'
 FIGTREE = 'family=Figtree:wght@400..800'
 SANS = "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
 
+LEDGER = {'color': {'primary': '#0d0d0d', 'accent': '#eab308', 'neutral': '#78736a', 'success': '#16803c', 'warning': '#c2540c', 'danger': '#c0311a', 'info': '#2F6BD8'},
+          'radius': {'roundness': 90, 'pill': True}, 'type': {'preset': 'geometric', 'display': 'Poppins', 'body': 'Poppins', 'buttonCase': 'normal'},
+          'density': 'comfortable', 'surface': {'float': 'solid', 'shadow': 'none', 'border': 'hairline'}, 'nav': {'front': 'bar', 'back': 'sidebar'}, 'motion': {'enabled': False, 'intensity': 'subtle'}}
+
+def ledger(**color):
+    import copy
+    c = copy.deepcopy(LEDGER)
+    c['color'].update(color)
+    return c
+
 PRODUCTS = []
 
 # ---------------------------------------------------------------- Senorita
@@ -52,14 +62,10 @@ PRODUCTS.append(dict(
            (0, 'Never invent amounts: [AMOUNT] until real data exists.')],
     gaps='Ships a vendored dark-first kit (Geist, 12/19px corners, deep shadows, 24–32px buttons under the 44px target). Decision D-05 targets UI System light, Poppins, pill, no shadows.',
     source='Shipped: _ds/linear-design-system tokens. Planned: ui-system-redesign sketch theme.json (decision D-05).',
-    default='Planned D-05',
+    default='Ledger (D-05)',
     variants=[
-        V('Planned D-05', 'UI System light · Poppins · pill', 'What D-05 signed. Recommended. Active nav fill is the engine default (not in the sketch).', 'light',
-          {'type': {'preset': 'humanist', 'display': 'Poppins', 'body': 'Poppins'},
-           'color': {'primary': '#0D0D0D', 'accent': '#EAB308', 'neutral': '#8A8172', 'success': '#16803C', 'warning': '#C2540C', 'danger': '#C0311A', 'info': '#2F6BD8',
-                     'pin': {'bg': '#FBF9F6', 'surface': '#FFFEFD', 'line': '#E1DDD7', 'ink': '#11100D', 'primary-ink': '#FFFFFF', 'accent-ink': '#11100D'}},
-           'radius': {'pill': True, 'overrides': {'card': 22, 'panel': 22}}, 'surface': {'shadow': 'none'}, 'sizes': {'sm': 36, 'md': 44, 'lg': 52}},
-          {'--uis-display-weight': '600', '--uis-heading-weight': '600'}, POPPINS),
+        V('Ledger (D-05)', 'ledger preset · Poppins · pill', 'The ledger engine preset (branch claude/round-preset), which implements D-05 and D-12. It pins nothing: every value comes from the seeds. Recommended.', 'light',
+          ledger(), {'--uis-display-weight': '600', '--uis-heading-weight': '600'}, POPPINS),
         V('Shipped today', 'Dark Linear kit · Geist', 'Values from the vendored Linear kit. Buttons 27/32/36px are under the 44px touch target.', 'dark',
           {'type': {'preset': 'geometric'},
            'color': {'mode': 'dark', 'primary': '#EAB308', 'accent': '#EAB308', 'neutral': '#8A857D', 'success': '#3DDC73', 'warning': '#E78640', 'danger': '#E64937',
@@ -97,8 +103,10 @@ PRODUCTS.append(dict(
                                  'nav-bg': '#090909', 'nav-active-bg': '#312915', 'nav-active-ink': '#FFCC00'}},
            'radius': {'overrides': {'control': 999, 'chip': 999, 'field': 8, 'card': 12, 'panel': 12, 'media': 12}}, 'surface': {'shadow': 'deep'}, 'sizes': {'sm': 36, 'md': 44, 'lg': 52}},
           {'--uis-display-weight': '700', '--uis-heading-weight': '700', '--uis-btn-weight': '500'}),
+        V('Ledger + Clickit seeds', 'ledger · yellow · dark', 'Planned: Clickit moves onto ledger when its design is rebuilt, keeping only its brand seeds (yellow #ffcc00, dark mode). Everything else comes from ledger.', 'dark',
+          ledger(primary='#FFCC00', mode='dark'), {'--uis-display-weight': '600', '--uis-heading-weight': '600'}, POPPINS),
     ],
-    fonts='family=Inter:wght@400..700',
+    fonts='family=Inter:wght@400..700&' + POPPINS,
     copy=dict(cta='Watch now', cta2='My list', chip='New', field='Episode title', placeholder='Season 2 · Episode 4', headline='Now streaming',
               alert=('Upload finished', 'Season 2 · Episode 4 is ready to publish.'), toast=('Published', 'Episode 4 is live in Arabic and English.')),
     nav=dict(type='side', sections=[{'label': 'Library', 'items': [{'label': 'Programs', 'icon': 'layers'}, {'label': 'Episodes', 'icon': 'play', 'active': True}, {'label': 'Uploads', 'icon': 'upload', 'badge': 2}]}, {'label': 'Viewers', 'items': [{'label': 'Analytics', 'icon': 'chart'}, {'label': 'Settings', 'icon': 'settings'}]}],

@@ -83,7 +83,7 @@ def screen(p):
         ep = lambda i: ('<article style="display: flex; flex-direction: column; gap: 8px;">' + slot('ck-' + str(i), '16 / 9', 'Episode still') +
                         '<span class="uis-body-s" style="font-weight: 600;">Episode ' + str(i + 1) + ' · [Title]</span><span class="uis-caption">42 min</span></article>')
         return ('<div style="position: relative;">' + slot('ck-hero', '21 / 9', 'Show artwork', ' border-radius: 0;') +
-                '<div style="position: absolute; inset: auto auto 40px 40px; display: flex; flex-direction: column; gap: 14px; max-width: 520px;" data-tone="image">' +
+                '<div style="position: absolute; inset: auto auto 40px 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; max-width: 520px;" data-tone="image">' +
                 X('Badge', 'tone="accent"', c['chip']) + '<h2 class="uis-display-l" style="color: var(--uis-on-image);">[Program title]</h2>' +
                 '<p class="uis-body" style="color: var(--uis-on-image);">[One-line logline in Arabic and English]</p>' + row(BTN('Watch now', 'size="lg" icon="play"'), BTN('My list', 'size="lg" variant="glass" icon="plus"')) + '</div></div>' +
                 '<div style="padding: 28px 40px; display: flex; flex-direction: column; gap: 16px;"><h3 class="uis-h3">Season 2</h3>' + grid(4, [ep(i) for i in range(4)], 16) + '</div>'), 960
@@ -295,7 +295,7 @@ def sheet(p):
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
     body = '<div style="padding: 64px 72px;">' + header + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9 + s10 + s11 + s12 + s13 + '</div>'
-    MEASURED = {'Almar': 9067, 'Clickit': 9561, 'Invios': 9691, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 8974, 'Vamos': 9121}  # rendered locally with the canvas runtime, 2026-11-08
+    MEASURED = {'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # tallest variant, rendered locally with the canvas runtime, 2026-11-08
     H = -(-(MEASURED[pid] + 40) // 20) * 20
 
     # ---- data for the script
