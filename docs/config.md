@@ -6,7 +6,10 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 Project name. Used by exports.
 
 ## preset
-Optional named design language, applied between the defaults and your keys: `retail-editorial`, `ledger`. See [presets.md](presets.md).
+Optional preset, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [presets.md](presets.md).
+
+## kind
+Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Sets no values; tools read it for the page set and questions. See [kinds.md](kinds.md).
 
 ## brand
 

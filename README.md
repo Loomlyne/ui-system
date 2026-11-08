@@ -82,7 +82,7 @@ ui.config.json  ──►  @ui-system/core  ──►  theme.css · tailwind.css
 | `motion.enabled` / `intensity` | boolean / `subtle`, `expressive` | anime.js entrances and counters. |
 | `nav.front` / `nav.back` | `island`, `bar`, `stacked`, `dock`, `minimal` / `sidebar`, `rail`, `inset`, `topbar`, `dock` | Default website nav and app shell. |
 
-Full reference: [docs/config.md](docs/config.md). Named design languages (`"preset": "retail-editorial"`): [docs/presets.md](docs/presets.md).
+Full reference: [docs/config.md](docs/config.md). Presets, ways of designing (`"preset": "ledger"` round, `"atelier"` sharp): [docs/presets.md](docs/presets.md). What you build (`"kind": "app"`): [docs/kinds.md](docs/kinds.md).
 
 ## Logos
 
