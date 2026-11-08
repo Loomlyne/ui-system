@@ -65,7 +65,7 @@ A preset is a whole design language (color pins, shape, type, sizes, shadows, mo
 
 | preset | label | look |
 |---|---|---|
-| `retail-editorial` | Retail editorial (Senorita) | Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts. |
+| `retail-editorial` | Retail editorial (Senorita, ALMAR) | Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion, retail and premium-service storefronts. Used by Senorita now, ALMAR when it moves onto this design. |
 | `ledger` | Ledger (Invios, Clickit) | Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. Money and back-office web apps, and the admin side of media platforms. Used by Invios now, Clickit when it is rebuilt. |
 
 `retail-editorial`: ink `#2D2A26` on white, hairlines `#E5E2DE` (decorative only), control borders `#8F8B86`, grey `#F4F4F4` photo wells and search pill, off-white `#FAF8F5` panels, tan `#8C6250` tags and hover, sand `#B49A87` (accent-soft) with ink text, never white, sale red `#CD2D2D`, green `#1F7A4D` for WhatsApp and success, burgundy `#7E1F33` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (`space-1`). No card shadows. 150/200/300ms motion, press scales to 0.96.

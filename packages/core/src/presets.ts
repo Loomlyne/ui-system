@@ -9,8 +9,8 @@ import type { Preset, PresetId } from './config';
 export const PRESETS: Record<PresetId, Preset> = {
   'retail-editorial': {
     id: 'retail-editorial',
-    label: 'Retail editorial (Senorita)',
-    note: 'Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts.',
+    label: 'Retail editorial (Senorita, ALMAR)',
+    note: 'Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion, retail and premium-service storefronts. Used by Senorita now, ALMAR when it moves onto this design.',
     source: 'Senorita Store Phase 1 storefront and admin CSS (_s_css, _s_err, _a_css) and 01-UI-SPEC.md, 2026-11-07.',
     config: {
       preset: 'retail-editorial',
