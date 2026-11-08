@@ -78,9 +78,6 @@ importers:
       '@dicebear/thumbs':
         specifier: ^9.4.2
         version: 9.4.2(@dicebear/core@9.4.3)
-      '@hugeicons/core-free-icons':
-        specifier: 4.4.0
-        version: 4.4.0
       '@ui-system/core':
         specifier: workspace:*
         version: link:../core
@@ -88,6 +85,9 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0
     devDependencies:
+      '@hugeicons/core-free-icons':
+        specifier: 4.4.0
+        version: 4.4.0
       '@types/react':
         specifier: ^19.2.0
         version: 19.3.0

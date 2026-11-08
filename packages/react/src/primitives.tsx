@@ -68,10 +68,10 @@ export function Badge({ tone = 'neutral', solid, outline, dot, className, style,
 }
 
 /* ---------- Fields ---------- */
-let fieldId = 0;
+// React.useId: stable across server and client render, so label/aria ids hydrate.
 const useFieldId = (id?: string) => {
-  const ref = React.useRef(id ?? `uis-f${++fieldId}`);
-  return id ?? ref.current;
+  const auto = React.useId();
+  return id ?? `uis-f${auto.replace(/:/g, '')}`;
 };
 
 export interface FieldProps { label?: string; hint?: string; error?: string; id?: string; className?: string; style?: React.CSSProperties; children?: React.ReactNode }
@@ -106,7 +106,7 @@ export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'd
       <input id={fid} type={isPassword && shown ? 'text' : type} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
       {kbd ? <span className="uis-kbd">{kbd}</span> : null}
       {isPassword ? (
-        <button type="button" className="uis-reveal" aria-label={shown ? 'Hide password' : 'Show password'} aria-pressed={shown} aria-controls={fid} onClick={() => setShown((v) => !v)}>
+        <button type="button" className="uis-reveal" aria-label={shown ? 'Hide password' : 'Show password'} aria-pressed={shown} aria-controls={fid} disabled={rest.disabled} onClick={() => setShown((v) => !v)}>
           <Icon name={shown ? 'eye-off' : 'eye'} />
         </button>
       ) : null}

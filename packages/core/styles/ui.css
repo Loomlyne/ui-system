@@ -117,6 +117,10 @@
 .uis-reveal:hover { color: var(--uis-ink); background: var(--uis-surface-3); }
 .uis-reveal:focus-visible { outline: 2px solid var(--uis-focus); outline-offset: -2px; }
 .uis-reveal .uis-icon { width: 18px; height: 18px; }
+.uis-reveal:disabled { cursor: default; opacity: 0.5; background: transparent; }
+/* Password + kbd hint: the hint sits left of the eye. */
+.uis-control--reveal > .uis-kbd { right: 48px; }
+.uis-control--reveal.uis-control--kbd .uis-input { padding-right: 92px; }
 .uis-input--sm { height: var(--uis-h-sm); font-size: 14px; }
 .uis-input--search { border-radius: var(--uis-r-search); background: var(--uis-search-bg); border-color: var(--uis-search-border); }
 .uis-input--search:hover:not(:focus) { border-color: var(--uis-search-border-hover); }

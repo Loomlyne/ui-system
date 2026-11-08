@@ -66,7 +66,8 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name'> {
 }
 
 export function Icon({ name, size, strokeWidth = ICON_STROKE, label, className, style, ...rest }: IconProps) {
-  const nodes = ICONS[name as IconName] ?? ICONS.sparkle;
+  // Own keys only: a name like 'constructor' must fall back, not crash.
+  const nodes = Object.prototype.hasOwnProperty.call(ICONS, name) ? ICONS[name as IconName] : ICONS.sparkle;
   return (
     <svg
       viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth}
