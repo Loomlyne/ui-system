@@ -95,13 +95,21 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in retail-editorial). */
   variant?: 'default' | 'search';
 }
-export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, className, style, ...rest }: InputProps) {
+export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, type, className, style, ...rest }: InputProps) {
   const fid = useFieldId(id);
+  // Password fields always get a show/hide eye on the physical right, in RTL too.
+  const isPassword = type === 'password';
+  const [shown, setShown] = React.useState(false);
   const control = (
-    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd')}>
+    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd', isPassword && 'uis-control--reveal')}>
       {icon ? <Icon name={icon} /> : null}
-      <input id={fid} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
+      <input id={fid} type={isPassword && shown ? 'text' : type} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
       {kbd ? <span className="uis-kbd">{kbd}</span> : null}
+      {isPassword ? (
+        <button type="button" className="uis-reveal" aria-label={shown ? 'Hide password' : 'Show password'} aria-pressed={shown} aria-controls={fid} onClick={() => setShown((v) => !v)}>
+          <Icon name={shown ? 'eye-off' : 'eye'} />
+        </button>
+      ) : null}
     </div>
   );
   if (!label && !hint && !error) return <div className={className} style={style}>{control}</div>;

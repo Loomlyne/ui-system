@@ -111,6 +111,12 @@
 .uis-input:focus, .uis-select:focus, .uis-textarea:focus { border-color: var(--uis-focus-field); box-shadow: 0 0 0 var(--uis-focus-ring-width) var(--uis-focus-ring); }
 .uis-control--icon .uis-input { padding-left: 42px; }
 .uis-control--kbd .uis-input { padding-right: 52px; }
+/* Password show/hide: physical right in every direction (owner rule), 40px hit area inside the field. */
+.uis-control--reveal .uis-input { padding-right: 48px; }
+.uis-reveal { position: absolute; right: 4px; top: 50%; translate: 0 -50%; display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: var(--uis-r-control); background: transparent; color: var(--uis-ink-3); cursor: pointer; transition: color var(--uis-dur-fast) ease, background var(--uis-dur-fast) ease; }
+.uis-reveal:hover { color: var(--uis-ink); background: var(--uis-surface-3); }
+.uis-reveal:focus-visible { outline: 2px solid var(--uis-focus); outline-offset: -2px; }
+.uis-reveal .uis-icon { width: 18px; height: 18px; }
 .uis-input--sm { height: var(--uis-h-sm); font-size: 14px; }
 .uis-input--search { border-radius: var(--uis-r-search); background: var(--uis-search-bg); border-color: var(--uis-search-border); }
 .uis-input--search:hover:not(:focus) { border-color: var(--uis-search-border-hover); }

@@ -89,12 +89,12 @@ Use \`light\` and \`glass\` only on photography. One \`primary\` per view. Label
   },
   {
     name: 'Input', group: 'Forms', height: 130,
-    readme: `A text field with optional label, hint, error, leading icon and keyboard hint.
+    readme: `A text field with optional label, hint, error, leading icon and keyboard hint. \`type="password"\` adds a show/hide eye button on the physical right (also in RTL), 40px hit area, \`aria-pressed\`.
 
 Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\`, \`--uis-search-border\` and \`--uis-search-border-hover\` (a grey pill in retail-editorial). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
 
 Always give a visible \`label\` in forms; a placeholder is not a label.`,
-    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }))`,
+    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }), h(U.Input, { label: 'Password', type: 'password', defaultValue: 'example-pass', style: { width: 240 } }))`,
   },
   {
     name: 'Select', group: 'Forms', height: 110,

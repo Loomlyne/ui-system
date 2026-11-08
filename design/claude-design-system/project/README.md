@@ -7,7 +7,7 @@ UI System is a brand-agnostic design system. It ships structure, not a brand: ev
 | Engine | Three color seeds, a roundness dial, a font preset and a density become every `--uis-*` variable, light and dark, contrast-checked at 4.5:1. | Root props, `ui.config.json` |
 | Presets | Whole design languages on top of the engine: `retail-editorial` today (fashion storefront and admin). | Root `preset` |
 | 38 components | Buttons, forms, feedback, data, overlays, 6 website navs, 5 app shells, motion. | Components in this design system |
-| Icons | Hugeicons free stroke-rounded set (MIT), 84 named icons. | `UIS.Icon`, Assets › Icons |
+| Icons | Hugeicons free stroke-rounded set (MIT), 85 named icons. | `UIS.Icon`, Assets › Icons |
 | Marks and avatars | Placeholder logo marks until the client's logo exists; DiceBear avatars for people without a photo. | Assets › Marks, Avatars |
 
 The working canvas is **UI System · Canvas**: pages for Start here, Foundations, Components, Navigation, Use cases and Presets, every board driven by the same Tweaks. Retail preset decisions (sidebar, info tone, dark mode, signed 2026-11-07) live on its Presets page.

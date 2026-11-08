@@ -320,6 +320,11 @@ declare const SOURCE: {
     }][] | readonly (readonly [string, {
         readonly [key: string]: string | number;
     }])[];
+    readonly 'eye-off': [string, {
+        [key: string]: string | number;
+    }][] | readonly (readonly [string, {
+        readonly [key: string]: string | number;
+    }])[];
     readonly link: [string, {
         [key: string]: string | number;
     }][] | readonly (readonly [string, {
@@ -861,7 +866,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in retail-editorial). */
     variant?: 'default' | 'search';
 }
-export declare function Input({ label, hint, error, icon, kbd, size, variant, id, className, style, ...rest }: InputProps): React.JSX.Element;
+export declare function Input({ label, hint, error, icon, kbd, size, variant, id, type, className, style, ...rest }: InputProps): React.JSX.Element;
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
     label?: string;
     hint?: string;
