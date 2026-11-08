@@ -1,11 +1,12 @@
-# One full design sheet per product preset, for UI System · Canvas (page "Preset sheets").
-# Run: python3 scripts/canvas/presetsheets.py <out_dir>  (writes Sheet-Preset-*.dc.html + made-presets.json)
-# Publish the boards to the canvas project/ folder and add them to canvas.json (page "presetsheets").
-# Every value on a sheet is computed live from UIS.buildTheme(config) for the chosen variant.
+# One full design sheet per PRESET (a way of designing), for UI System · Canvas (page "Presets").
+# Products are only skins on a sheet, side by side (owner, 2026-11-09; replaces the per-product sheets).
+# Run after pnpm build: python3 scripts/canvas/presetsheets.py <out_dir>  (writes Sheet-<Preset>.dc.html + made-presets.json)
+# Every value on a sheet is computed live from UIS.buildTheme(config) for each skin.
 import json, sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from products import PRODUCTS
+from presets_data import PRESET_SHEETS
 
 OUT = sys.argv[1]
 MADE = {}
@@ -174,25 +175,50 @@ DATA = {
 
 def js(o): return json.dumps(o, ensure_ascii=False)
 
+# ---------------------------------------------------------------- skins side by side (preset sheets)
+def skins_block(p):
+    c = p['copy']
+    swatch = lambda role: '<span title="' + role + '" style="width: 28px; height: 28px; border-radius: var(--uis-r-chip); background: var(--uis-' + role + '); border: 1px solid var(--uis-line);"></span>'
+    card = ('<div style="{{k.style}}">'
+            '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong class="uis-h3">{{k.key}}</strong><span class="uis-caption">{{k.tag}}</span></div>'
+            '<div style="display: flex; gap: 6px;">' + ''.join(swatch(r) for r in ['bg', 'surface', 'ink', 'primary', 'accent', 'success', 'danger']) + '</div>'
+            '<span style="font: var(--uis-display-weight) 22px/1.1 var(--uis-font-display); text-transform: var(--uis-display-case); letter-spacing: var(--uis-display-tracking); color: var(--uis-wordmark);">{{k.wordmark}}</span>'
+            '<span class="uis-display-m">' + esc(c['headline']) + '</span>'
+            + row(BTN(c['cta']), BTN('Cancel', 'variant="outline"'), X('Badge', 'tone="accent"', c['chip']), gap=10) +
+            X('Input', 'label="' + esc(c['field']) + '" placeholder="' + esc(c['placeholder']) + '"') +
+            X('Card', '', '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong>' + esc(DATA[p['data']]['cards'][0]) + '</strong><strong style="font-variant-numeric: tabular-nums;">' + esc(DATA[p['data']]['cards'][1]) + '</strong></div>'
+                          '<p class="uis-body-s" style="margin: 8px 0 0; color: var(--uis-ink-2);">' + esc(DATA[p['data']]['cards'][2]) + '</p>') +
+            '<span class="uis-body-s" style="color: var(--uis-ink-2);">{{k.note}}</span></div>')
+    return ('<section style="display: flex; flex-direction: column; gap: 20px; padding: 36px 0; border-top: 1px solid var(--uis-line);">'
+            '<div style="display: flex; align-items: baseline; gap: 16px;"><h2 class="uis-h2" style="margin: 0;">Skins side by side</h2>'
+            '<span class="uis-body-s" style="color: var(--uis-ink-2);">Same preset. Each product changes what it needs on top (colours, logo, fonts, anything). The outlined one is shown in full below.</span></div>'
+            '<div style="display: grid; grid-template-columns: repeat(' + str(len(p['variants'])) + ', minmax(0, 1fr)); gap: 20px; align-items: start;">'
+            '<sc-for list="{{skins}}" as="k" hint-placeholder-count="' + str(len(p['variants'])) + '">' + card + '</sc-for></div></section>')
+
 # ---------------------------------------------------------------- the sheet
 def sheet(p):
-    pid, c, d = p['id'], p['copy'], DATA[p['id']]
+    pid, c, d = p['id'], p['copy'], DATA[p.get('data', p['id'])]
+    is_preset = bool(p.get('preset'))
     mobile = p.get('mobile')
     title = p['name'] + ' · design sheet'
 
-    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · retail-editorial') if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
+    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · ' + p.get('preset', 'atelier')) if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
     header = ('<header style="display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 48px; align-items: end; padding-bottom: 36px;">'
-              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">Product preset · ' + p['kind'] + '</span>'
+              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Preset · ' if is_preset else 'Product preset · ') + p['kind'] + '</span>'
               '<h1 class="uis-display-xl">' + p['name'] + '</h1><p class="uis-body-l" style="color: var(--uis-ink-2); max-width: 720px;">' + p['summary'] + '</p></div>'
               '<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;">' + status +
-              '<span class="uis-overline" style="margin-top: 4px;">Variant on this sheet</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
+              '<span class="uis-overline" style="margin-top: 4px;">' + ('Skin' if is_preset else 'Variant') + ' shown in full below</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
               '<span class="uis-body-s" style="color: var(--uis-ink-2);">{{vNote}}</span><span class="uis-caption">Switch it in Tweaks › variant. Mode: Tweaks › mode.</span></div></header>'
+              + (skins_block(p) if is_preset else '') +
               '<sc-if value="{{hasErr}}" hint-placeholder-val="{{no}}">' + X('Alert', 'tone="danger" title="Config error"', '{{err}}') + '</sc-if>')
 
-    s1 = section('01', 'How it thinks', 'The product rules every screen follows. Read before designing anything new for ' + p['name'] + '.',
-                 '<div class="uis-card" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px;">' + ''.join(rule(do, t) for do, t in p['rules']) + '</div>' +
+    qs = ('<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;"><span class="uis-overline">Ask before any design</span>'
+          '<ol class="uis-body-s" style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">' + ''.join('<li>' + esc(q) + '</li>' for q in p.get('questions', [])) + '</ol>'
+          '<span class="uis-caption">Then pick the kind (Start here, Kinds page) and put the brand on top. A product may change anything; improvements come back here as a proposal.</span></div>') if p.get('questions') else ''
+    s1 = section('01', 'How it thinks', ('The rules every screen in this preset follows, whatever is built on it.' if is_preset else 'The product rules every screen follows. Read before designing anything new for ' + p['name'] + '.'),
+                 '<div class="uis-card" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px;">' + ''.join(rule(do, t) for do, t in p['rules']) + '</div>' + qs +
                  X('Alert', 'tone="warning" title="Gaps and conflicts"', p['gaps']) +
-                 '<p class="uis-caption" style="margin: 0;">Source: ' + p['source'] + ' Values from the "Product preset · ' + p['name'] + '" study on the Presets page.</p>')
+                 '<p class="uis-caption" style="margin: 0;">Source: ' + p['source'] + (' Engine preset: packages/core/src/presets.ts.' if is_preset else ' Values from the "Product preset · ' + p['name'] + '" study on the Presets page.') + '</p>')
 
     sw = ('<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px;"><sc-for list="{{swatches}}" as="s" hint-placeholder-count="36">'
           '<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;"><div style="height: 64px; border-radius: var(--uis-r-inner); background: {{s.css}}; border: 1px solid var(--uis-line);"></div>'
@@ -295,7 +321,7 @@ def sheet(p):
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
     body = '<div style="padding: 64px 72px;">' + header + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9 + s10 + s11 + s12 + s13 + '</div>'
-    MEASURED = {'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # tallest variant, rendered locally with the canvas runtime, 2026-11-08
+    MEASURED = {'Ledger': 10060, 'Atelier': 9880, 'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # rendered locally with the canvas runtime (Ledger 10015, Atelier 9831 on 2026-11-09; products 2026-11-08), plus margin
     H = -(-(MEASURED[pid] + 40) // 20) * 20
 
     # ---- data for the script
@@ -336,6 +362,18 @@ def sheet(p):
     for (const k in v.vars) vars[k] = v.vars[k];
     const wrap = 'width: 1440px; min-height: ''' + str(H) + '''px; box-sizing: border-box; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); ' + Object.keys(vars).map(function (k) { return k + ': ' + vars[k]; }).join('; ') + ';';
     const col = th ? th.colors[mode] : {};
+    const skins = Object.keys(D.variants).map(function (k) {
+      const s = D.variants[k];
+      const sc = JSON.parse(JSON.stringify(s.config));
+      sc.color = Object.assign({}, sc.color || {}, { mode: s.mode });
+      let st = null;
+      try { st = U.buildTheme(sc); } catch (e) { st = null; }
+      const sv = st ? st.vars(s.mode) : {};
+      for (const q in s.vars) sv[q] = s.vars[q];
+      return { key: k, tag: s.tag, note: s.note, current: k === key,
+        style: 'display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px; box-sizing: border-box; border-radius: 16px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); border: ' + (k === key ? '2px solid var(--uis-primary)' : '1px solid var(--uis-line)') + '; ' + Object.keys(sv).map(function (q) { return q + ': ' + sv[q]; }).join('; ') + ';',
+        wordmark: (s.config.brand && s.config.brand.wordmark) || '[NAME]' };
+    });
     const pre = cfg.preset && U.PRESETS && U.PRESETS[cfg.preset] ? U.PRESETS[cfg.preset].config : {};
     const prc = pre.color || {};
     const pins = Object.assign({}, mode === 'dark' ? prc.pinDark : prc.pin, mode === 'dark' ? cfg.color.pinDark : cfg.color.pin);
@@ -358,7 +396,7 @@ def sheet(p):
     const c = cfg.color;
     const seeds = seedKeys.filter(function (k) { return seedSet[k]; }).map(function (k) { return k + ' ' + seedSet[k]; }).join(' · ') || 'preset seeds';
     return {
-      wrap: wrap, err: err, hasErr: !!err, yes: true, no: false,
+      wrap: wrap, skins: skins, err: err, hasErr: !!err, yes: true, no: false,
       s14: 14, s16: 16, s18: 18, s20: 20, s22: 22, p27: 27, p40: 40, p68: 68, p100: 100,
       vKey: key, vTag: v.tag, vNote: v.note, modeLabel: mode === 'dark' ? 'Dark' : 'Light',
       swatches: swatches, pairs: pairs, passCount: rep.filter(function (x) { return x.pass; }).length, pairCount: rep.length, seeds: seeds,
@@ -381,7 +419,7 @@ def sheet(p):
     for f in ('family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Manrope:wght@400..800&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&family=Archivo:wdth,wght@75..125,700..900&' + p['fonts'] + ''.join('&' + v['fonts'] for v in p['variants'] if v['fonts'])).split('&'):
         if f: fams[f.split(':')[0]] = f
     fonts = 'https://fonts.googleapis.com/css2?' + '&'.join(fams.values()) + '&display=swap'
-    root_attrs = ('preset="retail-editorial" ' if p['engine'] else '') + 'mode="{{modeAttr}}" wordmark="' + esc(p['name']) + '" caption="" logo-mark="none" logo-variant="wordmark" style="display: block;"'
+    root_attrs = (('preset="' + p.get('preset', 'atelier') + '" ') if p['engine'] else '') + 'mode="{{modeAttr}}" wordmark="' + esc(p['name']) + '" caption="" logo-mark="none" logo-variant="wordmark" style="display: block;"'
     html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>' + title + '</title>\n<script src="./support.js"></script>\n'
             '<link rel="stylesheet" href="ds/uis/components/bundle.css">\n<script src="ds/uis/components/bundle.js"></script>\n</head>\n<body>\n<x-dc>\n'
             '<helmet>\n<link rel="stylesheet" href="' + fonts.replace('&', '&amp;') + '">\n<style>body{margin:0}</style>\n</helmet>\n'
@@ -389,11 +427,11 @@ def sheet(p):
             '\n</x-dc>\n<script type="text/x-dc" data-dc-script data-props=\'' + json.dumps(props, separators=(',', ':')) + '\'>\n' + script.replace("vKey: key,", "vKey: key, modeAttr: mode,") + '</script>\n</body>\n</html>\n')
     assert html.count('<x-import') == html.count('</x-import>'), pid
     assert "'" not in json.dumps(props), pid
-    name = 'Sheet-Preset-' + pid + '.dc.html'
+    name = ('Sheet-' if is_preset else 'Sheet-Preset-') + pid + '.dc.html'
     open(OUT + '/' + name, 'w').write(html)
     MADE[name] = (title, 1440, H)
 
-for p in PRODUCTS:
+for p in PRESET_SHEETS:
     sheet(p)
 json.dump(MADE, open(OUT + '/made-presets.json', 'w'), indent=1)
 print(len(MADE), 'sheets:', ', '.join(k + ' ' + str(v[2]) for k, v in MADE.items()))
