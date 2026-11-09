@@ -382,9 +382,12 @@
         },
         "check": {
           "type": "number"
+        },
+        "hint": {
+          "type": "number"
         }
       },
-      "description": "Pin control heights, card padding/gap, field focus ring width and checkbox edge width in px."
+      "description": "Pin control heights, card padding/gap, field focus ring width, checkbox edge width and the space reserved under a field for its hint or error, in px."
     },
     "space": {
       "type": "array",

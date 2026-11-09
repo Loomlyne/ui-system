@@ -80,7 +80,9 @@ export function Field({ label, hint, error, id, className, style, children }: Fi
     <div className={cx('uis-field', className)} style={style}>
       {label ? <label className="uis-label" htmlFor={id}>{label}</label> : null}
       {children}
-      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : null}
+      {/* A labelled field keeps one line for its hint or error (--uis-hint-reserve), so a hint never moves the fields around it.
+          Unlabelled fields reserve nothing; sizes.hint = 0 hides the empty slot (--uis-hint-slot). */}
+      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : label ? <span className="uis-hint" aria-hidden /> : null}
     </div>
   );
 }
