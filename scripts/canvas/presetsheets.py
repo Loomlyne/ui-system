@@ -321,7 +321,7 @@ def sheet(p):
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
     body = '<div style="padding: 64px 72px;">' + header + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9 + s10 + s11 + s12 + s13 + '</div>'
-    MEASURED = {'Ledger': 10060, 'Atelier': 9880, 'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # rendered locally with the canvas runtime (Ledger 10015, Atelier 9831 on 2026-11-09; products 2026-11-08), plus margin
+    MEASURED = {'Ledger': 10191, 'Atelier': 9998, 'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # rendered locally with the canvas runtime (Ledger 10146, Atelier 9953 on 2026-11-09 after the reserved hint slot; products 2026-11-08), plus margin
     H = -(-(MEASURED[pid] + 40) // 20) * 20
 
     # ---- data for the script
