@@ -249,8 +249,8 @@ export function resolveConfig(input?: UIConfigInput): UIConfig {
 /** The current id for a preset name (old names map through PRESET_ALIASES); undefined when unknown. */
 export function presetId(name?: string): PresetId | undefined {
   if (!name) return undefined;
-  if (name in PRESET_ALIASES) return PRESET_ALIASES[name as LegacyPresetId];
-  return name in PRESETS ? (name as PresetId) : undefined;
+  if (Object.hasOwn(PRESET_ALIASES, name)) return PRESET_ALIASES[name as LegacyPresetId];
+  return Object.hasOwn(PRESETS, name) ? (name as PresetId) : undefined;
 }
 
 /** Identity helper for typed config files: export default defineConfig({...}). */
