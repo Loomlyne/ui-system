@@ -1,19 +1,31 @@
 import type { Preset, PresetId } from './config';
 
 /**
- * Named design languages. A preset only sets values: `{ "preset": "retail-editorial" }`
- * in ui.config.json fills everything below, and any key you write yourself still wins.
+ * Presets are ways of designing, not products. Pick one for how it should look (`ledger` round
+ * and clean, `atelier` sharp and editorial), pick a kind for what you build (kinds.ts), then put
+ * any brand on top. `{ "preset": "atelier" }` in ui.config.json fills everything below, and any
+ * key you write yourself still wins. Products that use a preset are listed only in `seenIn`.
  * Pins (`color.pin`, `surface.shadows`, `sizes`, `motion.timing`) hold exact light-mode
- * values measured from the source; dark mode is always derived by the engine.
+ * values measured from the source. `color.pinDark` holds a designed dark mode where a
+ * preset has one; anything it leaves out is derived by the engine.
  */
 export const PRESETS: Record<PresetId, Preset> = {
-  'retail-editorial': {
-    id: 'retail-editorial',
-    label: 'Retail editorial (Senorita)',
-    note: 'Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts.',
+  atelier: {
+    id: 'atelier',
+    label: 'Atelier',
+    note: 'Sharp and editorial. Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Photos carry the colour.',
+    seenIn: ['Senorita', 'ALMAR'],
+    rules: [
+      'Square 2px on buttons, fields, chips and panels; only search and avatars are round.',
+      'Headings in condensed caps; body in a calm sans.',
+      'The main action is a 52px dark button; the accent is for sale tags and hover only.',
+      'Photos lead; the interface stays ink, white and one warm accent.',
+    ],
+    never: ['No rounded cards or pill buttons.', 'No colour washes behind photos.', 'No touch target under 44px.'],
+    questions: ['What photo leads each page?', 'What are the collections or categories?', 'What is the one action per page (add to bag, book)?', 'Light only, or dark too?'],
     source: 'Senorita Store Phase 1 storefront and admin CSS (_s_css, _s_err, _a_css) and 01-UI-SPEC.md, 2026-11-07.',
     config: {
-      preset: 'retail-editorial',
+      preset: 'atelier',
       brand: { mark: 'none', variant: 'wordmark', wordmarkCase: 'upper', wordmarkFont: 'display', wordmarkColor: '#7E1F33', caption: '' },
       color: {
         primary: '#2D2A26',
@@ -22,6 +34,7 @@ export const PRESETS: Record<PresetId, Preset> = {
         success: '#1F7A4D',
         warning: '#8C6250',
         danger: '#CD2D2D',
+        info: '#2D2A26',
         mode: 'light',
         pin: {
           bg: '#FFFFFF',
@@ -56,12 +69,59 @@ export const PRESETS: Record<PresetId, Preset> = {
           'float-border': '#E5E2DE',
           'search-bg': '#F4F4F4',
           'search-border': 'transparent',
+          'search-border-hover': '#8F8B86',
+          'info-soft': '#F4F4F4',
+          'info-soft-ink': '#2D2A26',
+          'nav-bg': '#FAF8F5',
+          'nav-active-bg': '#FFFFFF',
+          'nav-active-ink': '#2D2A26',
+          'nav-active-bar': '#2D2A26',
+        },
+        // Designed dark (signed off 2026-11-07; the source has no dark mode). Warm ink ground,
+        // sand badge kept as in light, burgundy wordmark lifted to 4.5:1, field edges 3:1+.
+        pinDark: {
+          bg: '#141210',
+          surface: '#1B1916',
+          'surface-2': '#221F1C',
+          'surface-3': '#2A2724',
+          line: '#35312D',
+          'line-strong': '#77716A',
+          ink: '#F3EFEA',
+          'ink-2': '#C2BBB3',
+          'ink-3': '#A39C94',
+          inverse: '#F3EFEA',
+          'inverse-ink': '#1B1916',
+          primary: '#F3EFEA',
+          'primary-hover': '#C59A83',
+          'primary-ink': '#1B1916',
+          accent: '#B4876F',
+          'accent-ink': '#1B1916',
+          'accent-text': '#C59A83',
+          'accent-soft': '#B49A87',
+          'accent-soft-ink': '#2D2A26',
+          'warning-soft': '#2B211C',
+          'warning-soft-ink': '#E6C9B9',
+          'danger-text': '#F07068',
+          'info-soft': '#2A2724',
+          'info-soft-ink': '#F3EFEA',
+          focus: '#F3EFEA',
+          'focus-field': '#C59A83',
+          'focus-ring': '#C59A83',
+          'float-border': '#35312D',
+          'search-bg': '#2A2724',
+          'search-border': 'transparent',
+          'search-border-hover': '#77716A',
+          'nav-bg': '#1B1916',
+          'nav-active-bg': '#36322E',
+          'nav-active-ink': '#F3EFEA',
+          'nav-active-bar': '#F3EFEA',
+          wordmark: '#D27A89',
         },
       },
       radius: { roundness: 0, pill: false, overrides: { chip: 2, control: 2, field: 2, search: 999, panel: 2, shell: 2, avatar: 999 } },
       type: { preset: 'retail', buttonCase: 'upper' },
       density: 'comfortable',
-      sizes: { sm: 44, md: 52, lg: 56, pad: 16, gap: 16, ring: 1 },
+      sizes: { sm: 44, md: 52, lg: 56, pad: 16, gap: 16, ring: 1, check: 1 },
       space: [2, 4, 8, 12, 16, 20, 24, 32, 40, 56, 72],
       surface: {
         float: 'solid',
@@ -81,6 +141,40 @@ export const PRESETS: Record<PresetId, Preset> = {
         intensity: 'subtle',
         timing: { fast: 150, base: 200, slow: 300, easeOut: 'cubic-bezier(0, 0, 0.2, 1)', easeInOut: 'cubic-bezier(0.42, 0, 0.58, 1)', press: 'scale(0.96)' },
       },
+    },
+  },
+  ledger: {
+    id: 'ledger',
+    label: 'Ledger',
+    note: 'Round and clean. Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion.',
+    seenIn: ['Invios', 'Clickit'],
+    rules: [
+      'One gold (accent) action per page; every other action is ink or outline.',
+      'Pills for buttons, fields and chips; cards 22px.',
+      'Hairline borders, no shadows, no motion.',
+      'Numbers in tabular figures, right-aligned.',
+    ],
+    never: ['No square corners mixed in.', 'No second accent colour.', 'No drop shadows to separate cards: use a border or a surface step.'],
+    questions: ['What is the one action on this page?', 'Which numbers must line up?', 'Light, dark, or both?', 'Which status words are used (paid, draft, overdue)?'],
+    source: 'Invios decisions D-05 (round radius, light and dark) and D-12 (Poppins), 2026-10-05; .planning/sketches/ui-system-redesign/ui.config.json and ui-theme/theme.json.',
+    config: {
+      preset: 'ledger',
+      color: {
+        primary: '#0d0d0d',
+        accent: '#eab308',
+        neutral: '#78736a',
+        success: '#16803c',
+        warning: '#c2540c',
+        danger: '#c0311a',
+        info: '#2F6BD8',
+        mode: 'light',
+      },
+      radius: { roundness: 90, pill: true },
+      type: { preset: 'geometric', display: 'Poppins', body: 'Poppins', buttonCase: 'normal' },
+      density: 'comfortable',
+      surface: { float: 'solid', shadow: 'none', border: 'hairline' },
+      nav: { front: 'bar', back: 'sidebar' },
+      motion: { enabled: false, intensity: 'subtle' },
     },
   },
 };

@@ -6,7 +6,10 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 Project name. Used by exports.
 
 ## preset
-Optional named design language, applied between the defaults and your keys: `retail-editorial`. See [presets.md](presets.md).
+Optional preset, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [presets.md](presets.md).
+
+## kind
+Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Sets no values; tools read it for the page set and questions. See [kinds.md](kinds.md).
 
 ## brand
 
@@ -35,9 +38,10 @@ Optional named design language, applied between the defaults and your keys: `ret
 | `neutral` | `#77736B` | Tints every grey. `"auto"` borrows the primary's hue. |
 | `success` `warning` `danger` `info` | green, amber, red, blue | Status roles. |
 | `mode` | `light` | Default theme. Dark is always generated too. |
-| `pin` | | Exact light-mode values on generated roles: `{ "line": "#E5E2DE" }`. Any role below without `--uis-`. Unknown keys throw. Dark stays derived. |
+| `pin` | | Exact light-mode values on generated roles: `{ "line": "#E5E2DE" }`. Any role below without `--uis-`. Unknown keys throw. |
+| `pinDark` | | Same for dark mode. Roles you leave out are derived from the scales. |
 
-Generated per role: `{role}`, `{role}-hover`, `{role}-ink` (text on the fill), `{role}-soft` (tinted background), `{role}-soft-ink`, `{role}-text` (the role as text on the page). Neutral roles: `bg`, `surface`, `surface-2`, `surface-3`, `line`, `line-strong`, `ink`, `ink-2`, `ink-3`, `inverse`, `inverse-ink`, `on-image`, `scrim`, `image-scrim`, `float-bg`, `float-border`, `focus`, `focus-field`, `focus-ring`, `search-bg`, `search-border`, `wordmark`. Scales: `primary-50…950`, `accent-50…950`, `neutral-0…975`, and the status scales. All as CSS variables prefixed `--uis-`.
+Generated per role: `{role}`, `{role}-hover`, `{role}-ink` (text on the fill), `{role}-soft` (tinted background), `{role}-soft-ink`, `{role}-text` (the role as text on the page). Neutral roles: `bg`, `surface`, `surface-2`, `surface-3`, `line`, `line-strong`, `ink`, `ink-2`, `ink-3`, `inverse`, `inverse-ink`, `on-image`, `scrim`, `image-scrim`, `float-bg`, `float-border`, `focus`, `focus-field`, `focus-ring`, `search-bg`, `search-border`, `search-border-hover`, `nav-bg`, `nav-active-bg`, `nav-active-ink`, `nav-active-bar` (side nav start bar, `transparent` = none), `wordmark`. Scales: `primary-50…950`, `accent-50…950`, `neutral-0…975`, and the status scales. All as CSS variables prefixed `--uis-`.
 
 ## radius
 
@@ -61,7 +65,7 @@ See [radius.md](radius.md).
 `compact` (32/38/46 px controls), `comfortable` (36/44/52), `spacious` (40/48/56).
 
 ## sizes
-Pin px over the density values: `sm`, `md`, `lg` (control heights), `pad` (card padding), `gap`, `ring` (field focus ring width, default 4).
+Pin px over the density values: `sm`, `md`, `lg` (control heights), `pad` (card padding), `gap`, `ring` (field focus ring width, default 4), `check` (checkbox edge width, default 1.5), `hint` (space kept under every labelled field for its hint or error, default 18 = one line, so fields line up whether or not they have a hint; unlabelled fields reserve nothing; `0` removes the slot and lets hints push). Write hints and errors as one line: a longer one wraps and pushes what is below it.
 
 ## space
 Spacing scale in px for token exports. Default `[4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]`.

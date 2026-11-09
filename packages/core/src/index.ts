@@ -5,3 +5,4 @@ export * from './type';
 export * from './theme';
 export * from './exports';
 export * from './presets';
+export * from './kinds';

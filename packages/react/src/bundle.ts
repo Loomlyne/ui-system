@@ -2,6 +2,6 @@
 // so a page can also compute themes: UIS.buildTheme(config).vars().
 export * from './index';
 export {
-  buildTheme, resolveConfig, DEFAULT_CONFIG, RADIUS_PRESETS, FONT_PRESETS,
+  buildTheme, resolveConfig, DEFAULT_CONFIG, RADIUS_PRESETS, FONT_PRESETS, PRESETS, PRESET_ALIASES, presetId, KINDS, contrastReport,
   toCSS, toTailwind, toDesignTokens, allPresetFontsUrl, googleFontsUrl, contrast, scaleFrom,
 } from '@ui-system/core';
