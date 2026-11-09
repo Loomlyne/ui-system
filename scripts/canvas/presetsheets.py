@@ -204,7 +204,7 @@ def sheet(p):
 
     status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · ' + p.get('preset', 'atelier')) if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
     header = ('<header style="display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 48px; align-items: end; padding-bottom: 36px;">'
-              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Preset · ' if is_preset else 'Product preset · ') + p['kind'] + '</span>'
+              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Preset · ' if is_preset else 'Product preset · ') + p.get('tagline', p.get('kind', '')) + '</span>'
               '<h1 class="uis-display-xl">' + p['name'] + '</h1><p class="uis-body-l" style="color: var(--uis-ink-2); max-width: 720px;">' + p['summary'] + '</p></div>'
               '<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;">' + status +
               '<span class="uis-overline" style="margin-top: 4px;">' + ('Skin' if is_preset else 'Variant') + ' shown in full below</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
@@ -224,7 +224,7 @@ def sheet(p):
           '<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;"><div style="height: 64px; border-radius: var(--uis-r-inner); background: {{s.css}}; border: 1px solid var(--uis-line);"></div>'
           '<span style="font: 600 12px/1.2 var(--uis-font-mono); color: var(--uis-ink);">{{s.role}}</span><span style="font: 400 11.5px/1.2 var(--uis-font-mono); color: var(--uis-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.hex}}</span>'
           '<span class="uis-caption" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.use}}</span><span style="font: 600 10.5px/1 var(--uis-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: {{s.srcInk}};">{{s.src}}</span></div></sc-for></div>')
-    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this variant. <strong>Source</strong> = pinned from the product. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
+    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this ' + ('skin' if is_preset else 'variant') + '. <strong>Source</strong> = pinned ' + ('by the preset or the skin' if is_preset else 'from the product') + '. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
                  '<p class="uis-caption" style="margin: 0;">Seeds: {{seeds}}</p>')
 
     ct = ('<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;"><sc-for list="{{pairs}}" as="k" hint-placeholder-count="35">'
@@ -316,7 +316,7 @@ def sheet(p):
     s12 = section('12', 'Sample screen', 'A real ' + p['name'] + ' screen built only from UI System parts in this variant.',
                   '<div style="border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden; background: var(--uis-bg);">' + scr + '</div>')
 
-    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this. It becomes a named engine preset only on your word.',
+    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this.' + (' Skins may change anything on top of the preset.' if is_preset else ' It becomes a named engine preset only on your word.'),
                   '<pre style="margin: 0; padding: 20px; max-height: 620px; overflow: auto; border-radius: var(--uis-r-card); background: var(--uis-surface-2); border: 1px solid var(--uis-line); font: 400 12.5px/1.55 var(--uis-font-mono); color: var(--uis-ink); white-space: pre;">{{configJson}}</pre>'
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
@@ -374,7 +374,7 @@ def sheet(p):
         style: 'display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px; box-sizing: border-box; border-radius: 16px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); border: ' + (k === key ? '2px solid var(--uis-primary)' : '1px solid var(--uis-line)') + '; ' + Object.keys(sv).map(function (q) { return q + ': ' + sv[q]; }).join('; ') + ';',
         wordmark: (s.config.brand && s.config.brand.wordmark) || '[NAME]' };
     });
-    const pre = cfg.preset && U.PRESETS && U.PRESETS[cfg.preset] ? U.PRESETS[cfg.preset].config : {};
+    const pre = cfg.preset && U.PRESETS && U.presetId && U.presetId(cfg.preset) ? U.PRESETS[U.presetId(cfg.preset)].config : {};
     const prc = pre.color || {};
     const pins = Object.assign({}, mode === 'dark' ? prc.pinDark : prc.pin, mode === 'dark' ? cfg.color.pinDark : cfg.color.pin);
     const seedKeys = ['primary', 'accent', 'success', 'warning', 'danger', 'info'];

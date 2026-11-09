@@ -37,7 +37,7 @@ def q_rows():
     for q, led, atl in PICK:
         rows += '<div style="display: grid; grid-template-columns: 150px 1fr 1fr; gap: 10px; align-items: center;"><span style="font: 600 14px/1.3 Inter, sans-serif;">' + esc(q) + '</span>' + pill(led) + pill(atl) + '</div>'
     return ('<div style="display: grid; grid-template-columns: 150px 1fr 1fr; gap: 10px;"><span></span>' + small('→ ledger') + small('→ atelier') + '</div>' + rows +
-            '<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px; border-top: 1px dashed #B9B5AE;">' + small('Later presets add their answer') +
+            '<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px; border-top: 1px dashed #B9B5AE;">' + small('Planned presets, not built yet (one at a time, pictures first)') +
             pills([pill(t + ' → ' + i) for t, i in LATER]) + '</div>')
 
 step1 = box(small('Step 1 · preset') + h2('How should it look?') + q_rows() + '<div style="flex-grow: 1;"></div>' +

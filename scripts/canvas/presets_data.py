@@ -17,7 +17,7 @@ def preset_sheet(pid, preset, data_from, kind_note, gaps, skins, default='Base')
     info = PRESET_INFO[preset]
     d = copy.deepcopy(BY_ID[data_from])
     d.update(id=pid, name=preset, preset=preset, engine=True, data=data_from,
-             kind=kind_note + ' · seen in ' + ', '.join(info['seenIn']),
+             tagline=kind_note + ' · seen in ' + ', '.join(info['seenIn']),
              summary=info['note'],
              rules=[(1, r) for r in info['rules']] + [(0, n) for n in info['never']],
              questions=info['questions'],

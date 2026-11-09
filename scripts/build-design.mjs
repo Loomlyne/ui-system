@@ -179,6 +179,14 @@ for (const [label, cfg] of [['defaults', core.DEFAULT_CONFIG], ...Object.values(
   if (fails.length) throw new Error(`Contrast below 4.5:1 in ${label}: ${fails.map((f) => `${f.mode} ${f.fg} on ${f.bg} ${f.ratio}`).join(', ')}`);
 }
 
+// Old preset names must give exactly the CSS of the preset they now point to, and object keys must not resolve.
+for (const [old, id] of Object.entries(core.PRESET_ALIASES)) {
+  if (core.toCSS(core.buildTheme({ preset: old })) !== core.toCSS(core.buildTheme({ preset: id }))) throw new Error(`Preset alias ${old} does not match ${id}`);
+}
+for (const bad of ['constructor', 'toString', '__proto__', 'nope']) {
+  if (core.presetId(bad) !== undefined) throw new Error(`presetId("${bad}") should be undefined`);
+}
+
 // ---------- README (brand book for agents) ----------
 const designPresetRows = Object.values(core.PRESETS).map((p) => `| \`${p.id}\` | ${p.note} | ${p.seenIn.join(', ')} | ${p.questions.join(' ')} |`).join('\n');
 const kindRows = Object.values(core.KINDS).map((k) => `| \`${k.id}\` | ${k.note} | ${k.pages.join(', ')} | ${k.questions.join(' ')} |`).join('\n');

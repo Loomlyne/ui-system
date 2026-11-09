@@ -18,8 +18,10 @@ const args = process.argv.slice(2);
 const cmd = args[0];
 const flag = (name: string) => {
   const i = args.indexOf(`--${name}`);
-  return i >= 0 ? args[i + 1] : undefined;
+  const v = i >= 0 ? args[i + 1] : undefined;
+  return v === undefined || v.startsWith('--') ? undefined : v;
 };
+const own = (o: object, k?: string): k is string => k !== undefined && Object.hasOwn(o, k);
 const has = (name: string) => args.includes(`--${name}`);
 
 function init() {
@@ -29,15 +31,25 @@ function init() {
     process.exit(1);
   }
   const presetFlag = flag('preset');
-  // --preset used to take a radius preset; those names still work and act like --radius.
-  const radius = flag('radius') ?? (presetFlag && RADIUS_PRESETS[presetFlag] ? presetFlag : undefined);
+  const radiusFlag = flag('radius');
   const id = presetId(presetFlag);
-  if (presetFlag && !id && !RADIUS_PRESETS[presetFlag]) {
+  // --preset used to take a radius preset; those names still work and act like --radius.
+  const presetIsRadius = !id && own(RADIUS_PRESETS, presetFlag);
+  if (presetFlag && !id && !presetIsRadius) {
     console.error(`Unknown preset "${presetFlag}". Presets: ${Object.keys(PRESETS).join(', ')}.`);
     process.exit(1);
   }
+  if (radiusFlag && !own(RADIUS_PRESETS, radiusFlag)) {
+    console.error(`Unknown radius "${radiusFlag}". Radius presets: ${Object.keys(RADIUS_PRESETS).join(', ')}.`);
+    process.exit(1);
+  }
+  if (presetIsRadius && radiusFlag && radiusFlag !== presetFlag) {
+    console.error(`--preset ${presetFlag} is a radius name and --radius ${radiusFlag} conflicts with it. Use one.`);
+    process.exit(1);
+  }
+  const radius = radiusFlag ?? (presetIsRadius ? presetFlag : undefined);
   const kindFlag = flag('kind');
-  if (kindFlag && !(kindFlag in KINDS)) {
+  if (kindFlag && !own(KINDS, kindFlag)) {
     console.error(`Unknown kind "${kindFlag}". Kinds: ${Object.keys(KINDS).join(', ')}.`);
     process.exit(1);
   }
@@ -47,8 +59,8 @@ function init() {
   if (kind) out.kind = kind;
   if (id) {
     // A preset fills everything else; the file holds only what this project sets on top.
-    out.name = flag('name') ?? DEFAULT_CONFIG.name;
-    out.brand = { wordmark: out.name };
+    const name = flag('name');
+    if (name) { out.name = name; out.brand = { wordmark: name }; }
     if (radius) out.radius = { ...RADIUS_PRESETS[radius] };
   } else {
     const config = structuredClone(DEFAULT_CONFIG);
