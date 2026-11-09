@@ -1,8 +1,7 @@
 # One canvas page per component family, for UI System · Canvas (owner, 2026-11-09).
-# Each family gets two boards:
-#   C-<Family>-States.dc.html  every state, size and icon placement, driven by the board's shared Tweaks
-#   C-<Family>-Themes.dc.html  a compact specimen in every engine preset and every product skin, light and dark,
-#                              each cell themed live by UIS.buildTheme(config) with its own contrast count
+# Each family gets one board, C-<Family>-States.dc.html: every state, size and icon placement drawn once, re-themed by
+# the board's Tweaks (skin, preset, palette, shape, mode, type, surface, logo) with a live contrast count (owner, 2026-11-09:
+# Tweaks over copies). The older C-<Family>-Themes grids (one copy per preset and skin) are superseded and live on Archive.
 # States that UI System does not have yet are listed as gaps on the board, never drawn as fake controls.
 # Run after pnpm build:  python3 scripts/canvas/componentpages.py <out_dir>
 #   writes the boards + made-components.json ({file: [title, page, w, h]}) for the canvas index.
@@ -193,7 +192,7 @@ ROWS3 = [['<strong>[Name A]</strong>', B('success', 'Paid', 'dot="{{yes}}"'), '[
          ['<strong>[Name C]</strong>', B('danger', 'Overdue', 'dot="{{yes}}"'), '[AMOUNT]']]
 
 # ------------------------------------------------------------------ the families
-# Each: id, title, page (canvas page name), what (one line), cov (coverage), states (html), specimen (html for the theme cells), spec_h (min cell height)
+# Each: id, title, page (canvas page name), what (one line), cov (coverage), states (html)
 F = []
 
 
@@ -216,9 +215,7 @@ fam(id='Button', title='Button', page='Button', what='Button and IconButton. One
     section('IconButton', 'Square, labelled for screen readers. Count and dot for unread.',
             row(cell('default', X('IconButton', 'icon="bell" label="Notifications"')), cell('hover', '<button type="button" class="uis-iconbtn" aria-label="Notifications" style="background: var(--uis-surface-3);">' + svg('bell') + '</button>'),
                 cell('focus', '<button type="button" class="uis-iconbtn" aria-label="Notifications" style="' + FOCUS + '">' + svg('bell') + '</button>'),
-                cell('count', X('IconButton', 'icon="bag" label="Bag" count="{{n2}}"')), cell('dot', X('IconButton', 'icon="bell" label="Notifications" dot="{{yes}}"')), gap=28)),
-    specimen=col(row(*btn_states('primary')[:3], btn('primary', extra=' disabled=""'), gap=8), row(btn('outline'), btn('ghost'), btn('danger', icon='trash'), btn('accent'), gap=8),
-                 row(btn('primary', size='sm'), btn('primary'), btn('primary', size='lg'), btn('outline', '[More]', icon='more', icon_only=True), gap=8), gap=12), spec_h=150)
+                cell('count', X('IconButton', 'icon="bag" label="Bag" count="{{n2}}"')), cell('dot', X('IconButton', 'icon="bell" label="Notifications" dot="{{yes}}"')), gap=28)))
 
 # Input / Field --------------------------------------------------------------
 def inrow(kind='', icon='', kbd='', ta=False):
@@ -244,10 +241,7 @@ fam(id='Input', title='Input and field', page='Input · Field', what='Input, Tex
                                   ('icon left', [field(inp(icon='search').replace('class="uis-input"', 'class="uis-input uis-input--sm"')), field(inp(icon='search'))]),
                                   ('trailing kbd', [field(inp(kbd='⌘K').replace('class="uis-input"', 'class="uis-input uis-input--sm"')), field(inp(kbd='⌘K'))]),
                                   ('trailing eye', [field(inp(kind='password').replace('class="uis-input"', 'class="uis-input uis-input--sm"')), field(inp(kind='password'))])]) +
-            cell('React component · hint', '<div style="max-width: 420px;">' + X('Input', 'label="[Label]" placeholder="[Placeholder]" hint="[Hint text]"') + '</div>')),
-    specimen=col(row('<div style="flex: 1; min-width: 0;">' + field(inp(), hint='[Hint]') + '</div>', '<div style="flex: 1; min-width: 0;">' + field(inp('[Value]', style=FIELD_FOCUS)) + '</div>', gap=12, wrap=False),
-                 row('<div style="flex: 1; min-width: 0;">' + field(inp('[Value]', extra=' invalid'), error='[Error]') + '</div>', '<div style="flex: 1; min-width: 0;">' + field(inp('[Value]', extra=' disabled=""')) + '</div>', gap=12, wrap=False),
-                 field(inp(icon='search', kind='search', kbd='⌘K'), label='[Search]'), gap=12), spec_h=260)
+            cell('React component · hint', '<div style="max-width: 420px;">' + X('Input', 'label="[Label]" placeholder="[Placeholder]" hint="[Hint text]"') + '</div>')))
 
 # Select --------------------------------------------------------------
 fam(id='Select', title='Select', page='Select', what='Native select inside the field frame: keyboard and screen readers work for free.',
@@ -261,9 +255,7 @@ fam(id='Select', title='Select', page='Select', what='Native select inside the f
     section('Open', 'Native lists draw with the OS. Where a styled list is needed, the field opens a Menu in a float panel.',
             '<div style="max-width: 360px; display: flex; flex-direction: column; gap: 8px;">' + field(sel(style=FIELD_FOCUS)) +
             '<div class="uis-float uis-popover">' + menu([('[Option A]', 'check', ''), ('[Option B]', '', ''), ('[Option C]', '', '')], hover=1) + '</div></div>') +
-    section('Sizes', 'One height (md). A small select is a gap.', '<div style="max-width: 360px;">' + X('Select', 'label="[Label]" options="{{opts}}" hint="[Hint text]"') + '</div>'),
-    specimen=row('<div style="flex: 1; min-width: 0;">' + field(sel(placeholder=True)) + '</div>', '<div style="flex: 1; min-width: 0;">' + field(sel(style=FIELD_FOCUS)) + '</div>',
-                 '<div style="flex: 1; min-width: 0;">' + field(sel(extra=' disabled=""')) + '</div>', gap=12, wrap=False), spec_h=90)
+    section('Sizes', 'One height (md). A small select is a gap.', '<div style="max-width: 360px;">' + X('Select', 'label="[Label]" options="{{opts}}" hint="[Hint text]"') + '</div>'))
 
 # Checkbox / Switch --------------------------------------------------------------
 fam(id='Choice', title='Checkbox and switch', page='Checkbox · Switch', what='Checkbox for choices that apply on submit, switch for settings that apply at once.',
@@ -276,8 +268,7 @@ fam(id='Choice', title='Checkbox and switch', page='Checkbox · Switch', what='C
                            ('switch', [switch(), switch(on=True), switch(track_style=FOCUS), switch(on=True, track_style=FOCUS)])], first=100)) +
     section('In a form', 'Labels sit on the right, sentence case, the whole row is the hit area.',
             row(col(X('Checkbox', 'label="[Choice A]" default-checked="{{yes}}"'), X('Checkbox', 'label="[Choice B]"'), X('Checkbox', 'label="[Choice C]"')),
-                col(X('Switch', 'label="[Setting A]" default-checked="{{yes}}"'), X('Switch', 'label="[Setting B]"')), gap=64, align='flex-start')),
-    specimen=row(col(check(), check(checked=True), check(checked=True, box_style=FOCUS), gap=10), col(switch(), switch(on=True), switch(on=True, track_style=FOCUS), gap=10), gap=48, align='flex-start'), spec_h=110)
+                col(X('Switch', 'label="[Setting A]" default-checked="{{yes}}"'), X('Switch', 'label="[Setting B]"')), gap=64, align='flex-start')))
 
 # Badge / Chips --------------------------------------------------------------
 TONES = ['neutral', 'primary', 'accent', 'success', 'warning', 'danger', 'info']
@@ -289,9 +280,7 @@ fam(id='Badge', title='Badge and chips', page='Badge · Chips', what='Badges lab
                    matrix(['soft', 'dot', 'solid', 'outline'], [(t, [B(t, '[Label]'), B(t, '[Label]', 'dot="{{yes}}"'), B(t, '[Label]', 'solid="{{yes}}"'), B(t, '[Label]', 'outline="{{yes}}"')]) for t in TONES], first=110)) +
     section('Chips', 'States drawn with ui.css hover and focus rules.',
             matrix(['default', 'hover', 'focus'], [('chip', [chip('[Filter]'), chip('[Filter]', 'background: var(--uis-line);'), chip('[Filter]', FOCUS)])], first=80) +
-            cell('group', X('Chips', 'items="{{chips}}"'))),
-    specimen=col(row(*[B(t, t.capitalize(), 'dot="{{yes}}"') for t in TONES], gap=6), row(*[B(t, t.capitalize(), 'solid="{{yes}}"') for t in TONES[1:5]], *[B(t, t.capitalize(), 'outline="{{yes}}"') for t in TONES[4:]], gap=6),
-                 row(chip('[Filter]'), chip('[Filter]', 'background: var(--uis-line);'), chip('[Filter]'), gap=6), gap=12), spec_h=120)
+            cell('group', X('Chips', 'items="{{chips}}"'))))
 
 # Card / Media --------------------------------------------------------------
 CARD_IN = '<strong class="uis-h3">[Title]</strong><p class="uis-body-s" style="margin: 8px 0 0; color: var(--uis-ink-2);">[One line of detail]</p>'
@@ -307,8 +296,7 @@ fam(id='Card', title='Card and media', page='Card · Media', what='Cards group o
             cell('focus', card(CARD_IN, 'interactive', FOCUS)) + cell('loading', card(skeleton())) +
             cell('error', card(X('Alert', 'tone="danger" title="[Could not load]"', '[Short reason]'))) + cell('empty', card(empty('inbox', '[Nothing yet]', '[What will show here]', '[Action]', 'plus'))) +
             cell('media', X('Card', 'flush="{{yes}}"', '<image-slot id="cm-photo" shape="rect" placeholder="Photo" style="display: block; width: 100%; aspect-ratio: 16 / 9; background: var(--uis-surface-3);"></image-slot><div style="padding: var(--uis-pad-card);">' + CARD_IN + '</div>')) +
-            '</div>'),
-    specimen=row(card(CARD_IN, '', 'flex: 1;'), card(CARD_IN, 'interactive', 'flex: 1; box-shadow: var(--uis-shadow-md); border-color: var(--uis-line-strong);'), card(skeleton(), '', 'flex: 1;'), gap=12, align='stretch', wrap=False), spec_h=120)
+            '</div>'))
 
 # Table / Stat --------------------------------------------------------------
 fam(id='Table', title='Table and stat', page='Table · Stat', what='Tables for records, stats for the one number that matters. Money right-aligned, tabular numbers.',
@@ -323,8 +311,7 @@ fam(id='Table', title='Table and stat', page='Table · Stat', what='Tables for r
                    cell('error', tbl([[X('Alert', 'tone="danger" title="[Could not load]"', '[Short reason] · [Try again]'), '', '']]).replace('<td style="">', '<td colspan="3" style="">', 1).replace('<td style=""></td><td style="text-align: right; "></td>', '')) + '</div>') +
     section('Stat', 'Label, value, delta. Down is not automatically bad: say what the number means.',
             '<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">' +
-            ''.join(card(X('Stat', a)) for a in ['label="[Metric]" value="[N]" delta="+[N]%" icon="chart"', 'label="[Metric]" value="[AMOUNT]" delta="-[N]%" trend="down"', 'label="[Metric]" value="[N]"', 'label="[Metric]" value="[N]" icon="users"']) + '</div>'),
-    specimen=col(tbl(ROWS3[:2], row_style={1: 'background: var(--uis-surface-2);'}), row(card(X('Stat', 'label="[Metric]" value="[N]" delta="+[N]%"'), '', 'flex: 1;'), card(X('Stat', 'label="[Metric]" value="[N]" delta="-[N]%" trend="down"'), '', 'flex: 1;'), gap=12, wrap=False), gap=12), spec_h=250)
+            ''.join(card(X('Stat', a)) for a in ['label="[Metric]" value="[N]" delta="+[N]%" icon="chart"', 'label="[Metric]" value="[AMOUNT]" delta="-[N]%" trend="down"', 'label="[Metric]" value="[N]"', 'label="[Metric]" value="[N]" icon="users"']) + '</div>'))
 
 # Tabs --------------------------------------------------------------
 TV = ['segmented', 'pill', 'underline', 'plain']
@@ -334,8 +321,7 @@ fam(id='Tabs', title='Tabs', page='Tabs', what='Segmented for views of one thing
          'error': ('na', 'Not an input'), 'empty': ('na', 'Always one tab')},
     states=section('States', 'Tab A is selected; B shows hover, C shows focus.',
                    matrix(['selected · hover · focus', 'with icons'], [(v, [tabs(v, tab_style={1: 'color: var(--uis-ink); background: ' + ('transparent' if v == 'segmented' else 'var(--uis-surface-3)') + ';', 2: FOCUS + ' outline-offset: -2px;'}), tabs(v, icon=True)]) for v in TV], first=110)) +
-    section('Live', 'React component, click to switch.', row(X('Tabs', 'items="{{ranges}}"'), X('Tabs', 'items="{{filters}}" variant="pill"'), X('Tabs', 'items="{{pageTabs}}" variant="underline"'), gap=24)),
-    specimen=col(tabs('segmented', tab_style={2: FOCUS + ' outline-offset: -2px;'}), tabs('pill'), tabs('underline', tab_style={1: 'color: var(--uis-ink); background: var(--uis-surface-3);'}), gap=12), spec_h=140)
+    section('Live', 'React component, click to switch.', row(X('Tabs', 'items="{{ranges}}"'), X('Tabs', 'items="{{filters}}" variant="pill"'), X('Tabs', 'items="{{pageTabs}}" variant="underline"'), gap=24)))
 
 # Menu / Popover / Tooltip / Kbd --------------------------------------------------------------
 MENU = [('[Profile]', 'user', ''), ('[Billing]', 'card', ''), ('[Settings]', 'settings', '⌘,'), ('[Sign out]', 'logout', '')]
@@ -348,8 +334,7 @@ fam(id='Menu', title='Menu, popover, tooltip', page='Menu · Popover', what='Flo
                        cell('empty popover', '<div style="width: 280px;" class="uis-float uis-popover"><p class="uis-popover__title">[Recent]</p><p class="uis-body-s" style="margin: 0; padding: 8px 10px; color: var(--uis-ink-2);">[Nothing here yet]</p></div>'),
                        cell('chips in a popover', X('Popover', 'title="[Explore]" style="width: 280px;"', X('Chips', 'items="{{chips}}"'))), gap=24, align='flex-start')) +
     section('Tooltip and Kbd', 'Tooltips name an icon; never put actions in them.',
-            row(cell('tooltip', X('Tooltip', '', '[Tooltip]')), cell('kbd', row(X('Kbd', '', '⌘K'), X('Kbd', '', 'Esc'), X('Kbd', '', '↵'), gap=6)), gap=48)),
-    specimen=row('<div style="width: 250px;" class="uis-float uis-popover">' + menu(MENU[:3], hover=1, focus=2) + '</div>', col(X('Tooltip', '', '[Tooltip]'), row(X('Kbd', '', '⌘K'), X('Kbd', '', 'Esc'), gap=6), gap=14), gap=24, align='flex-start'), spec_h=170)
+            row(cell('tooltip', X('Tooltip', '', '[Tooltip]')), cell('kbd', row(X('Kbd', '', '⌘K'), X('Kbd', '', 'Esc'), X('Kbd', '', '↵'), gap=6)), gap=48)))
 
 # Dialog / Drawer --------------------------------------------------------------
 def stage(inner, h=360):
@@ -379,8 +364,7 @@ fam(id='Overlay', title='Dialog and drawer', page='Dialog · Drawer', what='Dial
             '<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">' +
             cell('right', stage(DRW('[Title]', '<p class="uis-body-s" style="color: var(--uis-ink-2);">[Body]</p>', foot=btn('outline', '[Cancel]') + btn('primary', '[Save]')), 460)) +
             cell('left', stage(DRW('[Title]', '<p class="uis-body-s" style="color: var(--uis-ink-2);">[Body]</p>', side='left'), 460)) +
-            cell('floating · empty', stage(DRW('[Your bag]', empty('bag', '[Your bag is empty]', '[Add items to see them here]', '[Browse]', 'arrow-right'), floating=True, scrim=False), 460)) + '</div>'),
-    specimen=stage(DLG('[Title]', '[One sentence on what happens.]', DLG_ACT()), 250), spec_h=250)
+            cell('floating · empty', stage(DRW('[Your bag]', empty('bag', '[Your bag is empty]', '[Add items to see them here]', '[Browse]', 'arrow-right'), floating=True, scrim=False), 460)) + '</div>'))
 
 # Feedback --------------------------------------------------------------
 fam(id='Feedback', title='Alert, toast, progress', page='Alert · Toast', what='Alerts sit in the page, toasts confirm and leave, progress shows long work.',
@@ -393,8 +377,7 @@ fam(id='Feedback', title='Alert, toast, progress', page='Alert · Toast', what='
     section('Toast and progress', 'Toasts are inverse panels; one action at most.',
             '<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">' +
             cell('toast', X('Toast', 'title="[Saved]"', '[Your changes are live.]')) + cell('toast · own icon', X('Toast', 'title="[Deleted]" icon="trash"', '[One record removed.]')) +
-            cell('progress · 0', X('Progress', 'value="{{p0}}"')) + cell('progress · 40', X('Progress', 'value="{{p40}}"')) + cell('progress · 100', X('Progress', 'value="{{p100}}"')) + cell('skeleton', skeleton()) + '</div>'),
-    specimen=col(X('Alert', 'tone="success" title="[Title]"', '[One line.]'), X('Alert', 'tone="danger" title="[Title]"', '[One line.]'), X('Toast', 'title="[Saved]"', '[Changes are live.]'), X('Progress', 'value="{{p40}}"'), gap=10), spec_h=290)
+            cell('progress · 0', X('Progress', 'value="{{p0}}"')) + cell('progress · 40', X('Progress', 'value="{{p40}}"')) + cell('progress · 100', X('Progress', 'value="{{p100}}"')) + cell('skeleton', skeleton()) + '</div>'))
 
 # Avatar --------------------------------------------------------------
 fam(id='Avatar', title='Avatar', page='Avatar', what='DiceBear art for people without a photo (CC0); never stock or invented photos.',
@@ -402,8 +385,7 @@ fam(id='Avatar', title='Avatar', page='Avatar', what='DiceBear art for people wi
          'selected': ('na', 'Static'), 'disabled': ('na', 'Static'), 'loading': ('na', 'Art is generated'), 'error': ('na', 'Falls back to initials'), 'empty': ('shown', 'No name: initials style')},
     states=section('Sizes', 'sm 28, md 36, lg 48, xl 72.', row(*[cell(z, X('Avatar', 'name="[Person A]" size="' + z + '"')) for z in ['sm', 'md', 'lg', 'xl']], gap=32, align='flex-end')) +
     section('Styles', 'Set once per project (config.avatars).', row(*[cell(s, X('Avatar', 'name="[Person B]" avatar-style="' + s + '" size="lg"')) for s in ['notionists-neutral', 'lorelei-neutral', 'thumbs', 'glass', 'shapes', 'initials']], gap=28)) +
-    section('Group', 'Overlapping stack for teams and attendees.', X('AvatarGroup', 'people="{{people}}"')),
-    specimen=row(X('Avatar', 'name="[Person A]" size="sm"'), X('Avatar', 'name="[Person A]"'), X('Avatar', 'name="[Person A]" size="lg"'), X('Avatar', 'name="[Person B]" avatar-style="initials" size="lg"'), X('AvatarGroup', 'people="{{people}}"'), gap=14), spec_h=60)
+    section('Group', 'Overlapping stack for teams and attendees.', X('AvatarGroup', 'people="{{people}}"')))
 
 # Empty state --------------------------------------------------------------
 fam(id='Empty', title='Empty state', page='Empty state', what='What a screen says when there is nothing, nothing found, or it could not load. A pattern built from Icon, text and Button.',
@@ -414,8 +396,7 @@ fam(id='Empty', title='Empty state', page='Empty state', what='What a screen say
                    card(empty('inbox', '[No records yet]', '[Your first record shows up here.]', '[Create]', 'plus')) +
                    card(empty('search', '[No results]', '[Nothing matches. Try fewer words.]', '[Clear filters]', 'x', 'outline')) +
                    card(empty('alert-circle', '[Could not load]', '[The connection dropped. Your work is saved.]', '[Try again]', 'refresh', 'outline')) +
-                   card(col('<span class="uis-overline">[Loading]</span>', skeleton(), skeleton((80, 50)), gap=16)) + '</div>'),
-    specimen=row(card(empty('inbox', '[No records]', '[First one shows here.]', '[Create]', 'plus'), '', 'flex: 1;'), card(empty('alert-circle', '[Could not load]', '[Try again.]', '[Retry]', 'refresh', 'outline'), '', 'flex: 1;'), gap=12, wrap=False), spec_h=250)
+                   card(col('<span class="uis-overline">[Loading]</span>', skeleton(), skeleton((80, 50)), gap=16)) + '</div>'))
 
 # Nav · front --------------------------------------------------------------
 fam(id='NavFront', title='Website navigation parts', page='Nav · Website', what='Links, current page, icon actions and the call to action. Whole bars live on the Navigation page.',
@@ -423,9 +404,7 @@ fam(id='NavFront', title='Website navigation parts', page='Nav · Website', what
          'selected': ('shown', 'Current page'), 'disabled': ('na', 'Hide links instead'), 'loading': ('na', 'Static'), 'error': ('na', 'Static'), 'empty': ('na', 'Always links')},
     states=section('Link states', 'Current page uses aria-current, not colour alone.',
                    matrix(['default', 'hover', 'focus', 'current'], [('navlink', [navlink('[Link]'), navlink('[Link]', 'color: var(--uis-ink); background: var(--uis-surface-3);'), navlink('[Link]', FOCUS), navlink('[Link]', current=True)])], first=90)) +
-    section('Bar', 'NavBar with links, icon actions and one call to action.', '<div style="border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden;">' + X('NavBar', 'links="{{navLinks}}" actions="{{navActions}}" cta="{{navCta}}"') + '</div>'),
-    specimen=col(row(navlink('[Link]', current=True), navlink('[Link]', 'color: var(--uis-ink); background: var(--uis-surface-3);'), navlink('[Link]', FOCUS), navlink('[Link]'), gap=4),
-                 row(X('IconButton', 'icon="search" label="Search"'), X('IconButton', 'icon="bag" label="Bag" count="{{n2}}"'), btn('primary', '[Call to action]', size='sm'), gap=8), gap=14), spec_h=100)
+    section('Bar', 'NavBar with links, icon actions and one call to action.', '<div style="border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden;">' + X('NavBar', 'links="{{navLinks}}" actions="{{navActions}}" cta="{{navCta}}"') + '</div>'))
 
 # Nav · back --------------------------------------------------------------
 fam(id='NavBack', title='App navigation parts', page='Nav · App', what='Sidebar items, badges, current page and the page header. Whole shells live on the Navigation page.',
@@ -437,9 +416,7 @@ fam(id='NavBack', title='App navigation parts', page='Nav · App', what='Sidebar
                    navitem('[Default]', 'settings') + navitem('[With badge]', 'inbox', badge='12') + '</div>') +
     section('Sidebar and header', 'AppSidebar with a section list and the account, PageHeader with crumbs and one action.',
             '<div style="display: flex; height: 520px; border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden;">' + X('AppSidebar', 'sections="{{navSections}}" user="{{navUser}}"') +
-            '<div style="flex: 1; min-width: 0; padding: 24px; background: var(--uis-bg);">' + X('PageHeader', 'title="[Page title]" description="[One line on what this page is for.]" crumbs="{{crumbs}}"', X('Button', 'icon="plus"', '[Create]')) + '</div></div>'),
-    specimen='<div style="display: flex; flex-direction: column; gap: 4px; padding: 10px; border-radius: var(--uis-r-card); background: var(--uis-nav-bg); border: 1px solid var(--uis-line);">' +
-    navitem('[Current]', 'grid', current=True, badge='3') + navitem('[Hover]', 'receipt', 'background: var(--uis-surface-3); color: var(--uis-ink);') + navitem('[Focus]', 'users', FOCUS + ' outline-offset: -2px;') + navitem('[Default]', 'settings') + '</div>', spec_h=180)
+            '<div style="flex: 1; min-width: 0; padding: 24px; background: var(--uis-bg);">' + X('PageHeader', 'title="[Page title]" description="[One line on what this page is for.]" crumbs="{{crumbs}}"', X('Button', 'icon="plus"', '[Create]')) + '</div></div>'))
 
 
 # ------------------------------------------------------------------ preset and product rows for the theme boards
@@ -470,7 +447,7 @@ for name in SKIN_ORDER:
     for f in (v.get('fonts') or '').split('&'):
         if f:
             FONTS.add(f)
-    ROWS.append(dict(key=name, tag=tag, config=cfg, vars=v['vars']))
+    ROWS.append(dict(key=name, tag=tag, config=cfg, vars=v['vars'], mode=v['mode']))
 for p in PRODUCTS:
     for f in p['fonts'].split('&'):
         if f:
@@ -480,6 +457,10 @@ FAMS = {}
 for f in sorted(FONTS):
     FAMS[f.split(':')[0]] = f
 FONT_URL = 'https://fonts.googleapis.com/css2?' + '&'.join(FAMS.values()) + '&display=swap'
+
+# Skins for the skin Tweak (owner, 2026-11-09: Tweaks over copies). A skin fills Root's config; every Tweak left at its
+# default follows the skin, any Tweak you change wins over it.
+SKINS = {r['key']: {'config': r['config'], 'vars': r['vars'], 'mode': r['mode']} for r in ROWS if 'mode' in r}
 
 # ------------------------------------------------------------------ shared board data and Tweaks
 COMMON = {
@@ -495,11 +476,12 @@ COMMON = {
                     {'label': '[Section]', 'items': [{'label': '[Item D]', 'icon': 'file'}, {'label': '[Settings]', 'icon': 'settings'}]}],
     'navUser': {'name': '[Person A]', 'meta': '[Role]'}, 'crumbs': ['[Product]', '[Page]'],
 }
-TWEAKS = {"preset": {"editor": "enum", "options": ["none", "ledger", "atelier"], "default": "none", "section": "Preset"},
+TWEAKS = {"skin": {"editor": "enum", "options": ["none"] + SKIN_ORDER, "default": "none", "section": "Skin"},
+          "preset": {"editor": "enum", "options": ["none", "ledger", "atelier", "retail-editorial"], "default": "none", "section": "Preset"},
           "primary": {"editor": "color", "default": "#1C1B19", "section": "Color", "options": ["#1C1B19", "#2F5D50", "#2F6BD8", "#7A2E3A"]},
           "accent": {"editor": "color", "default": "#E0562B", "section": "Color", "options": ["#E0562B", "#C4952E", "#2F6BD8", "#1E8E4E"]},
           "neutral": {"editor": "color", "default": "#77736B", "section": "Color", "options": ["#77736B", "#6B7280", "#7C8579", "#8A7F6A"]},
-          "mode": {"editor": "enum", "options": ["light", "dark"], "default": "light", "section": "Color"},
+          "mode": {"editor": "enum", "options": ["auto", "light", "dark"], "default": "auto", "section": "Color"},
           "roundness": {"editor": "range", "min": 0, "max": 100, "step": 5, "default": 60, "unit": "%", "section": "Shape"},
           "pill": {"editor": "boolean", "default": False, "section": "Shape"},
           "fontPreset": {"editor": "enum", "options": ["modern", "geometric", "editorial", "grotesk", "humanist", "classic", "retail"], "default": "modern", "section": "Type"},
@@ -511,25 +493,35 @@ TWEAKS = {"preset": {"editor": "enum", "options": ["none", "ledger", "atelier"],
           "logoVariant": {"editor": "enum", "options": ["lockup", "stacked", "mark", "wordmark"], "default": "lockup", "section": "Logo"},
           "logoPlacement": {"editor": "enum", "options": ["left", "center", "right"], "default": "left", "section": "Logo"},
           "logoSrc": {"editor": "text", "default": "", "section": "Logo"}, "markSrc": {"editor": "text", "default": "", "section": "Logo"}}
-ROOT_ATTRS = ('preset="{{preset}}" primary="{{primary}}" accent="{{accent}}" neutral="{{neutral}}" mode="{{mode}}" roundness="{{roundness}}" pill="{{pill}}" font-preset="{{fontPreset}}" '
+ROOT_ATTRS = ('config="{{config}}" preset="{{preset}}" primary="{{primary}}" accent="{{accent}}" neutral="{{neutral}}" mode="{{mode}}" roundness="{{roundness}}" pill="{{pill}}" font-preset="{{fontPreset}}" '
               'button-case="{{buttonCase}}" surface="{{surface}}" density="{{density}}" wordmark="{{wordmark}}" caption="{{caption}}" logo-mark="{{logoMark}}" logo-variant="{{logoVariant}}" '
               'logo-placement="{{logoPlacement}}" logo-src="{{logoSrc}}" mark-src="{{markSrc}}" style="display: block;"')
-THEME_JS = '''  theme() {
-    const p = this.props;
-    const t = {
-      primary: p.primary ?? '#1C1B19', accent: p.accent ?? '#E0562B', neutral: p.neutral ?? '#77736B', mode: p.mode ?? 'light',
-      roundness: p.roundness ?? 60, pill: p.pill ?? false, fontPreset: p.fontPreset ?? 'modern', buttonCase: p.buttonCase ?? 'normal',
-      surface: p.surface ?? 'solid', density: p.density ?? 'comfortable',
-      wordmark: p.wordmark ?? 'Brand', caption: p.caption ?? 'Tagline', logoMark: p.logoMark ?? 'monogram',
-      logoVariant: p.logoVariant ?? 'lockup', logoPlacement: p.logoPlacement ?? 'left', logoSrc: p.logoSrc ?? '', markSrc: p.markSrc ?? ''
-    };
-    // A preset is a whole design language: it owns color, shape, type, density and logo style.
-    const P = p.preset && p.preset !== 'none' && window.UIS && window.UIS.PRESETS ? window.UIS.PRESETS[(window.UIS.presetId && window.UIS.presetId(p.preset)) || p.preset] : null;
-    t.preset = P ? P.id : undefined;
-    if (P) for (const k of ['primary', 'accent', 'neutral', 'roundness', 'pill', 'fontPreset', 'buttonCase', 'surface', 'density', 'caption', 'logoMark', 'logoVariant']) t[k] = undefined;
+THEME_KEYS = ['primary', 'accent', 'neutral', 'roundness', 'pill', 'fontPreset', 'buttonCase', 'surface', 'density', 'wordmark', 'caption', 'logoMark', 'logoVariant', 'logoPlacement', 'logoSrc', 'markSrc']
+THEME_JS = ('''  theme() {
+    const p = this.props, U = window.UIS || {};
+    const D = ''' + json.dumps({k: TWEAKS[k]['default'] for k in THEME_KEYS}) + ''';
+    const SK = ''' + json.dumps(SKINS, ensure_ascii=False) + ''';
+    const S = p.skin && p.skin !== 'none' ? SK[p.skin] : null;
+    const P = p.preset && p.preset !== 'none' && U.PRESETS ? U.PRESETS[(U.presetId && U.presetId(p.preset)) || p.preset] : null;
+    // A Tweak left at its default follows the skin and the preset; a Tweak you change wins over both.
+    const t = { config: S ? S.config : {}, preset: P ? P.id : undefined };
+    for (const k in D) { const x = p[k] === undefined ? D[k] : p[k]; t[k] = (S || P) && x === D[k] ? undefined : x; }
+    if (!S) for (const k of ['wordmark', 'caption', 'logoPlacement', 'logoSrc', 'markSrc']) t[k] = p[k] === undefined ? D[k] : p[k];
+    t.mode = p.mode && p.mode !== 'auto' ? p.mode : (S ? S.mode : 'light');
+    t.skinStyle = 'display: block;' + (S ? ' ' + Object.keys(S.vars).map(function (k) { return k + ': ' + S.vars[k]; }).join('; ') : '');
+    let label = 'config error', ok = false;
+    try {
+      const th = U.buildTheme(U.configFromProps(t));
+      const rep = U.contrastReport(th).filter(function (x) { return x.mode === t.mode; });
+      const fails = rep.filter(function (x) { return !x.pass; }).length;
+      ok = !fails; label = fails ? fails + ' contrast FAIL' : rep.length + '/' + rep.length + ' text pairs AA';
+    } catch (e) { label = 'config error'; }
+    t.themeLine = (S ? 'skin ' + p.skin : 'no skin') + ' · ' + (P ? 'preset ' + P.id : 'no preset') + ' · ' + t.mode;
+    t.checkLabel = label;
+    t.checkStyle = 'font: 700 12px/1 var(--uis-font-mono); color: ' + (ok ? 'var(--uis-success-text)' : 'var(--uis-danger-text)') + ';';
     return t;
   }
-'''
+''')
 
 
 def page(title, inner, script, props, h, root=True):
@@ -561,59 +553,16 @@ for f in F:
     # ---- states board (shared Tweaks)
     name = 'C-' + f['id'] + '-States.dc.html'
     H = height(name, 2400)
-    inner = ('<div style="width: 1440px; min-height: ' + str(H) + 'px; box-sizing: border-box; padding: 56px 64px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body);" data-measure="">' +
-             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Change the board Tweaks (preset, colours, mode, shape, type) and every row follows.') +
+    inner = ('<div style="{{skinStyle}}"><div style="width: 1440px; min-height: ' + str(H) + 'px; box-sizing: border-box; padding: 56px 64px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body);" data-measure="">' +
+             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Every state is drawn once. Try it in any product skin, preset, palette, shape, mode or type with the board Tweaks: a Tweak left at its default follows the skin, one you change wins.') +
+             '<div style="display: flex; gap: 16px; align-items: center; padding: 0 0 24px;"><span class="uis-caption" style="color: var(--uis-ink-2);">{{themeLine}}</span><span style="{{checkStyle}}">{{checkLabel}}</span></div>' +
              section('Coverage', 'The nine states every component is checked against. Gaps are not in UI System yet; they are never drawn as working controls.', coverage(f['cov'])) +
-             f['states'] + '</div>')
+             f['states'] + '</div></div>')
     script = 'class Component extends DCLogic {\n' + THEME_JS + '  renderVals() {\n    return Object.assign({}, ' + json.dumps(COMMON, ensure_ascii=False) + ', this.theme());\n  }\n}\n'
     props = dict(TWEAKS, **{'$preview': {'width': 1440, 'height': H}})
     open(os.path.join(OUT, name), 'w').write(page(f['title'] + ' · states', inner, script, props, H))
     MADE[name] = [f['title'] + ' · states, sizes, icons', f['page'], 1440, H]
 
-    # ---- themes board (every preset and product skin, light and dark)
-    name = 'C-' + f['id'] + '-Themes.dc.html'
-    H = height(name, 300 + 12 * (f['spec_h'] + 120))
-    cellh = ('<div style="{{c.style}}">'
-             '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid var(--uis-line);">'
-             '<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><strong class="uis-h3" style="margin: 0;">{{c.key}}</strong><span class="uis-caption" style="color: var(--uis-ink-2);">{{c.tag}}</span></span>'
-             '<span style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;"><span class="uis-caption" style="color: var(--uis-ink-2);">{{c.modeLabel}}</span>'
-             '<span style="font: 700 12px/1 var(--uis-font-mono); color: {{c.okInk}};">{{c.contrast}}</span></span></div>' +
-             f['specimen'] + '</div>')
-    inner = ('<div style="width: 1440px; min-height: ' + str(H) + 'px; box-sizing: border-box; padding: 56px 64px; background: #FFFFFF; color: #1C1B19; font-family: Inter, system-ui, sans-serif;" data-measure="">'
-             '<header style="display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; padding-bottom: 28px;">'
-             '<div style="display: flex; flex-direction: column; gap: 12px;"><span style="font: 600 11px/1.2 Inter, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #5F5B55;">Component · ' + f['page'] + ' · presets and product skins</span>'
-             '<h1 style="margin: 0; font: 600 36px/1.1 Inter, sans-serif; letter-spacing: -0.02em;">' + f['title'] + ' in every preset and skin</h1></div>'
-             '<p style="margin: 0; font: 400 15px/1.55 Inter, sans-serif; color: #5F5B55; max-width: 560px;">Each cell is themed live by the engine (buildTheme) for that preset or product, light on the left, dark on the right. '
-             'The number is the contrast check for that theme: text pairs under 4.5:1. Products are skins: a product may change anything on top of its preset.</p></header>'
-             '<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch;">'
-             '<sc-for list="{{cells}}" as="c" hint-placeholder-count="' + str(2 * len(ROWS)) + '">' + cellh + '</sc-for></div></div>')
-    data = {'rows': ROWS}
-    script = ('class Component extends DCLogic {\n  renderVals() {\n    const D = ' + json.dumps(data, ensure_ascii=False) + ';\n' + '''    const U = window.UIS || {};
-    const cells = [];
-    D.rows.forEach(function (r) {
-      ['light', 'dark'].forEach(function (mode) {
-        const cfg = JSON.parse(JSON.stringify(r.config));
-        cfg.color = Object.assign({}, cfg.color || {}, { mode: mode });
-        let th = null;
-        try { th = U.buildTheme(cfg); } catch (e) { th = null; }
-        const vars = th ? th.vars(mode) : {};
-        for (const k in r.vars) vars[k] = r.vars[k];
-        const rep = th && U.contrastReport ? U.contrastReport(th).filter(function (x) { return x.mode === mode; }) : [];
-        const fails = rep.filter(function (x) { return !x.pass; }).length;
-        cells.push({ key: r.key, tag: r.tag, modeLabel: mode === 'dark' ? 'Dark' : 'Light',
-          contrast: th ? (fails ? fails + ' FAIL' : rep.length + '/' + rep.length + ' AA') : 'config error', okInk: th && !fails ? 'var(--uis-success-text)' : 'var(--uis-danger-text)',
-          style: 'position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 20px; box-sizing: border-box; border-radius: 16px; border: 1px solid var(--uis-line); background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); '
-            + Object.keys(vars).map(function (k) { return k + ': ' + vars[k]; }).join('; ') + ';' });
-      });
-    });
-    return Object.assign({ cells: cells }, ''' + json.dumps(COMMON, ensure_ascii=False) + ''');
-  }
-}
-''')
-    props = {'$preview': {'width': 1440, 'height': H}}
-    # The theme board needs the uis base class for component styles but no board-level theme: cells set every variable.
-    open(os.path.join(OUT, name), 'w').write(page(f['title'] + ' · themes', '<div class="uis">' + inner + '</div>', script, props, H, root=False))
-    MADE[name] = [f['title'] + ' · presets and skins', f['page'], 1440, H]
 
 json.dump(MADE, open(os.path.join(OUT, 'made-components.json'), 'w'), indent=1)
 print(len(MADE), 'boards in', len(F), 'families')

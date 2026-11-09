@@ -64,6 +64,22 @@ for f, (title, page, w, h) in M.items():
         order.append(f)
 N['order'] = order
 
+# ---- the per-skin Themes grids are superseded by the skin Tweak on each States board (owner, 2026-11-09:
+# Tweaks over copies). They move to Archive, rows of five under the older sheets; nothing is deleted.
+THEMES = sorted(f for f, b in N['boards'].items() if f.startswith('C-') and f.endswith('-Themes.dc.html') and b.get('page') != 'archive')
+if THEMES:
+    arch = [b for b in N['boards'].values() if b.get('page') == 'archive' and b not in [N['boards'][f] for f in THEMES]]
+    y = max([b['y'] + b['h'] for b in arch] + [0]) + 700
+    top = y
+    for r in range(0, len(THEMES), 5):
+        chunk = THEMES[r:r + 5]
+        for i, f in enumerate(chunk):
+            N['boards'][f].update(page='archive', x=i * 1520, y=y)
+        y += max(N['boards'][f]['h'] for f in chunk) + GAP_Y
+    THEMES_TITLE_Y = top - 300
+else:
+    THEMES_TITLE_Y = None
+
 # ---- notes: titles and stickies follow their boards
 notes = N['notes']
 def note(nid, new_only=False, **k):
@@ -90,17 +106,28 @@ note('t-retail', page='presets', x=3040, y=-300, maxW=1440)
 note('n-retail', page='presets', x=4560, y=0)
 note('n-prod', page='presets', x=4560, y=400)
 note('t-prod', page='presets', x=0, y=-300, maxW=2960)
+if THEMES_TITLE_Y is not None:
+    note('t-themes', new_only=True, kind='title1', page='archive', x=0, y=THEMES_TITLE_Y, w=240, maxW=5960,
+         text='Superseded per-skin grids (2026-11-09): each States board now has a skin Tweak')
 note('t-front', text='Navigation · whole website bars')
 note('t-back', text='Navigation · whole app shells')
+OLD_NOTE_TEXT = ('Left: every state, size and icon placement. Its Tweaks work like every other board (preset, colours, mode, shape, type).\n\n'
+                 'Right: the same parts in every preset (none, ledger, atelier) and every product skin, light and dark, each with its contrast count.\n\n'
+                 'Gaps on the coverage row are states UI System does not have yet.')
+NOTE_TEXT = ('Every state, size and icon placement, drawn once.\n\n'
+             'Try it in any product skin, preset, palette, shape, mode or type with this board\'s Tweaks: a Tweak left at its default follows the skin, one you change wins. '
+             'The line under the title shows the live contrast check.\n\n'
+             'Gaps on the coverage row are states UI System does not have yet. The older per-skin grids are on Archive.')
 GAPS = {}
 for f, (title, page, w, h) in M.items():
     pid = 'c-' + page.lower().replace(' · ', '-').replace(' ', '-')
     if f.endswith('-States.dc.html'):
         note('t-' + pid, kind='title1', page=pid, x=0, y=-300, maxW=2 * w + GAP_X, w=240, text=page)
-        note('n-' + pid, fill='gray', page=pid, size=20, w=480, x=2 * (w + GAP_X), y=0, text=(
-            'Left: every state, size and icon placement. Its Tweaks work like every other board (preset, colours, mode, shape, type).\n\n'
-            'Right: the same parts in every preset (none, ledger, atelier) and every product skin, light and dark, each with its contrast count.\n\n'
-            'Gaps on the coverage row are states UI System does not have yet.'))
+        note('n-' + pid, fill='gray', page=pid, size=20, w=480, x=2 * (w + GAP_X), y=0, text=NOTE_TEXT)
+        # Tweaks over copies (owner, 2026-11-09): retype the sticky only if it still says what the generator wrote, and pull it beside the one board.
+        n = notes.get('n-' + pid)
+        if n and n.get('text') == OLD_NOTE_TEXT:
+            n.update(text=NOTE_TEXT, x=w + GAP_X)
 howto = notes.get('howto')
 OLD_HOWTO = '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Presets (one sheet per preset, products as skins), Kinds (what you build).'
 if FIRST and howto and OLD_HOWTO not in howto['text']:
