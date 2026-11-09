@@ -9,6 +9,9 @@ live, made, out = sys.argv[1], sys.argv[2], sys.argv[3]
 C = json.load(open(live))
 M = json.load(open(made))
 N = copy.deepcopy(C)
+# First run moves the existing boards and notes. Later runs only add new family boards and notes and resize
+# generated boards to their measured height: anything the owner moved or retyped on the canvas stays.
+FIRST = 'archive' not in [p['id'] for p in C.get('pages', [])]
 GAP_X, GAP_Y = 80, 120
 
 # ---- pages, in reading order
@@ -21,7 +24,14 @@ PAGES = ([('start', 'Start here'), ('foundations', 'Foundations'), ('presets', '
          [(pid, 'Components › ' + name) for pid, name in FAMILY_PAGES] +
          [('patterns', 'Patterns'), ('navigation', 'Navigation · shells'), ('usecases', 'Use cases'), ('archive', 'Archive')])
 assert len(PAGES) <= 40
-N['pages'] = [{'id': i, 'name': n} for i, n in PAGES]
+if FIRST:
+    N['pages'] = [{'id': i, 'name': n} for i, n in PAGES]
+else:  # keep his page names and order; insert a new family page before Patterns
+    have = [p['id'] for p in N['pages']]
+    for i, n in PAGES:
+        if i not in have:
+            at = have.index('patterns') if 'patterns' in have else len(have)
+            N['pages'].insert(at, {'id': i, 'name': n}); have.insert(at, i)
 
 # ---- move superseded boards to Archive (never deleted)
 ARCHIVE = [  # (file, x, y)
@@ -29,13 +39,14 @@ ARCHIVE = [  # (file, x, y)
     ('Sheet-Buttons.dc.html', 0, 2400), ('Sheet-Forms.dc.html', 1520, 2400), ('Sheet-Badges.dc.html', 3040, 2400), ('Sheet-Feedback.dc.html', 4560, 2400),
     ('Sheet-Cards.dc.html', 0, 6400), ('Sheet-Data.dc.html', 1520, 6400), ('Sheet-People.dc.html', 3040, 6400), ('Sheet-NavParts.dc.html', 4560, 6400),
 ]
-for f, x, y in ARCHIVE:
+for f, x, y in (ARCHIVE if FIRST else []):
     if f in N['boards']:
         N['boards'][f].update(page='archive', x=x, y=y)
 # Components overview keeps the two boards at rest; Presets keeps the two sheets and the live board beside them.
-for f, x, y in [('Components.dc.html', 0, 0), ('States.dc.html', 1520, 0)]:
-    N['boards'][f].update(x=x, y=y)
-if 'Retail-Live.dc.html' in N['boards']:
+for f, x, y in ([('Components.dc.html', 0, 0), ('States.dc.html', 1520, 0)] if FIRST else []):
+    if f in N['boards']:
+        N['boards'][f].update(x=x, y=y)
+if FIRST and 'Retail-Live.dc.html' in N['boards']:
     N['boards']['Retail-Live.dc.html'].update(x=3040, y=0)
 
 # ---- family boards: states left, themes right
@@ -44,7 +55,10 @@ for f, (title, page, w, h) in M.items():
     pid = 'c-' + page.lower().replace(' · ', '-').replace(' ', '-')
     x = 0 if f.endswith('-States.dc.html') else w + GAP_X
     entry = dict(N['boards'].get(f, {}))
-    entry.update(x=x, y=0, w=w, h=h, title=title, page=pid, is_interactive=True)
+    if f in N['boards']:  # keep where he put it and what he called it; only the measured size follows the generator
+        entry.update(w=w, h=h)
+    else:
+        entry.update(x=x, y=0, w=w, h=h, title=title, page=pid, is_interactive=True)
     N['boards'][f] = entry
     if f not in order:
         order.append(f)
@@ -52,7 +66,11 @@ N['order'] = order
 
 # ---- notes: titles and stickies follow their boards
 notes = N['notes']
-def note(nid, **k):
+def note(nid, new_only=False, **k):
+    if nid in notes and (new_only or not FIRST):
+        return  # never retype or move a note that is already on the canvas after the first run
+    if nid not in notes and 'page' not in k:
+        return  # a text-only change for a note this canvas does not have
     notes[nid] = dict(notes.get(nid, {}), **k)
     if nid not in N['noteOrder']:
         N['noteOrder'].append(nid)
@@ -84,10 +102,14 @@ for f, (title, page, w, h) in M.items():
             'Right: the same parts in every preset (none, ledger, atelier) and every product skin, light and dark, each with its contrast count.\n\n'
             'Gaps on the coverage row are states UI System does not have yet.'))
 howto = notes.get('howto')
-if howto:
+OLD_HOWTO = '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Presets (one sheet per preset, products as skins), Kinds (what you build).'
+if FIRST and howto and OLD_HOWTO not in howto['text']:
+    print('warning: howto note text changed; page list line not updated')
+if FIRST and howto:
     howto['text'] = howto['text'].replace(
         '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Presets (one sheet per preset, products as skins), Kinds (what you build).',
         '1. Pages, top left: Start here, Foundations, Presets (one sheet per preset, products as skins), Kinds (what you build), Components overview, then one page per component family (Components › …), Patterns, Navigation shells, Use cases, Archive.')
-N['launch'] = {'page': 'start', 'view': 'canvas'}
+if FIRST:
+    N['launch'] = {'page': 'start', 'view': 'canvas'}
 json.dump(N, open(out, 'w'), ensure_ascii=False)
 print('pages:', len(N['pages']), '· boards:', len(N['boards']), '· notes:', len(N['notes']))

@@ -96,9 +96,14 @@ def btn_states(v):
             btn(v, extra=' disabled=""'), btn(v, '[Saving]', icon='refresh', extra=' disabled="" aria-busy="true"')]
 
 
+# Every labelled field keeps its hint slot (owner, 2026-11-09): ui.css gives .uis-hint min-height var(--uis-hint-reserve).
+# Inline here too, with the same default, so the canvas shows it before its bundle copy is refreshed.
+HINT_SLOT = ' style="min-height: var(--uis-hint-reserve, 18px);"'
+
+
 def field(control, label='[Label]', hint='', error=''):
     return ('<div class="uis-field"><span class="uis-label">' + label + '</span>' + control +
-            ('<span class="uis-hint uis-hint--error">' + error + '</span>' if error else ('<span class="uis-hint">' + hint + '</span>' if hint else '')) + '</div>')
+            ('<span class="uis-hint uis-hint--error"' + HINT_SLOT + '>' + error + '</span>' if error else '<span class="uis-hint"' + HINT_SLOT + (' aria-hidden="true"' if not hint else '') + '>' + hint + '</span>') + '</div>')
 
 
 def inp(value='', placeholder='[Placeholder]', style='', extra='', icon='', kind='', kbd=''):
@@ -205,7 +210,7 @@ fam(id='Button', title='Button', page='Button', what='Button and IconButton. One
     states=section('States', 'Every variant in every state. Hover and pressed are forced with the same variables ui.css uses.',
                    matrix(['default', 'hover', 'focus', 'pressed', 'disabled', 'loading'], [(v, btn_states(v)) for v in VARS])) +
     section('Sizes and icons', 'Heights come from --uis-h-sm/md/lg. Icon left for verbs, right for direction, icon-only always has a label.',
-            matrix(['text', 'icon left', 'icon right', 'icon only'], [(z, [btn('primary', size=z), btn('primary', size=z, icon='plus'), btn('primary', size=z, icon_right='arrow-right'), btn('primary', '[Add]', size=z, icon='plus', icon_only=True)]) for z in ['sm', 'md', 'lg']]) +
+            matrix(['text', 'icon left', 'icon right', 'icon only'], [(z, [btn('primary', size=s), btn('primary', size=s, icon='plus'), btn('primary', size=s, icon_right='arrow-right'), btn('primary', '[Add]', size=s, icon='plus', icon_only=True)]) for z, s in [('sm', 'sm'), ('md', ''), ('lg', 'lg')]]) +
             cell('block · phones and forms', '<div style="max-width: 420px;">' + btn('primary', block=True, size='lg') + '</div>') +
             cell('over photos · light, glass', '<div data-tone="image" style="display: flex; gap: 12px; padding: 24px; border-radius: var(--uis-r-card); background: var(--uis-neutral-900);">' + btn('light') + btn('glass') + '</div>')) +
     section('IconButton', 'Square, labelled for screen readers. Count and dot for unread.',
@@ -220,7 +225,7 @@ def inrow(kind='', icon='', kbd='', ta=False):
     if ta:
         T = lambda st='', ex='', v='': '<textarea class="uis-textarea" aria-label="[Label]" placeholder="[Placeholder]" rows="3"' + (' style="' + st + '"' if st else '') + ex + '>' + v + '</textarea>'
         return [field(T()), field(T(v='[Value]')), field(T('border-color: var(--uis-ink-3);', v='[Value]')), field(T(FIELD_FOCUS, v='[Value]')), field(T(ex=' disabled=""', v='[Value]')),
-                field(T('border-color: var(--uis-danger);', v='[Value]'), error='[Error message]')]
+                field(T(ex=' aria-invalid="true"', v='[Value]').replace('class="uis-textarea"', 'class="uis-textarea uis-input--invalid"'), error='[Error message]')]
     hov = 'border-color: var(--uis-search-border-hover);' if kind == 'search' else 'border-color: var(--uis-ink-3);'
     f = lambda **a: field(inp(icon=icon, kind=kind, kbd=kbd, **a), **({} if 'err' not in a else {}))
     return [field(inp(icon=icon, kind=kind, kbd=kbd)), field(inp('[Value]', icon=icon, kind=kind, kbd=kbd)), field(inp('[Value]', style=hov, icon=icon, kind=kind, kbd=kbd)),
@@ -230,7 +235,7 @@ def inrow(kind='', icon='', kbd='', ta=False):
 fam(id='Input', title='Input and field', page='Input · Field', what='Input, Textarea and Field: label, control, hint or error. Password always has the eye on the right.',
     cov={'default': ('shown', 'Empty with placeholder'), 'hover': ('shown', 'Edge darkens'), 'focus': ('shown', 'Focus edge + ring'), 'active': ('na', 'Typing is focus'),
          'selected': ('na', 'Not a choice control'), 'disabled': ('shown', 'Native disabled'), 'loading': ('gap', 'No inline spinner for async checks yet'),
-         'error': ('shown', 'Red edge + message'), 'empty': ('shown', 'Placeholder only')},
+         'error': ('shown', 'Red edge + message (Textarea: class only, no error prop yet)'), 'empty': ('shown', 'Placeholder only')},
     states=section('States', 'Each field type in every state. Hint below; an error replaces the hint.',
                    matrix(['empty', 'filled', 'hover', 'focus', 'disabled', 'error'], [('text', inrow()), ('leading icon', inrow(icon='mail')), ('search', inrow('search', 'search', '⌘K')),
                                                                                      ('password', inrow('password')), ('textarea', inrow(ta=True))], first=110)) +
@@ -263,12 +268,12 @@ fam(id='Select', title='Select', page='Select', what='Native select inside the f
 # Checkbox / Switch --------------------------------------------------------------
 fam(id='Choice', title='Checkbox and switch', page='Checkbox · Switch', what='Checkbox for choices that apply on submit, switch for settings that apply at once.',
     cov={'default': ('shown', 'Off'), 'hover': ('na', 'No hover style in ui.css'), 'focus': ('shown', 'Ring on the box or track'), 'active': ('na', 'Click toggles'),
-         'selected': ('shown', 'Checked / on'), 'disabled': ('gap', 'No disabled prop; native disabled drawn at 45%'), 'loading': ('na', 'Settings save after'),
+         'selected': ('shown', 'Checked / on'), 'disabled': ('gap', 'No disabled prop or style yet'), 'loading': ('na', 'Settings save after'),
          'error': ('gap', 'No error state for a required checkbox yet'), 'empty': ('na', 'Always on or off')},
     states=section('States', 'Radio is a gap: UI System has no Radio yet (use Select or Tabs for one-of-many).',
-                   matrix(['off', 'on', 'focus off', 'focus on', 'disabled off', 'disabled on'],
-                          [('checkbox', [check(), check(checked=True), check(box_style=FOCUS), check(checked=True, box_style=FOCUS), check(disabled=True), check(checked=True, disabled=True)]),
-                           ('switch', [switch(), switch(on=True), switch(track_style=FOCUS), switch(on=True, track_style=FOCUS), switch(disabled=True), switch(on=True, disabled=True)])], first=100)) +
+                   matrix(['off', 'on', 'focus off', 'focus on'],
+                          [('checkbox', [check(), check(checked=True), check(box_style=FOCUS), check(checked=True, box_style=FOCUS)]),
+                           ('switch', [switch(), switch(on=True), switch(track_style=FOCUS), switch(on=True, track_style=FOCUS)])], first=100)) +
     section('In a form', 'Labels sit on the right, sentence case, the whole row is the hit area.',
             row(col(X('Checkbox', 'label="[Choice A]" default-checked="{{yes}}"'), X('Checkbox', 'label="[Choice B]"'), X('Checkbox', 'label="[Choice C]"')),
                 col(X('Switch', 'label="[Setting A]" default-checked="{{yes}}"'), X('Switch', 'label="[Setting B]"')), gap=64, align='flex-start')),
@@ -291,7 +296,7 @@ fam(id='Badge', title='Badge and chips', page='Badge · Chips', what='Badges lab
 # Card / Media --------------------------------------------------------------
 CARD_IN = '<strong class="uis-h3">[Title]</strong><p class="uis-body-s" style="margin: 8px 0 0; color: var(--uis-ink-2);">[One line of detail]</p>'
 fam(id='Card', title='Card and media', page='Card · Media', what='Cards group one record; media holds photos (drop an image on any grey slot).',
-    cov={'default': ('shown', 'Default, flat, raised, sunken'), 'hover': ('shown', 'Interactive: lift + edge'), 'focus': ('shown', 'Focus ring'), 'active': ('shown', 'Pressed interactive card'),
+    cov={'default': ('shown', 'Default, flat, raised, sunken'), 'hover': ('shown', 'Interactive: lift + edge'), 'focus': ('shown', 'Focus ring'), 'active': ('gap', 'No pressed style on interactive cards yet'),
          'selected': ('gap', 'No selected card style yet'), 'disabled': ('na', 'Cards are not disabled'), 'loading': ('shown', 'Skeleton lines (pattern)'),
          'error': ('shown', 'Danger alert inside'), 'empty': ('shown', 'Empty state inside')},
     states=section('Variants', 'Flat on tinted pages, raised for one focal card, sunken for wells.',
@@ -299,7 +304,7 @@ fam(id='Card', title='Card and media', page='Card · Media', what='Cards group o
     section('States', 'Interactive cards (a link) lift on hover. Loading, error and empty sit inside the same frame.',
             '<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">' +
             cell('interactive · default', card(CARD_IN, 'interactive')) + cell('hover', card(CARD_IN, 'interactive', 'box-shadow: var(--uis-shadow-md); border-color: var(--uis-line-strong);')) +
-            cell('focus', card(CARD_IN, 'interactive', FOCUS)) + cell('pressed', card(CARD_IN, 'interactive', 'transform: var(--uis-press);')) + cell('loading', card(skeleton())) +
+            cell('focus', card(CARD_IN, 'interactive', FOCUS)) + cell('loading', card(skeleton())) +
             cell('error', card(X('Alert', 'tone="danger" title="[Could not load]"', '[Short reason]'))) + cell('empty', card(empty('inbox', '[Nothing yet]', '[What will show here]', '[Action]', 'plus'))) +
             cell('media', X('Card', 'flush="{{yes}}"', '<image-slot id="cm-photo" shape="rect" placeholder="Photo" style="display: block; width: 100%; aspect-ratio: 16 / 9; background: var(--uis-surface-3);"></image-slot><div style="padding: var(--uis-pad-card);">' + CARD_IN + '</div>')) +
             '</div>'),
@@ -387,7 +392,7 @@ fam(id='Feedback', title='Alert, toast, progress', page='Alert · Toast', what='
                    ''.join(X('Alert', ('tone="' + t + '"' if t != 'info' else ''), '[No title, one line.]') for t in ['info', 'danger']) + '</div>') +
     section('Toast and progress', 'Toasts are inverse panels; one action at most.',
             '<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">' +
-            cell('toast', X('Toast', 'title="[Saved]"', '[Your changes are live.]')) + cell('toast with action', X('Toast', 'title="[Deleted]" icon="trash"', '[One record removed.]')) +
+            cell('toast', X('Toast', 'title="[Saved]"', '[Your changes are live.]')) + cell('toast · own icon', X('Toast', 'title="[Deleted]" icon="trash"', '[One record removed.]')) +
             cell('progress · 0', X('Progress', 'value="{{p0}}"')) + cell('progress · 40', X('Progress', 'value="{{p40}}"')) + cell('progress · 100', X('Progress', 'value="{{p100}}"')) + cell('skeleton', skeleton()) + '</div>'),
     specimen=col(X('Alert', 'tone="success" title="[Title]"', '[One line.]'), X('Alert', 'tone="danger" title="[Title]"', '[One line.]'), X('Toast', 'title="[Saved]"', '[Changes are live.]'), X('Progress', 'value="{{p40}}"'), gap=10), spec_h=290)
 

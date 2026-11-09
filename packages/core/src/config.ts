@@ -29,7 +29,7 @@ export type BackNav = 'sidebar' | 'rail' | 'inset' | 'topbar' | 'dock';
 export type AvatarStyle = 'notionists-neutral' | 'lorelei-neutral' | 'thumbs' | 'glass' | 'shapes' | 'initials';
 export type MotionIntensity = 'subtle' | 'expressive';
 export type RadiusRole = 'chip' | 'control' | 'field' | 'search' | 'card' | 'panel' | 'media' | 'shell';
-export type SizeKey = 'sm' | 'md' | 'lg' | 'pad' | 'gap' | 'ring' | 'check';
+export type SizeKey = 'sm' | 'md' | 'lg' | 'pad' | 'gap' | 'ring' | 'check' | 'hint';
 export type ShadowKey = 'sm' | 'md' | 'lg' | 'float';
 
 export interface BrandConfig {

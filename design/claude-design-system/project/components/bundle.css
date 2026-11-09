@@ -118,6 +118,7 @@
   --uis-wordmark-stretch: 100%;
   --uis-focus-ring-width: 4px;
   --uis-check-border: 1.5px;
+  --uis-hint-reserve: 18px;
   --uis-h-sm: var(--control-sm);
   --uis-h-md: var(--control-md);
   --uis-h-lg: var(--control-lg);
@@ -298,7 +299,7 @@
 /* ---------- Fields ---------- */
 .uis-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
 .uis-label { font: 600 13px/1.2 var(--uis-font-body); color: var(--uis-ink); }
-.uis-hint { font: 400 12.5px/1.4 var(--uis-font-body); color: var(--uis-ink-3); }
+.uis-hint { min-height: var(--uis-hint-reserve, 18px); font: 400 12.5px/1.4 var(--uis-font-body); color: var(--uis-ink-3); }
 .uis-hint--error { color: var(--uis-danger-text); }
 .uis-control { position: relative; display: flex; align-items: center; }
 .uis-control > .uis-icon { position: absolute; left: 14px; width: 18px; height: 18px; color: var(--uis-ink-3); pointer-events: none; }

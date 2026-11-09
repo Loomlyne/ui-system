@@ -80,7 +80,8 @@ export function Field({ label, hint, error, id, className, style, children }: Fi
     <div className={cx('uis-field', className)} style={style}>
       {label ? <label className="uis-label" htmlFor={id}>{label}</label> : null}
       {children}
-      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : null}
+      {/* The hint slot is always there (height --uis-hint-reserve), so a hint or error never moves the fields around it. */}
+      {error ? <span className="uis-hint uis-hint--error">{error}</span> : <span className="uis-hint" aria-hidden={hint ? undefined : true}>{hint}</span>}
     </div>
   );
 }
