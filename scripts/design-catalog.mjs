@@ -195,7 +195,7 @@ Effects: \`fade-up\` (default), \`fade\`, \`scale-in\`, \`slide-left\`, \`slide-
     readme: `Counts a number up when it scrolls into view (anime.js). For stats, prices and KPIs with real values only.
 
 **Props:** \`to\`, \`from\`, \`decimals\`, \`prefix\`, \`suffix\`, \`duration\`. Shows the final value immediately under reduced motion.`,
-    preview: `row(h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Projects shipped'), h(U.CountUp, { to: 128, className: 'uis-stat__value' }))), h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Conversion'), h(U.CountUp, { to: 4.8, decimals: 1, suffix: '%', className: 'uis-stat__value' }))))`,
+    preview: `h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 220px))', gap: 16, padding: 20 } }, h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Projects shipped'), h(U.CountUp, { to: 128, className: 'uis-stat__value' }))), h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Conversion'), h(U.CountUp, { to: 4.8, decimals: 1, suffix: '%', className: 'uis-stat__value' }))))`,
   },
   {
     name: 'Alert', group: 'Feedback', height: 190,
