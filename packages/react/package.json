@@ -42,6 +42,7 @@
   "devDependencies": {
     "@types/react": "^19.2.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "@hugeicons/core-free-icons": "4.4.0"
   }
 }

@@ -6,7 +6,10 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 Project name. Used by exports.
 
 ## preset
-Optional named design language, applied between the defaults and your keys: `retail-editorial`. See [presets.md](presets.md).
+Optional preset, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [presets.md](presets.md).
+
+## kind
+Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Sets no values; tools read it for the page set and questions. See [kinds.md](kinds.md).
 
 ## brand
 
@@ -62,7 +65,7 @@ See [radius.md](radius.md).
 `compact` (32/38/46 px controls), `comfortable` (36/44/52), `spacious` (40/48/56).
 
 ## sizes
-Pin px over the density values: `sm`, `md`, `lg` (control heights), `pad` (card padding), `gap`, `ring` (field focus ring width, default 4), `check` (checkbox edge width, default 1.5).
+Pin px over the density values: `sm`, `md`, `lg` (control heights), `pad` (card padding), `gap`, `ring` (field focus ring width, default 4), `check` (checkbox edge width, default 1.5), `hint` (space kept under every labelled field for its hint or error, default 18 = one line, so fields line up whether or not they have a hint; unlabelled fields reserve nothing; `0` removes the slot and lets hints push). Write hints and errors as one line: a longer one wraps and pushes what is below it.
 
 ## space
 Spacing scale in px for token exports. Default `[4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]`.

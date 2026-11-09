@@ -28,7 +28,8 @@ export const CATALOG = [
 Every other component reads its CSS variables and brand context. Root computes the whole theme (color scales, contrast-safe text colors, radius roles, fonts, shadows) from a handful of inputs, so one change restyles everything.
 
 **Props (all optional, defaults in brackets)**
-- Preset: \`preset\` retail-editorial (a whole design language; every other prop still wins)
+- Preset: \`preset\` ledger|atelier (a way of designing; \`retail-editorial\` is atelier's old name; every other prop still wins)
+- Kind: \`kind\` shop|app|website|booking|portfolio (what you build; sets no values)
 - Color: \`primary\` [#1C1B19], \`accent\` [#E0562B], \`neutral\` [#77736B, or 'auto'], \`mode\` light|dark [light]
 - Shape: \`roundness\` 0–100 [60], \`pill\` boolean [false]
 - Type: \`fontPreset\` modern|geometric|editorial|grotesk|humanist|classic|retail [modern], \`displayFont\`, \`bodyFont\` (any Google Fonts family), \`buttonCase\` normal|upper
@@ -60,11 +61,13 @@ Without props it renders the brand set on Root. The generated marks (monogram, r
   },
   {
     name: 'Icon', group: 'Brand', height: 110,
-    readme: `Stroke icons drawn for this system on a 24px grid (1.75 stroke, round caps and joins); they inherit \`currentColor\`.
+    readme: `Every icon comes from **Hugeicons** (https://hugeicons.com), free stroke-rounded set, MIT (\`@hugeicons/core-free-icons\`). 24px grid, 1.5 stroke, round caps and joins; icons inherit \`currentColor\`. Never draw a custom icon or mix in another set: pick the closest Hugeicons glyph and add it to \`SOURCE\` in \`packages/react/src/Icon.tsx\` under a short name.
 
-Use by name: \`<Icon name="search" />\`. Names: menu, x, search, bell, home, grid, chart, activity, trend, users, user, settings, sliders, target, bag, cart, calendar, inbox, file, folder, plus, check, chevron-down, chevron-up, chevron-right, chevron-left, chevrons-updown, arrow-right, arrow-up-right, clock, pin, phone, mail, message, logout, command, sun, moon, sparkle, layers, box, card, help, filter, more, star, heart, globe, lock, download, upload, copy, edit, trash, eye, link, bolt, tag, truck, image, play, sidebar, currency, briefcase, building.
+Use by name: \`<Icon name="search" />\`. Names: menu, x, search, bell, home, grid, chart, activity, trend, users, user, settings, target, sliders, bag, cart, calendar, inbox, file, folder, plus, check, chevron-down, chevron-up, chevron-right, chevron-left, chevrons-updown, arrow-right, arrow-up-right, clock, pin, phone, mail, message, logout, command, sun, moon, sparkle, layers, box, card, help, filter, more, star, heart, globe, lock, download, upload, copy, edit, trash, eye, link, bolt, tag, truck, image, play, sidebar, currency, briefcase, building, receipt, wallet, map, car, shield, share, refresh, ruler, bookmark, camera, store, list, route, check-circle, alert-circle, info, warning, x-circle, health.
 
-**Do** pair icon-only buttons with a \`label\`. **Don't** mix in emoji or another icon set.`,
+Sizes: 16 in dense tables and badges, 18 in buttons and nav items, 20–24 standalone. Stroke stays 1.5; pass \`strokeWidth\` only for a deliberate heavy style.
+
+**Do** pair icon-only buttons with a \`label\` and status icons with a word. **Don't** mix in emoji, filled glyphs from another library, or hand-drawn paths.`,
     preview: `row.apply(null, Object.keys(U.ICONS).map(function (n) { return h('span', { key: n, title: n, style: { display: 'inline-grid', placeItems: 'center', width: 36, height: 36, color: 'var(--ink)' } }, h(U.Icon, { name: n, size: 22 })); }))`,
   },
   {
@@ -87,12 +90,14 @@ Use \`light\` and \`glass\` only on photography. One \`primary\` per view. Label
   },
   {
     name: 'Input', group: 'Forms', height: 130,
-    readme: `A text field with optional label, hint, error, leading icon and keyboard hint.
+    readme: `A text field with optional label, hint, error, leading icon and keyboard hint. \`type="password"\` adds a show/hide eye button on the physical right (also in RTL), 40px hit area, \`aria-pressed\`.
 
-Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\`, \`--uis-search-border\` and \`--uis-search-border-hover\` (a grey pill in retail-editorial). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
+Every labelled field keeps one line under it for the hint or error (\`--uis-hint-reserve\`, \`sizes.hint\`), so fields in a row or column line up whether or not they show a hint. Unlabelled fields reserve nothing, and \`sizes.hint: 0\` removes the slot. **Write hints and errors as one line:** a longer message wraps and pushes what is below it.
+
+Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\`, \`--uis-search-border\` and \`--uis-search-border-hover\` (a grey pill in atelier). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
 
 Always give a visible \`label\` in forms; a placeholder is not a label.`,
-    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }))`,
+    preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }), h(U.Input, { label: 'Password', type: 'password', defaultValue: 'example-pass', style: { width: 240 } }))`,
   },
   {
     name: 'Select', group: 'Forms', height: 110,
@@ -117,7 +122,7 @@ Always give a visible \`label\` in forms; a placeholder is not a label.`,
   },
   {
     name: 'Checkbox', group: 'Forms', height: 80,
-    readme: `A checkbox for form choices. The edge is \`--uis-check-border\` wide in \`--uis-line-strong\` (1.5px by default, 1px in retail-editorial; set \`sizes.check\`).
+    readme: `A checkbox for form choices. The edge is \`--uis-check-border\` wide in \`--uis-line-strong\` (1.5px by default, 1px in atelier; set \`sizes.check\`).
 
 **Props:** \`label\`, \`checked\`, \`defaultChecked\`, \`onChange(checked)\`.`,
     preview: `row(h(U.Checkbox, { label: 'Remember me', defaultChecked: true }), h(U.Checkbox, { label: 'Send me updates' }))`,
@@ -192,11 +197,11 @@ Effects: \`fade-up\` (default), \`fade\`, \`scale-in\`, \`slide-left\`, \`slide-
     readme: `Counts a number up when it scrolls into view (anime.js). For stats, prices and KPIs with real values only.
 
 **Props:** \`to\`, \`from\`, \`decimals\`, \`prefix\`, \`suffix\`, \`duration\`. Shows the final value immediately under reduced motion.`,
-    preview: `row(h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Projects shipped'), h(U.CountUp, { to: 128, className: 'uis-stat__value' }))), h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Conversion'), h(U.CountUp, { to: 4.8, decimals: 1, suffix: '%', className: 'uis-stat__value' }))))`,
+    preview: `h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 220px))', gap: 16, padding: 20 } }, h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Projects shipped'), h(U.CountUp, { to: 128, className: 'uis-stat__value' }))), h(U.Card, null, h('div', { className: 'uis-stat' }, h('span', { className: 'uis-stat__label' }, 'Conversion'), h(U.CountUp, { to: 4.8, decimals: 1, suffix: '%', className: 'uis-stat__value' }))))`,
   },
   {
     name: 'Alert', group: 'Feedback', height: 190,
-    readme: `An inline message in the flow of a page. Each tone reads its \`-soft\` and \`-soft-ink\` pair; retail-editorial pins \`info\` to ink on grey. **Props:** \`tone\` info|success|warning|danger, \`title\`, \`icon\`, children.`,
+    readme: `An inline message in the flow of a page. Each tone reads its \`-soft\` and \`-soft-ink\` pair; atelier pins \`info\` to ink on grey. **Props:** \`tone\` info|success|warning|danger, \`title\`, \`icon\`, children.`,
     preview: `h('div', { style: { padding: 20, display: 'grid', gap: 10, maxWidth: 560 } }, h(U.Alert, { title: 'Heads up' }, 'Your trial ends in 3 days.'), h(U.Alert, { tone: 'success', title: 'Published' }, 'The site is live.'), h(U.Alert, { tone: 'danger', title: 'Payment failed' }, 'Update the card on file.'))`,
   },
   {
@@ -294,7 +299,7 @@ Best for studios, luxury, architecture, hospitality and one-page sites.
     name: 'AppSidebar', group: 'Navigation: Backend', height: 520,
     readme: `The full backend sidebar: logo, search, grouped links with icons and counts, and one account block at the bottom. When a \`workspace\` is given with a \`user\`, they merge into that block (name, workspace · plan, switcher), so nothing is shown twice.
 
-The panel is \`--uis-nav-bg\`; the current page is \`--uis-nav-active-bg\` with \`--uis-nav-active-ink\` and a 2px start bar in \`--uis-nav-active-bar\` (transparent by default; off-white panel, white item, ink bar in retail-editorial).
+The panel is \`--uis-nav-bg\`; the current page is \`--uis-nav-active-bg\` with \`--uis-nav-active-ink\` and a 2px start bar in \`--uis-nav-active-bar\` (transparent by default; off-white panel, white item, ink bar in atelier).
 
 **Props:** \`sections\`, \`workspace\`, \`search\` (true or placeholder), \`user\`, \`logoPlacement\` left|center|right, \`logoVariant\`, \`footer\`.`,
     preview: `h('div', { style: { display: 'grid', gridTemplateColumns: '264px 1fr', height: 520 } }, h(U.AppSidebar, { sections: sections, workspace: workspace, user: user }), h('div', { style: { background: 'var(--bg)' } }))`,

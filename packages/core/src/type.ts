@@ -36,6 +36,7 @@ export const FONT_PRESETS: Record<FontPresetId, FontPreset> = {
 const AXES: Record<string, string> = {
   Inter: 'wght@400..700',
   Archivo: 'wdth,wght@75..125,700..900',
+  Poppins: 'wght@400;500;600;700',
   'Inter Tight': 'wght@400..700',
   Geist: 'wght@400..700',
   'Geist Mono': 'wght@400..600',

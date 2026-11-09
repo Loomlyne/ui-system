@@ -6,6 +6,7 @@ UI System stays the source of truth for tokens (color, radius, type). These are 
 | --- | --- | --- |
 | Avatars for people without a photo | [DiceBear](https://github.com/dicebear/dicebear), built into `Avatar` | MIT code, CC0 styles |
 | Animation | [anime.js v4](https://github.com/juliangarnier/anime), built into `Reveal`, `CountUp`, `anime` | MIT |
+| Icons | [Hugeicons](https://hugeicons.com) free stroke-rounded set (`@hugeicons/core-free-icons`), built into `Icon` | MIT |
 | Animated text, backgrounds, effects | [React Bits](https://github.com/DavidHDev/react-bits) | MIT + Commons Clause |
 | Extra app components (date pickers, file upload, charts…) | [Untitled UI React](https://github.com/untitleduico/react) open-source set | MIT |
 | Web references (sites, sections, flows) | Mobbin (connected in Claude) | Reference only |

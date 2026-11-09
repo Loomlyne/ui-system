@@ -1,20 +1,31 @@
 import type { Preset, PresetId } from './config';
 
 /**
- * Named design languages. A preset only sets values: `{ "preset": "retail-editorial" }`
- * in ui.config.json fills everything below, and any key you write yourself still wins.
+ * Presets are ways of designing, not products. Pick one for how it should look (`ledger` round
+ * and clean, `atelier` sharp and editorial), pick a kind for what you build (kinds.ts), then put
+ * any brand on top. `{ "preset": "atelier" }` in ui.config.json fills everything below, and any
+ * key you write yourself still wins. Products that use a preset are listed only in `seenIn`.
  * Pins (`color.pin`, `surface.shadows`, `sizes`, `motion.timing`) hold exact light-mode
  * values measured from the source. `color.pinDark` holds a designed dark mode where a
  * preset has one; anything it leaves out is derived by the engine.
  */
 export const PRESETS: Record<PresetId, Preset> = {
-  'retail-editorial': {
-    id: 'retail-editorial',
-    label: 'Retail editorial (Senorita)',
-    note: 'Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Fashion and retail storefronts.',
+  atelier: {
+    id: 'atelier',
+    label: 'Atelier',
+    note: 'Sharp and editorial. Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Photos carry the colour.',
+    seenIn: ['Senorita', 'ALMAR'],
+    rules: [
+      'Square 2px on buttons, fields, chips and panels; only search and avatars are round.',
+      'Headings in condensed caps; body in a calm sans.',
+      'The main action is a 52px dark button; the accent is for sale tags and hover only.',
+      'Photos lead; the interface stays ink, white and one warm accent.',
+    ],
+    never: ['No rounded cards or pill buttons.', 'No colour washes behind photos.', 'No touch target under 44px.'],
+    questions: ['What photo leads each page?', 'What are the collections or categories?', 'What is the one action per page (add to bag, book)?', 'Light only, or dark too?'],
     source: 'Senorita Store Phase 1 storefront and admin CSS (_s_css, _s_err, _a_css) and 01-UI-SPEC.md, 2026-11-07.',
     config: {
-      preset: 'retail-editorial',
+      preset: 'atelier',
       brand: { mark: 'none', variant: 'wordmark', wordmarkCase: 'upper', wordmarkFont: 'display', wordmarkColor: '#7E1F33', caption: '' },
       color: {
         primary: '#2D2A26',
@@ -130,6 +141,40 @@ export const PRESETS: Record<PresetId, Preset> = {
         intensity: 'subtle',
         timing: { fast: 150, base: 200, slow: 300, easeOut: 'cubic-bezier(0, 0, 0.2, 1)', easeInOut: 'cubic-bezier(0.42, 0, 0.58, 1)', press: 'scale(0.96)' },
       },
+    },
+  },
+  ledger: {
+    id: 'ledger',
+    label: 'Ledger',
+    note: 'Round and clean. Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion.',
+    seenIn: ['Invios', 'Clickit'],
+    rules: [
+      'One gold (accent) action per page; every other action is ink or outline.',
+      'Pills for buttons, fields and chips; cards 22px.',
+      'Hairline borders, no shadows, no motion.',
+      'Numbers in tabular figures, right-aligned.',
+    ],
+    never: ['No square corners mixed in.', 'No second accent colour.', 'No drop shadows to separate cards: use a border or a surface step.'],
+    questions: ['What is the one action on this page?', 'Which numbers must line up?', 'Light, dark, or both?', 'Which status words are used (paid, draft, overdue)?'],
+    source: 'Invios decisions D-05 (round radius, light and dark) and D-12 (Poppins), 2026-10-05; .planning/sketches/ui-system-redesign/ui.config.json and ui-theme/theme.json.',
+    config: {
+      preset: 'ledger',
+      color: {
+        primary: '#0d0d0d',
+        accent: '#eab308',
+        neutral: '#78736a',
+        success: '#16803c',
+        warning: '#c2540c',
+        danger: '#c0311a',
+        info: '#2F6BD8',
+        mode: 'light',
+      },
+      radius: { roundness: 90, pill: true },
+      type: { preset: 'geometric', display: 'Poppins', body: 'Poppins', buttonCase: 'normal' },
+      density: 'comfortable',
+      surface: { float: 'solid', shadow: 'none', border: 'hairline' },
+      nav: { front: 'bar', back: 'sidebar' },
+      motion: { enabled: false, intensity: 'subtle' },
     },
   },
 };

@@ -1,4 +1,4 @@
-import { resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
+import { presetId, resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
 import { PRESETS } from './presets';
 import {
   alpha, bestOn, contrast, hexToOklch, isHex, mix, neutralFrom, scaleFrom, stepWithContrast,
@@ -57,7 +57,8 @@ const NEUTRAL_ROLES = new Set(['bg', 'surface', 'surface-2', 'surface-3', 'line'
  * again (a cream primary must not keep white text). Pins the project wrote itself always stay.
  */
 function activePins(config: UIConfig, pins: Partial<Record<string, string>>, key: 'pin' | 'pinDark'): Partial<Record<string, string>> {
-  const preset = config.preset ? PRESETS[config.preset] : undefined;
+  const id = presetId(config.preset);
+  const preset = id ? PRESETS[id] : undefined;
   const pc = preset?.config.color;
   if (!pc) return pins;
   const same = (a?: string, b?: string) => (a ?? '').toLowerCase() === (b ?? '').toLowerCase();
@@ -224,6 +225,9 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     'wordmark-stretch': type.wordmark?.stretch ?? '100%',
     'focus-ring-width': pxOr(config.sizes?.ring, 4),
     'check-border': pxOr(config.sizes?.check, 1.5),
+    // Space kept under every labelled field for its hint or error, so a hint never pushes the fields below or beside it.
+    'hint-reserve': pxOr(config.sizes?.hint, 18),
+    'hint-slot': config.sizes?.hint === 0 ? 'none' : 'block',
     'h-sm': pxOr(d.sm, DENSITY.comfortable.sm),
     'h-md': pxOr(d.md, DENSITY.comfortable.md),
     'h-lg': pxOr(d.lg, DENSITY.comfortable.lg),
