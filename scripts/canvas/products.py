@@ -64,7 +64,7 @@ PRODUCTS.append(dict(
     source='Shipped: _ds/linear-design-system tokens. Planned: ui-system-redesign sketch theme.json (decision D-05).',
     default='Ledger (D-05)',
     variants=[
-        V('Ledger (D-05)', 'ledger preset · Poppins · pill', 'The ledger engine preset (branch claude/round-preset), which implements D-05 and D-12. It pins nothing: every value comes from the seeds. Recommended.', 'light',
+        V('Ledger (D-05)', 'ledger preset · Poppins · pill', 'Invios on the ledger engine preset, which implements D-05 and D-12. Invios itself is a study, not an engine preset; it pins nothing on ledger: every value comes from the seeds. Recommended.', 'light',
           ledger(), {'--uis-display-weight': '600', '--uis-heading-weight': '600'}, POPPINS),
         V('Shipped today', 'Dark Linear kit · Geist', 'Values from the vendored Linear kit. Buttons 27/32/36px are under the 44px touch target.', 'dark',
           {'type': {'preset': 'geometric'},

@@ -32,6 +32,8 @@ MADE = {}
 X = lambda comp, attrs='', inner='': '<x-import component-from-global-scope="UIS.' + comp + '"' + (' ' + attrs if attrs else '') + '>' + inner + '</x-import>'
 I = lambda name, size='s18': X('Icon', 'name="' + name + '" size="{{' + size + '}}"')
 esc = lambda s: s.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
+# JSON inlined into a <script>: '</' would end the script early, so it is written '<\/' (still the same JSON string).
+js_inline = lambda o: json.dumps(o, ensure_ascii=False).replace('</', '<\\/')
 MONO = 'font: 500 11.5px/1.3 var(--uis-font-mono); color: var(--uis-ink-3);'
 STATES = ['default', 'hover', 'focus', 'active', 'selected', 'disabled', 'loading', 'error', 'empty']
 FOCUS = 'outline: 2px solid var(--uis-focus); outline-offset: 2px;'
@@ -456,6 +458,9 @@ for p in PRODUCTS:
 FAMS = {}
 for f in sorted(FONTS):
     FAMS[f.split(':')[0]] = f
+FONT_SPEC = re.compile(r'^family=[A-Za-z0-9+]+(:[A-Za-z0-9@;.,]+)?$')  # Google Fonts css2 family specs only
+for f in FAMS.values():
+    assert FONT_SPEC.match(f), 'bad font spec: ' + f
 FONT_URL = 'https://fonts.googleapis.com/css2?' + '&'.join(FAMS.values()) + '&display=swap'
 
 # Skins for the skin Tweak (owner, 2026-11-09: Tweaks over copies). A skin fills Root's config; every Tweak left at its
@@ -499,26 +504,29 @@ ROOT_ATTRS = ('config="{{config}}" preset="{{preset}}" primary="{{primary}}" acc
 THEME_KEYS = ['primary', 'accent', 'neutral', 'roundness', 'pill', 'fontPreset', 'buttonCase', 'surface', 'density', 'wordmark', 'caption', 'logoMark', 'logoVariant', 'logoPlacement', 'logoSrc', 'markSrc']
 THEME_JS = ('''  theme() {
     const p = this.props, U = window.UIS || {};
-    const D = ''' + json.dumps({k: TWEAKS[k]['default'] for k in THEME_KEYS}) + ''';
-    const SK = ''' + json.dumps(SKINS, ensure_ascii=False) + ''';
+    const D = ''' + js_inline({k: TWEAKS[k]['default'] for k in THEME_KEYS}) + ''';
+    const SK = ''' + js_inline(SKINS) + ''';
     const S = p.skin && p.skin !== 'none' ? SK[p.skin] : null;
     const P = p.preset && p.preset !== 'none' && U.PRESETS ? U.PRESETS[(U.presetId && U.presetId(p.preset)) || p.preset] : null;
-    // A Tweak left at its default follows the skin and the preset; a Tweak you change wins over both.
+    // A Tweak never touched (undefined: the editor's default only seeds the panel) follows the skin and the preset;
+    // a Tweak you set wins over both, even when you set it back to the default value.
     const t = { config: S ? S.config : {}, preset: P ? P.id : undefined };
-    for (const k in D) { const x = p[k] === undefined ? D[k] : p[k]; t[k] = (S || P) && x === D[k] ? undefined : x; }
+    for (const k in D) t[k] = p[k] !== undefined ? p[k] : (S || P) ? undefined : D[k];
     if (!S) for (const k of ['wordmark', 'caption', 'logoPlacement', 'logoSrc', 'markSrc']) t[k] = p[k] === undefined ? D[k] : p[k];
     t.mode = p.mode && p.mode !== 'auto' ? p.mode : (S ? S.mode : 'light');
     t.skinStyle = 'display: block;' + (S ? ' ' + Object.keys(S.vars).map(function (k) { return k + ': ' + S.vars[k]; }).join('; ') : '');
-    let label = 'config error', ok = false;
+    let label = 'config error', tone = 'danger';
     try {
       const th = U.buildTheme(U.configFromProps(t));
       const rep = U.contrastReport(th).filter(function (x) { return x.mode === t.mode; });
       const fails = rep.filter(function (x) { return !x.pass; }).length;
-      ok = !fails; label = fails ? fails + ' contrast FAIL' : rep.length + '/' + rep.length + ' text pairs AA';
+      if (!rep.length) { label = 'no text pairs checked'; tone = 'ink-3'; }
+      else if (fails) label = fails + ' contrast FAIL';
+      else { label = rep.length + '/' + rep.length + ' text pairs AA'; tone = 'success'; }
     } catch (e) { label = 'config error'; }
     t.themeLine = (S ? 'skin ' + p.skin : 'no skin') + ' · ' + (P ? 'preset ' + P.id : 'no preset') + ' · ' + t.mode;
     t.checkLabel = label;
-    t.checkStyle = 'font: 700 12px/1 var(--uis-font-mono); color: ' + (ok ? 'var(--uis-success-text)' : 'var(--uis-danger-text)') + ';';
+    t.checkStyle = 'font: 700 12px/1 var(--uis-font-mono); color: ' + (tone === 'ink-3' ? 'var(--uis-ink-3)' : 'var(--uis-' + tone + '-text)') + ';';
     return t;
   }
 ''')
@@ -528,7 +536,7 @@ def page(title, inner, script, props, h, root=True):
     body = (X('Root', ROOT_ATTRS, '\n' + inner + '\n') if root else inner)
     html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>' + esc(title) + '</title>\n<script src="./support.js"></script>\n'
             '<link rel="stylesheet" href="ds/uis/components/bundle.css">\n<script src="ds/uis/components/bundle.js"></script>\n</head>\n<body>\n<x-dc>\n'
-            '<helmet>\n<link rel="stylesheet" href="' + FONT_URL.replace('&', '&amp;') + '">\n<style>body{margin:0}</style>\n</helmet>\n' + body +
+            '<helmet>\n<link rel="stylesheet" href="' + esc(FONT_URL) + '">\n<style>body{margin:0}</style>\n</helmet>\n' + body +
             '\n</x-dc>\n<script type="text/x-dc" data-dc-script data-props=\'' + json.dumps(props, separators=(',', ':')) + '\'>\n' + script + '</script>\n</body>\n</html>\n')
     assert html.count('<x-import') == html.count('</x-import>'), title
     assert "'" not in json.dumps(props), title
@@ -558,7 +566,7 @@ for f in F:
              '<div style="display: flex; gap: 16px; align-items: center; padding: 0 0 24px;"><span class="uis-caption" style="color: var(--uis-ink-2);">{{themeLine}}</span><span style="{{checkStyle}}">{{checkLabel}}</span></div>' +
              section('Coverage', 'The nine states every component is checked against. Gaps are not in UI System yet; they are never drawn as working controls.', coverage(f['cov'])) +
              f['states'] + '</div></div>')
-    script = 'class Component extends DCLogic {\n' + THEME_JS + '  renderVals() {\n    return Object.assign({}, ' + json.dumps(COMMON, ensure_ascii=False) + ', this.theme());\n  }\n}\n'
+    script = 'class Component extends DCLogic {\n' + THEME_JS + '  renderVals() {\n    return Object.assign({}, ' + js_inline(COMMON) + ', this.theme());\n  }\n}\n'
     props = dict(TWEAKS, **{'$preview': {'width': 1440, 'height': H}})
     open(os.path.join(OUT, name), 'w').write(page(f['title'] + ' · states', inner, script, props, H))
     MADE[name] = [f['title'] + ' · states, sizes, icons', f['page'], 1440, H]

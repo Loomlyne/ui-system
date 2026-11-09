@@ -227,6 +227,7 @@ export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
     'check-border': pxOr(config.sizes?.check, 1.5),
     // Space kept under every labelled field for its hint or error, so a hint never pushes the fields below or beside it.
     'hint-reserve': pxOr(config.sizes?.hint, 18),
+    'hint-slot': config.sizes?.hint === 0 ? 'none' : 'block',
     'h-sm': pxOr(d.sm, DENSITY.comfortable.sm),
     'h-md': pxOr(d.md, DENSITY.comfortable.md),
     'h-lg': pxOr(d.lg, DENSITY.comfortable.lg),
