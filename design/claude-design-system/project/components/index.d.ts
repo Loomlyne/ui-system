@@ -4,7 +4,8 @@ type Placement = 'left' | 'center' | 'right';
 type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
-type PresetId = 'retail-editorial';
+type PresetId = 'atelier' | 'ledger';
+type KindId = 'shop' | 'app' | 'website' | 'booking' | 'portfolio';
 type Density = 'compact' | 'comfortable' | 'spacious';
 type FloatSurface = 'solid' | 'glass';
 type ShadowDepth = 'none' | 'soft' | 'medium' | 'deep';
@@ -565,8 +566,10 @@ export declare function CountUp({ to, from, decimals, prefix, suffix, duration, 
  */
 export interface RootProps {
     config?: UIConfigInput;
-    /** Named design language (e.g. 'retail-editorial'). Other props still win over it. */
-    preset?: PresetId;
+    /** Preset, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+    preset?: PresetId | LegacyPresetId;
+    /** What you build (shop, app, website, booking, portfolio). Sets no values. */
+    kind?: KindId;
     primary?: string;
     accent?: string;
     neutral?: string;
@@ -863,7 +866,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     icon?: IconName | string;
     kbd?: string;
     size?: 'sm' | 'md';
-    /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in retail-editorial). */
+    /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in atelier). */
     variant?: 'default' | 'search';
 }
 export declare function Input({ label, hint, error, icon, kbd, size, variant, id, type, className, style, ...rest }: InputProps): React.JSX.Element;

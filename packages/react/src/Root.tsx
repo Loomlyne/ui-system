@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   buildTheme, resolveConfig,
   type AvatarStyle, type BackNav, type Density, type MotionIntensity, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
-  type Mode, type Placement, type PresetId, type ShadowDepth, type UIConfigInput,
+  type KindId, type LegacyPresetId, type Mode, type Placement, type PresetId, type ShadowDepth, type UIConfigInput,
 } from '@ui-system/core';
 import { UISContext, cx } from './context';
 
@@ -13,8 +13,10 @@ import { UISContext, cx } from './context';
  */
 export interface RootProps {
   config?: UIConfigInput;
-  /** Named design language (e.g. 'retail-editorial'). Other props still win over it. */
-  preset?: PresetId;
+  /** Preset, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+  preset?: PresetId | LegacyPresetId;
+  /** What you build (shop, app, website, booking, portfolio). Sets no values. */
+  kind?: KindId;
   // color
   primary?: string;
   accent?: string;
@@ -79,6 +81,7 @@ export function configFromProps(p: RootProps): UIConfigInput {
   return {
     ...base,
     preset: def(p.preset) ?? base.preset,
+    kind: def(p.kind) ?? base.kind,
     name: def(p.projectName) ?? base.name,
     brand: {
       ...base.brand,

@@ -1,18 +1,22 @@
-# One full design sheet per product preset, for UI System · Canvas (page "Preset sheets").
-# Run: python3 scripts/canvas/presetsheets.py <out_dir>  (writes Sheet-Preset-*.dc.html + made-presets.json)
-# Publish the boards to the canvas project/ folder and add them to canvas.json (page "presetsheets").
-# Every value on a sheet is computed live from UIS.buildTheme(config) for the chosen variant.
-import json, sys
+# One full design sheet per PRESET (a way of designing), for UI System · Canvas (page "Presets").
+# Products are only skins on a sheet, side by side (owner, 2026-11-09; replaces the per-product sheets).
+# Run after pnpm build: python3 scripts/canvas/presetsheets.py <out_dir>  (writes Sheet-<Preset>.dc.html + made-presets.json)
+# Every value on a sheet is computed live from UIS.buildTheme(config) for each skin.
+import json, re, sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from products import PRODUCTS
+from presets_data import PRESET_SHEETS
 
+if len(sys.argv) != 2:
+    sys.exit('usage: python3 scripts/canvas/presetsheets.py <out_dir>')
 OUT = sys.argv[1]
 MADE = {}
 
 X = lambda comp, attrs='', inner='': '<x-import component-from-global-scope="UIS.' + comp + '"' + (' ' + attrs if attrs else '') + '>' + inner + '</x-import>'
 I = lambda name, size='s18', style='': X('Icon', 'name="' + name + '" size="{{' + size + '}}"' + (' style="' + style + '"' if style else ''))
 BTN = lambda text, attrs='': X('Button', attrs, text)
+FONT_SPEC = re.compile(r'^family=[A-Za-z0-9+]+(:[A-Za-z0-9@;.,]+)?$')  # Google Fonts css2 family specs only
 esc = lambda s: s.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
 
 def section(num, title, note, content):
@@ -172,33 +176,58 @@ DATA = {
                  filters=['All', 'Live', 'Casting', 'Wrapped'], chips=['Film', 'Series', 'Music', 'Gaming']),
 }
 
-def js(o): return json.dumps(o, ensure_ascii=False)
+def js(o): return json.dumps(o, ensure_ascii=False).replace('</', '<\\/')  # inlined in <script>: never end it early
+
+# ---------------------------------------------------------------- skins side by side (preset sheets)
+def skins_block(p):
+    c = p['copy']
+    swatch = lambda role: '<span title="' + role + '" style="width: 28px; height: 28px; border-radius: var(--uis-r-chip); background: var(--uis-' + role + '); border: 1px solid var(--uis-line);"></span>'
+    card = ('<div style="{{k.style}}">'
+            '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong class="uis-h3">{{k.key}}</strong><span class="uis-caption">{{k.tag}}</span></div>'
+            '<div style="display: flex; gap: 6px;">' + ''.join(swatch(r) for r in ['bg', 'surface', 'ink', 'primary', 'accent', 'success', 'danger']) + '</div>'
+            '<span style="font: var(--uis-display-weight) 22px/1.1 var(--uis-font-display); text-transform: var(--uis-display-case); letter-spacing: var(--uis-display-tracking); color: var(--uis-wordmark);">{{k.wordmark}}</span>'
+            '<span class="uis-display-m">' + esc(c['headline']) + '</span>'
+            + row(BTN(esc(c['cta'])), BTN('Cancel', 'variant="outline"'), X('Badge', 'tone="accent"', esc(c['chip'])), gap=10) +
+            X('Input', 'label="' + esc(c['field']) + '" placeholder="' + esc(c['placeholder']) + '"') +
+            X('Card', '', '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong>' + esc(DATA[p['data']]['cards'][0]) + '</strong><strong style="font-variant-numeric: tabular-nums;">' + esc(DATA[p['data']]['cards'][1]) + '</strong></div>'
+                          '<p class="uis-body-s" style="margin: 8px 0 0; color: var(--uis-ink-2);">' + esc(DATA[p['data']]['cards'][2]) + '</p>') +
+            '<span class="uis-body-s" style="color: var(--uis-ink-2);">{{k.note}}</span></div>')
+    return ('<section style="display: flex; flex-direction: column; gap: 20px; padding: 36px 0; border-top: 1px solid var(--uis-line);">'
+            '<div style="display: flex; align-items: baseline; gap: 16px;"><h2 class="uis-h2" style="margin: 0;">Skins side by side</h2>'
+            '<span class="uis-body-s" style="color: var(--uis-ink-2);">Same preset. Each product changes what it needs on top (colours, logo, fonts, anything). The outlined one is shown in full below.</span></div>'
+            '<div style="display: grid; grid-template-columns: repeat(' + str(len(p['variants'])) + ', minmax(0, 1fr)); gap: 20px; align-items: start;">'
+            '<sc-for list="{{skins}}" as="k" hint-placeholder-count="' + str(len(p['variants'])) + '">' + card + '</sc-for></div></section>')
 
 # ---------------------------------------------------------------- the sheet
 def sheet(p):
-    pid, c, d = p['id'], p['copy'], DATA[p['id']]
+    pid, c, d = p['id'], p['copy'], DATA[p.get('data', p['id'])]
+    is_preset = bool(p.get('preset'))
     mobile = p.get('mobile')
     title = p['name'] + ' · design sheet'
 
-    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · retail-editorial') if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
+    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · ' + esc(p.get('preset', 'atelier'))) if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
     header = ('<header style="display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 48px; align-items: end; padding-bottom: 36px;">'
-              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">Product preset · ' + p['kind'] + '</span>'
-              '<h1 class="uis-display-xl">' + p['name'] + '</h1><p class="uis-body-l" style="color: var(--uis-ink-2); max-width: 720px;">' + p['summary'] + '</p></div>'
+              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Preset · ' if is_preset else 'Product preset · ') + esc(p.get('tagline', p.get('kind', ''))) + '</span>'
+              '<h1 class="uis-display-xl">' + esc(p['name']) + '</h1><p class="uis-body-l" style="color: var(--uis-ink-2); max-width: 720px;">' + esc(p['summary']) + '</p></div>'
               '<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;">' + status +
-              '<span class="uis-overline" style="margin-top: 4px;">Variant on this sheet</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
+              '<span class="uis-overline" style="margin-top: 4px;">' + ('Skin' if is_preset else 'Variant') + ' shown in full below</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
               '<span class="uis-body-s" style="color: var(--uis-ink-2);">{{vNote}}</span><span class="uis-caption">Switch it in Tweaks › variant. Mode: Tweaks › mode.</span></div></header>'
+              + (skins_block(p) if is_preset else '') +
               '<sc-if value="{{hasErr}}" hint-placeholder-val="{{no}}">' + X('Alert', 'tone="danger" title="Config error"', '{{err}}') + '</sc-if>')
 
-    s1 = section('01', 'How it thinks', 'The product rules every screen follows. Read before designing anything new for ' + p['name'] + '.',
-                 '<div class="uis-card" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px;">' + ''.join(rule(do, t) for do, t in p['rules']) + '</div>' +
-                 X('Alert', 'tone="warning" title="Gaps and conflicts"', p['gaps']) +
-                 '<p class="uis-caption" style="margin: 0;">Source: ' + p['source'] + ' Values from the "Product preset · ' + p['name'] + '" study on the Presets page.</p>')
+    qs = ('<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;"><span class="uis-overline">Ask before any design</span>'
+          '<ol class="uis-body-s" style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">' + ''.join('<li>' + esc(q) + '</li>' for q in p.get('questions', [])) + '</ol>'
+          '<span class="uis-caption">Then pick the kind (Start here, Kinds page) and put the brand on top. A product may change anything; improvements come back here as a proposal.</span></div>') if p.get('questions') else ''
+    s1 = section('01', 'How it thinks', ('The rules every screen in this preset follows, whatever is built on it.' if is_preset else 'The product rules every screen follows. Read before designing anything new for ' + esc(p['name']) + '.'),
+                 '<div class="uis-card" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px;">' + ''.join(rule(do, esc(t)) for do, t in p['rules']) + '</div>' + qs +
+                 X('Alert', 'tone="warning" title="Gaps and conflicts"', esc(p['gaps'])) +
+                 '<p class="uis-caption" style="margin: 0;">Source: ' + esc(p['source']) + (' Engine preset: packages/core/src/presets.ts.' if is_preset else ' Values from the "Product preset · ' + esc(p['name']) + '" study on the Presets page.') + '</p>')
 
     sw = ('<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px;"><sc-for list="{{swatches}}" as="s" hint-placeholder-count="36">'
           '<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;"><div style="height: 64px; border-radius: var(--uis-r-inner); background: {{s.css}}; border: 1px solid var(--uis-line);"></div>'
           '<span style="font: 600 12px/1.2 var(--uis-font-mono); color: var(--uis-ink);">{{s.role}}</span><span style="font: 400 11.5px/1.2 var(--uis-font-mono); color: var(--uis-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.hex}}</span>'
           '<span class="uis-caption" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.use}}</span><span style="font: 600 10.5px/1 var(--uis-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: {{s.srcInk}};">{{s.src}}</span></div></sc-for></div>')
-    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this variant. <strong>Source</strong> = pinned from the product. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
+    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this ' + ('skin' if is_preset else 'variant') + '. <strong>Source</strong> = pinned ' + ('by the preset or the skin' if is_preset else 'from the product') + '. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
                  '<p class="uis-caption" style="margin: 0;">Seeds: {{seeds}}</p>')
 
     ct = ('<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;"><sc-for list="{{pairs}}" as="k" hint-placeholder-count="35">'
@@ -212,11 +241,11 @@ def sheet(p):
                                               '<span style="font: 500 12px/1.3 var(--uis-font-mono); color: var(--uis-ink-3);">' + name + '</span><span class="' + cls + '" style="margin: 0; min-width: 0;">' + sample + '</span>'
                                               '<span style="font: 400 12px/1.4 var(--uis-font-mono); color: var(--uis-ink-2);">' + metric + '</span></div>')
     s4 = section('04', 'Typography', 'Display and headings use the display face; body, labels and tables the body face. {{fontNote}}',
-                 '<div>' + trow('display-xl', 'uis-display-xl', c['headline'], '{{tDisplay}} · 64') + trow('display-l', 'uis-display-l', c['headline'], '{{tDisplay}} · 48') + trow('display-m', 'uis-display-m', c['headline'], '{{tDisplay}} · 36') +
+                 '<div>' + trow('display-xl', 'uis-display-xl', esc(c['headline']), '{{tDisplay}} · 64') + trow('display-l', 'uis-display-l', esc(c['headline']), '{{tDisplay}} · 48') + trow('display-m', 'uis-display-m', esc(c['headline']), '{{tDisplay}} · 36') +
                  trow('h1', 'uis-h1', 'Page title', '{{tHeading}} · 30') + trow('h2', 'uis-h2', 'Section title', '{{tHeading}} · 24') + trow('h3', 'uis-h3', 'Card title', '{{tHeading}} · 20') +
                  trow('body-l', 'uis-body-l', 'Lead paragraph that sets up the page in one sentence.', '{{tBody}} · 18 / 1.6') + trow('body', 'uis-body', 'Body text for descriptions, forms and messages.', '{{tBody}} · 16 / 1.55') +
                  trow('body-s', 'uis-body-s', 'Dense UI, tables, helper text.', '{{tBody}} · 14 / 1.5') + trow('caption', 'uis-caption', 'Caption · meta · timestamps', '{{tBody}} · 12') +
-                 trow('overline', 'uis-overline', 'Section kicker', '{{tBody}} · 11 · 600 · caps') + trow('button', 'uis-body', BTN(c['cta']), '{{tButton}}') +
+                 trow('overline', 'uis-overline', 'Section kicker', '{{tBody}} · 11 · 600 · caps') + trow('button', 'uis-body', BTN(esc(c['cta'])), '{{tButton}}') +
                  trow('numbers', 'uis-h2', '<span style="font-variant-numeric: tabular-nums;">0123456789</span>', 'tabular-nums for money and dates') + '</div>')
 
     rad = ('<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px;"><sc-for list="{{radii}}" as="r" hint-placeholder-count="10">'
@@ -230,17 +259,17 @@ def sheet(p):
                  cell('Radius', rad) + cell('Control heights', hts) + cell('Card padding · gap', '<span class="uis-body-s">pad-card <strong>{{padCard}}</strong> · gap <strong>{{gapV}}</strong> · focus ring <strong>{{ringV}}</strong> · checkbox edge <strong>{{checkV}}</strong></span>') + cell('Shadows', shd))
 
     VARS = [('primary', 'One main action per screen'), ('accent', 'Highlight moment'), ('secondary', 'Second action'), ('outline', 'Neutral, cancel'), ('ghost', 'Low emphasis'), ('soft', 'Tinted secondary'), ('danger', 'Destructive')]
-    bvar = grid(2, [cell(v + ' · ' + n, row(BTN(c['cta'] if v == 'primary' else v.capitalize(), 'variant="' + v + '"'), BTN('With icon', 'variant="' + v + '" icon="plus"'), BTN('', 'variant="' + v + '" icon-only="{{yes}}" icon="more" label="More"'))) for v, n in VARS], 18)
-    bsize = grid(3, [cell(z + ' · {{h_' + z + '}}', row(BTN(c['cta'], 'size="' + z + '"'), BTN('', 'size="' + z + '" icon-only="{{yes}}" icon="plus" label="Add"'))) for z in ['sm', 'md', 'lg']])
+    bvar = grid(2, [cell(v + ' · ' + n, row(BTN(esc(c['cta']) if v == 'primary' else v.capitalize(), 'variant="' + v + '"'), BTN('With icon', 'variant="' + v + '" icon="plus"'), BTN('', 'variant="' + v + '" icon-only="{{yes}}" icon="more" label="More"'))) for v, n in VARS], 18)
+    bsize = grid(3, [cell(z + ' · {{h_' + z + '}}', row(BTN(esc(c['cta']), 'size="' + z + '"'), BTN('', 'size="' + z + '" icon-only="{{yes}}" icon="plus" label="Add"'))) for z in ['sm', 'md', 'lg']])
     st = lambda v, hov: cell(v + ' · states', row(plainbtn(v, 'Default'), plainbtn(v, 'Hover', '--_bg: ' + hov + ';'), plainbtn(v, 'Focus', 'outline: 2px solid var(--uis-focus); outline-offset: 2px;'), plainbtn(v, 'Pressed', 'transform: var(--uis-press);'), plainbtn(v, 'Disabled', '', ' disabled=""'), plainbtn(v, I('refresh', 's16') + 'Saving…', '', ' disabled="" aria-busy="true"')))
     bimg = ('<div style="border-radius: var(--uis-r-card); background: var(--uis-neutral-900); padding: 24px; display: flex; gap: 12px; align-items: center;" data-tone="image"><span style="color: var(--uis-on-image); font: 500 11.5px/1.3 var(--uis-font-mono); margin-right: 8px;">over photos · light, glass</span>' +
-            BTN(c['cta'], 'variant="light"') + BTN(c['cta2'], 'variant="glass"') + '</div>')
+            BTN(esc(c['cta']), 'variant="light"') + BTN(esc(c['cta2']), 'variant="glass"') + '</div>')
     s6 = section('06', 'Buttons', 'Every variant, size and state in this product\'s shape and type. Labels are this product\'s real actions.',
                  cell('Variants', bvar) + cell('Sizes', bsize) + st('primary', 'var(--uis-primary-hover)') + st('outline', 'var(--uis-surface-2)') + st('danger', 'var(--uis-danger-hover)') +
-                 grid(2, [cell('Product actions', row(BTN(c['cta'], 'size="lg"'), BTN(c['cta2'], 'size="lg" variant="outline"'))), cell('Block · phones and forms', '<div style="max-width: 380px;">' + BTN(c['cta'], 'block="{{yes}}" size="lg"') + '</div>')]) + bimg)
+                 grid(2, [cell('Product actions', row(BTN(esc(c['cta']), 'size="lg"'), BTN(esc(c['cta2']), 'size="lg" variant="outline"'))), cell('Block · phones and forms', '<div style="max-width: 380px;">' + BTN(esc(c['cta']), 'block="{{yes}}" size="lg"') + '</div>')]) + bimg)
 
     s7 = section('07', 'Forms', 'Fields, states and choices. Password fields always have the eye on the right.',
-                 grid(3, [cell('Label · input · hint', X('Input', 'label="' + c['field'] + '" placeholder="' + esc(c['placeholder']) + '" hint="Shown to the customer."')),
+                 grid(3, [cell('Label · input · hint', X('Input', 'label="' + esc(c['field']) + '" placeholder="' + esc(c['placeholder']) + '" hint="Shown to the customer."')),
                           cell('Leading icon', X('Input', 'label="Email" icon="mail" type="email" placeholder="you@example.com"')),
                           cell('Search', X('Input', 'variant="search" icon="search" placeholder="Search" aria-label="Search"')),
                           fstate(pid, 'Default', c['placeholder']), fstate(pid, 'Focus', c['placeholder'], 'border-color: var(--uis-focus-field); box-shadow: 0 0 0 var(--uis-focus-ring-width) var(--uis-focus-ring);'),
@@ -256,19 +285,19 @@ def sheet(p):
                  '<div class="uis-card" style="display: grid; grid-template-columns: 110px repeat(3, minmax(0, 1fr)); gap: 12px 20px; align-items: center;">' +
                  '<span></span><span class="uis-caption">soft</span><span class="uis-caption">dot</span><span class="uis-caption">outline</span>' +
                  ''.join('<span style="font: 500 12.5px/1.3 var(--uis-font-mono);">' + t + '</span>' + X('Badge', 'tone="' + t + '"', t.capitalize()) + X('Badge', 'tone="' + t + '" dot="{{yes}}"', t.capitalize()) + X('Badge', 'tone="' + t + '" outline="{{yes}}"', t.capitalize()) for t in TONES) + '</div>' +
-                 grid(2, [cell('This product\'s status words', row(*[X('Badge', 'tone="' + r[3][0] + '" dot="{{yes}}"', r[3][1]) for r in d['rows']])), cell('Product chip · filters', row(X('Badge', 'tone="accent" solid="{{yes}}"', c['chip']), X('Chips', 'items="{{chips}}"')))]))
+                 grid(2, [cell('This product\'s status words', row(*[X('Badge', 'tone="' + r[3][0] + '" dot="{{yes}}"', esc(r[3][1])) for r in d['rows']])), cell('Product chip · filters', row(X('Badge', 'tone="accent" solid="{{yes}}"', esc(c['chip'])), X('Chips', 'items="{{chips}}"')))]))
 
     s9 = section('09', 'Feedback', 'Alerts in four tones, a toast for confirmations, progress for long tasks.',
-                 grid(2, [X('Alert', 'tone="success" title="' + c['alert'][0] + '"', c['alert'][1]), X('Alert', 'tone="info" title="Heads up"', 'Changes save automatically.'),
+                 grid(2, [X('Alert', 'tone="success" title="' + esc(c['alert'][0]) + '"', esc(c['alert'][1])), X('Alert', 'tone="info" title="Heads up"', 'Changes save automatically.'),
                           X('Alert', 'tone="warning" title="Check this"', 'Something needs a second look before it goes out.'), X('Alert', 'tone="danger" title="Could not save"', 'Try again in a moment.')], 16) +
-                 grid(3, [cell('Toast', X('Toast', 'title="' + c['toast'][0] + '"', c['toast'][1])), cell('Progress · 40%', X('Progress', 'value="{{p40}}"')), cell('Progress · done', X('Progress', 'value="{{p100}}"'))]))
+                 grid(3, [cell('Toast', X('Toast', 'title="' + esc(c['toast'][0]) + '"', esc(c['toast'][1]))), cell('Progress · 40%', X('Progress', 'value="{{p40}}"')), cell('Progress · done', X('Progress', 'value="{{p100}}"'))]))
 
-    tcard = X('Card', '', '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong class="uis-h3">' + d['cards'][0] + '</strong><strong style="font-variant-numeric: tabular-nums;">' + d['cards'][1] + '</strong></div>'
-              '<div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">' + X('Badge', 'tone="success" dot="{{yes}}"', d['cards'][2]) + '</div>')
+    tcard = X('Card', '', '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><strong class="uis-h3">' + esc(d['cards'][0]) + '</strong><strong style="font-variant-numeric: tabular-nums;">' + esc(d['cards'][1]) + '</strong></div>'
+              '<div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">' + X('Badge', 'tone="success" dot="{{yes}}"', esc(d['cards'][2])) + '</div>')
     mcard = X('Card', 'flush="{{yes}}"', slot('mc-' + pid.lower(), '16 / 9', 'Photo', ' border-radius: 0;') + '<div style="padding: var(--uis-pad-card); display: flex; flex-direction: column; gap: 6px;"><strong class="uis-h3">[Title]</strong><span class="uis-body-s" style="color: var(--uis-ink-2);">[One line of detail]</span></div>')
     s10 = section('10', 'Cards and data', 'The product\'s own card, stats and table. Every amount, name and date is a placeholder until real data exists.',
                   grid(3, [cell('Record card', tcard), cell('Media card', mcard), cell('Raised', X('Card', 'variant="raised"', '<strong class="uis-h3">Raised card</strong><p class="uis-body-s" style="color: var(--uis-ink-2); margin-top: 8px;">Hover and focus lift with shadow-md.</p>'))]) +
-                  grid(3, [X('Card', '', X('Stat', 'label="' + l + '" value="' + v + '" icon="' + ic + '"')) for l, v, ic in d['stats']], 16) + X('Table', 'columns="{{columns}}" rows="{{rows}}"'))
+                  grid(3, [X('Card', '', X('Stat', 'label="' + esc(l) + '" value="' + esc(v) + '" icon="' + ic + '"')) for l, v, ic in d['stats']], 16) + X('Table', 'columns="{{columns}}" rows="{{rows}}"'))
 
     n = p['nav']
     if n['type'] == 'side':
@@ -290,12 +319,12 @@ def sheet(p):
     s12 = section('12', 'Sample screen', 'A real ' + p['name'] + ' screen built only from UI System parts in this variant.',
                   '<div style="border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden; background: var(--uis-bg);">' + scr + '</div>')
 
-    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this. It becomes a named engine preset only on your word.',
+    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this.' + (' Skins may change anything on top of the preset.' if is_preset else ' It becomes a named engine preset only on your word.'),
                   '<pre style="margin: 0; padding: 20px; max-height: 620px; overflow: auto; border-radius: var(--uis-r-card); background: var(--uis-surface-2); border: 1px solid var(--uis-line); font: 400 12.5px/1.55 var(--uis-font-mono); color: var(--uis-ink); white-space: pre;">{{configJson}}</pre>'
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
     body = '<div style="padding: 64px 72px;">' + header + s1 + s2 + s3 + s4 + s5 + s6 + s7 + s8 + s9 + s10 + s11 + s12 + s13 + '</div>'
-    MEASURED = {'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # tallest variant, rendered locally with the canvas runtime, 2026-11-08
+    MEASURED = {'Ledger': 10191, 'Atelier': 9998, 'Almar': 9088, 'Clickit': 9603, 'Invios': 9712, 'Koussay': 9641, 'Obox': 9326, 'Sahti': 9422, 'Senorita': 9169, 'Vamos': 9121}  # rendered locally with the canvas runtime (Ledger 10146, Atelier 9953 on 2026-11-09 after the reserved hint slot; products 2026-11-08), plus margin
     H = -(-(MEASURED[pid] + 40) // 20) * 20
 
     # ---- data for the script
@@ -336,7 +365,19 @@ def sheet(p):
     for (const k in v.vars) vars[k] = v.vars[k];
     const wrap = 'width: 1440px; min-height: ''' + str(H) + '''px; box-sizing: border-box; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); ' + Object.keys(vars).map(function (k) { return k + ': ' + vars[k]; }).join('; ') + ';';
     const col = th ? th.colors[mode] : {};
-    const pre = cfg.preset && U.PRESETS && U.PRESETS[cfg.preset] ? U.PRESETS[cfg.preset].config : {};
+    const skins = Object.keys(D.variants).map(function (k) {
+      const s = D.variants[k];
+      const sc = JSON.parse(JSON.stringify(s.config));
+      sc.color = Object.assign({}, sc.color || {}, { mode: s.mode });
+      let st = null;
+      try { st = U.buildTheme(sc); } catch (e) { st = null; }
+      const sv = st ? st.vars(s.mode) : {};
+      for (const q in s.vars) sv[q] = s.vars[q];
+      return { key: k, tag: s.tag, note: s.note, current: k === key,
+        style: 'display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px; box-sizing: border-box; border-radius: 16px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body); border: ' + (k === key ? '2px solid var(--uis-primary)' : '1px solid var(--uis-line)') + '; ' + Object.keys(sv).map(function (q) { return q + ': ' + sv[q]; }).join('; ') + ';',
+        wordmark: (s.config.brand && s.config.brand.wordmark) || '[NAME]' };
+    });
+    const pre = cfg.preset && U.PRESETS && U.presetId && U.presetId(cfg.preset) ? U.PRESETS[U.presetId(cfg.preset)].config : {};
     const prc = pre.color || {};
     const pins = Object.assign({}, mode === 'dark' ? prc.pinDark : prc.pin, mode === 'dark' ? cfg.color.pinDark : cfg.color.pin);
     const seedKeys = ['primary', 'accent', 'success', 'warning', 'danger', 'info'];
@@ -358,7 +399,7 @@ def sheet(p):
     const c = cfg.color;
     const seeds = seedKeys.filter(function (k) { return seedSet[k]; }).map(function (k) { return k + ' ' + seedSet[k]; }).join(' · ') || 'preset seeds';
     return {
-      wrap: wrap, err: err, hasErr: !!err, yes: true, no: false,
+      wrap: wrap, skins: skins, err: err, hasErr: !!err, yes: true, no: false,
       s14: 14, s16: 16, s18: 18, s20: 20, s22: 22, p27: 27, p40: 40, p68: 68, p100: 100,
       vKey: key, vTag: v.tag, vNote: v.note, modeLabel: mode === 'dark' ? 'Dark' : 'Light',
       swatches: swatches, pairs: pairs, passCount: rep.filter(function (x) { return x.pass; }).length, pairCount: rep.length, seeds: seeds,
@@ -379,21 +420,25 @@ def sheet(p):
 '''
     fams = {}
     for f in ('family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Manrope:wght@400..800&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&family=Archivo:wdth,wght@75..125,700..900&' + p['fonts'] + ''.join('&' + v['fonts'] for v in p['variants'] if v['fonts'])).split('&'):
-        if f: fams[f.split(':')[0]] = f
+        if f:
+            assert FONT_SPEC.match(f), 'bad font spec: ' + f
+            fams[f.split(':')[0]] = f
     fonts = 'https://fonts.googleapis.com/css2?' + '&'.join(fams.values()) + '&display=swap'
-    root_attrs = ('preset="retail-editorial" ' if p['engine'] else '') + 'mode="{{modeAttr}}" wordmark="' + esc(p['name']) + '" caption="" logo-mark="none" logo-variant="wordmark" style="display: block;"'
-    html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>' + title + '</title>\n<script src="./support.js"></script>\n'
+    root_attrs = (('preset="' + p.get('preset', 'atelier') + '" ') if p['engine'] else '') + 'mode="{{modeAttr}}" wordmark="' + esc(p['name']) + '" caption="" logo-mark="none" logo-variant="wordmark" style="display: block;"'
+    html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>' + esc(title) + '</title>\n<script src="./support.js"></script>\n'
             '<link rel="stylesheet" href="ds/uis/components/bundle.css">\n<script src="ds/uis/components/bundle.js"></script>\n</head>\n<body>\n<x-dc>\n'
-            '<helmet>\n<link rel="stylesheet" href="' + fonts.replace('&', '&amp;') + '">\n<style>body{margin:0}</style>\n</helmet>\n'
+            '<helmet>\n<link rel="stylesheet" href="' + esc(fonts) + '">\n<style>body{margin:0}</style>\n</helmet>\n'
             + X('Root', root_attrs, '\n<div style="{{wrap}}">\n' + body + '\n</div>\n') +
             '\n</x-dc>\n<script type="text/x-dc" data-dc-script data-props=\'' + json.dumps(props, separators=(',', ':')) + '\'>\n' + script.replace("vKey: key,", "vKey: key, modeAttr: mode,") + '</script>\n</body>\n</html>\n')
     assert html.count('<x-import') == html.count('</x-import>'), pid
     assert "'" not in json.dumps(props), pid
-    name = 'Sheet-Preset-' + pid + '.dc.html'
-    open(OUT + '/' + name, 'w').write(html)
+    name = ('Sheet-' if is_preset else 'Sheet-Preset-') + pid + '.dc.html'
+    with open(OUT + '/' + name, 'w', encoding='utf-8') as fh:
+        fh.write(html)
     MADE[name] = (title, 1440, H)
 
-for p in PRODUCTS:
+for p in PRESET_SHEETS:
     sheet(p)
-json.dump(MADE, open(OUT + '/made-presets.json', 'w'), indent=1)
+with open(OUT + '/made-presets.json', 'w', encoding='utf-8') as fh:
+    json.dump(MADE, fh, indent=1)
 print(len(MADE), 'sheets:', ', '.join(k + ' ' + str(v[2]) for k, v in MADE.items()))
