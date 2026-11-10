@@ -9,6 +9,16 @@ export interface FontPreset {
   displayWeight: number;
   /** Letter spacing for display sizes. */
   displayTracking: string;
+  /** Display letter case. Default none. */
+  displayCase?: 'upper';
+  /** font-stretch for display and headings (width-axis fonts). Default 100%. */
+  displayStretch?: string;
+  /** h1–h3 use the display face, weight, case and tracking instead of the body face. */
+  headings?: 'display';
+  /** Button face and metrics. Default: body face, 600, size and tracking from buttonCase. */
+  button?: { font: 'display' | 'body'; weight: number; size: number; tracking: string; stretch?: string };
+  /** Wordmark metrics. Default: 650, tracking from wordmarkCase. */
+  wordmark?: { weight: number; tracking: string; stretch?: string };
   note: string;
 }
 
@@ -19,11 +29,14 @@ export const FONT_PRESETS: Record<FontPresetId, FontPreset> = {
   editorial: { id: 'editorial', label: 'Editorial', display: 'Fraunces', body: 'Inter', mono: 'JetBrains Mono', displayWeight: 500, displayTracking: '-0.015em', note: 'Soft serif headlines over a neutral sans. Hospitality, food, lifestyle.' },
   grotesk: { id: 'grotesk', label: 'Grotesk', display: 'Space Grotesk', body: 'Inter', mono: 'Space Mono', displayWeight: 600, displayTracking: '-0.03em', note: 'Characterful grotesk. Tech, creative studios, launches.' },
   humanist: { id: 'humanist', label: 'Humanist', display: 'Manrope', body: 'Manrope', mono: 'JetBrains Mono', displayWeight: 700, displayTracking: '-0.025em', note: 'Friendly and open. Consumer apps, services.' },
+  retail: { id: 'retail', label: 'Retail', display: 'Archivo', body: 'Inter', mono: 'JetBrains Mono', displayWeight: 900, displayTracking: '0.025em', displayCase: 'upper', displayStretch: '92%', headings: 'display', button: { font: 'display', weight: 900, size: 16, tracking: '0.025em', stretch: '88%' }, wordmark: { weight: 900, tracking: '0.06em', stretch: '110%' }, note: 'Heavy uppercase width-axis grotesk over Inter. Fashion and retail storefronts.' },
   classic: { id: 'classic', label: 'Classic', display: 'Instrument Serif', body: 'Instrument Sans', mono: 'JetBrains Mono', displayWeight: 400, displayTracking: '-0.01em', note: 'Elegant high-contrast serif. Luxury, real estate, fashion.' },
 };
 
 const AXES: Record<string, string> = {
   Inter: 'wght@400..700',
+  Archivo: 'wdth,wght@75..125,700..900',
+  Poppins: 'wght@400;500;600;700',
   'Inter Tight': 'wght@400..700',
   Geist: 'wght@400..700',
   'Geist Mono': 'wght@400..600',
@@ -42,6 +55,11 @@ export interface ResolvedType {
   mono: string;
   displayWeight: number;
   displayTracking: string;
+  displayCase: 'uppercase' | 'none';
+  displayStretch: string;
+  headings: 'display' | 'body';
+  button?: FontPreset['button'];
+  wordmark?: FontPreset['wordmark'];
   buttonCase: 'normal' | 'upper';
   stacks: { display: string; body: string; mono: string };
 }
@@ -62,6 +80,11 @@ export function resolveType(cfg: TypeConfig): ResolvedType {
     display, body, mono,
     displayWeight: cfg.display ? 600 : preset.displayWeight,
     displayTracking: preset.displayTracking,
+    displayCase: preset.displayCase === 'upper' ? 'uppercase' : 'none',
+    displayStretch: preset.displayStretch ?? '100%',
+    headings: preset.headings ?? 'body',
+    button: preset.button,
+    wordmark: preset.wordmark,
     buttonCase: cfg.buttonCase,
     stacks: {
       display: stack(display, SERIFS.includes(display) ? SERIF : SANS),

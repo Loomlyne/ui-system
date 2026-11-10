@@ -1,12 +1,26 @@
 UI System is a brand-agnostic design system. It ships structure, not a brand: every project sets its own colors, shape, type and logo through one config, and every component follows. Nothing from a previous client is prebuilt.
 
+## What is inside
+
+| part | what it gives you | where |
+|---|---|---|
+| Engine | Three color seeds, a roundness dial, a font preset and a density become every `--uis-*` variable, light and dark, contrast-checked at 4.5:1. | Root props, `ui.config.json` |
+| Presets | Ways of designing on top of the engine: `ledger` (round and clean) and `atelier` (sharp and editorial). Not tied to a product. | Root `preset` |
+| Kinds | What you build, picked separately: shop, app, website, booking, portfolio. Each names its pages and questions; sets no values. | Root `kind` |
+| 38 components | Buttons, forms, feedback, data, overlays, 6 website navs, 5 app shells, motion. | Components in this design system |
+| Icons | Hugeicons free stroke-rounded set (MIT), 85 named icons. | `UIS.Icon`, Assets › Icons |
+| Marks and avatars | Placeholder logo marks until the client's logo exists; DiceBear avatars for people without a photo. | Assets › Marks, Avatars |
+
+The working canvas is **UI System · Canvas**: Start here (the preset, kind and brand questions), Foundations, Components, Patterns, Navigation, Use cases, Presets (one sheet per preset, products shown as skins side by side) and Kinds (page sets), every board driven by the same Tweaks.
+
 ## Start every design here
 
 1. Mount the bundle and wrap each artboard or page in `UIS.Root`. Pass the project's brand as props on Root, never on individual components:
    `<x-import component-from-global-scope="UIS.Root" primary="#…" accent="#…" roundness="{{60}}" pill="{{false}}" font-preset="modern" wordmark="Client" logo-mark="monogram" logo-placement="left">…</x-import>`
 2. Build screens from the real components (`UIS.NavIsland`, `UIS.AppShell`, `UIS.Button`…). Style your own markup with the `--uis-*` variables Root writes (`var(--uis-primary)`, `var(--uis-ink-2)`, `var(--uis-r-card)`), never raw hex.
-3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every preset), or the single-preset URL `theme.fontsUrl` returns.
-4. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
+3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Archivo:wdth,wght@75..125,700..900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every preset), or the single-preset URL `theme.fontsUrl` returns.
+4. Before any design, ask the preset questions (corners square or round, headings condensed caps or calm sans, photos or numbers lead) and the kind questions (see Kinds). Then add `preset="ledger"` or `preset="atelier"` and `kind="…"` on Root; any other prop still wins, and the brand goes on top.
+5. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
 
 The same config drives code: `ui.config.json` in the repo builds theme.css, a Tailwind v4 theme and this tokens.json (`ui-system build`).
 
@@ -34,6 +48,7 @@ One `roundness` value (0–100) scales every radius role together; `pill` turns 
 | chip | `radius-chip` | badges, tags | 0 | 10 |
 | control | `radius-control` | buttons, nav items, tabs | 0 | 14 (pill: 999) |
 | field | `radius-field` | inputs, selects | 0 | 14 (pill: 999) |
+| search | `radius-search` | search fields | 0 | 14 (pill: 999) |
 | card | `radius-card` | cards, tables | 0 | 24 |
 | panel | `radius-panel` | popovers, drawers, dialogs, inset panels | 0 | 32 |
 | media | `radius-media` | images, video | 0 | 22 |
@@ -52,9 +67,37 @@ Pick a preset with `fontPreset` (all Google Fonts), or override `displayFont`/`b
 | `editorial` | Fraunces | Inter | JetBrains Mono | Soft serif headlines over a neutral sans. Hospitality, food, lifestyle. |
 | `grotesk` | Space Grotesk | Inter | Space Mono | Characterful grotesk. Tech, creative studios, launches. |
 | `humanist` | Manrope | Manrope | JetBrains Mono | Friendly and open. Consumer apps, services. |
+| `retail` | Archivo | Inter | JetBrains Mono | Heavy uppercase width-axis grotesk over Inter. Fashion and retail storefronts. |
 | `classic` | Instrument Serif | Instrument Sans | JetBrains Mono | Elegant high-contrast serif. Luxury, real estate, fashion. |
 
 Styles: `display-2xl` 80, `display-xl` 64, `display-l` 48, `display-m` 36 in the display face (they shrink on small screens); `h1` 30, `h2` 24, `h3` 20, `body-l` 18, `body` 16, `body-s` 14, `label` 13, `caption` 12, `overline` 11 uppercase. CSS classes carry the same names with a `uis-` prefix. `buttonCase="upper"` sets buttons and the menu button in spaced capitals. Sentence case everywhere else.
+
+## Presets
+
+A preset is a way of designing, not a product (color pins, shape, type, sizes, shadows, motion, plus rules and questions). Products appear only as "seen in" examples and may override anything. `retail-editorial` is the old name of `atelier` and still works. A project opts in with `preset` on Root or `"preset"` in ui.config.json; every other prop still wins, and the defaults never change. `color.pin` holds exact light-mode values and `color.pinDark` exact dark-mode values; roles a preset leaves unpinned are derived. A new seed drops the preset's pins for that seed's roles, so the contrast gate still holds.
+
+| preset | look | seen in | ask first |
+|---|---|---|---|
+| `atelier` | Sharp and editorial. Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Photos carry the colour. | Senorita, ALMAR | What photo leads each page? What are the collections or categories? What is the one action per page (add to bag, book)? Light only, or dark too? |
+| `ledger` | Round and clean. Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. | Invios, Clickit | What is the one action on this page? Which numbers must line up? Light, dark, or both? Which status words are used (paid, draft, overdue)? |
+
+`atelier`: ink `#2D2A26` on white, hairlines `#E5E2DE` (decorative only), control borders `#8F8B86`, grey `#F4F4F4` photo wells and search pill, off-white `#FAF8F5` panels, tan `#8C6250` tags and hover, sand `#B49A87` (accent-soft) with ink text, never white, sale red `#CD2D2D`, green `#1F7A4D` for WhatsApp and success, burgundy `#7E1F33` for the wordmark only. 2px controls, square cards and media, pill search. Archivo 900 uppercase headings and buttons over Inter 400/700. 52px buttons and inputs, 44px icon buttons and tabs, 56px large. 2px gaps between product tiles (`space-1`). No card shadows. 150/200/300ms motion, press scales to 0.96.
+
+Atelier decisions (signed 2026-11-07 as retail-editorial): app sidebar on off-white `#FAF8F5` with a white current item and a 2px ink start bar; info is ink on grey `#F4F4F4` (the source has no info color, warning stays tan); a designed dark mode (ground `#141210`, ink `#F3EFEA`, sand stays sand, wordmark `#D27A89`); search pill edge `#8F8B86` on hover; 1px checkbox edge like every other control.
+
+`ledger`: near-black ink `#0d0d0d` on warm off-white `#FBF9F6`, gold `#eab308` for the one primary action per page, warm greys from `#78736a`, green, orange and red status shown as dot plus word. Radius preset round: pill controls, 22px cards, 29px panels. Poppins 400/500/600 with Geist Mono for tabular money. Comfortable 36/44/52 controls, hairlines, no shadows, motion off. Pins nothing, so dark mode is derived.
+
+## Kinds
+
+What you build, picked separately from the preset; any kind works in any preset and sets no values. Ask its questions first, then draw its pages in the chosen preset.
+
+| kind | for | pages | ask first |
+|---|---|---|---|
+| `shop` | A store with products, a bag and checkout, plus the admin that runs it. | Home, Listing, Product, Bag, Checkout, Account, Admin orders | How many products and categories? Which payment and delivery options? Do customers sign in, or check out as guests? Which languages and currencies? |
+| `app` | A signed-in tool for work: dashboards, records, forms and settings. | Sign in, Overview, List, Detail, Form, Settings | Does it take or track money? Who signs in (staff, customers, both)? Mostly phone or desk? Which records does it hold (invoices, clients, orders)? |
+| `website` | A public site that explains and converts: landing, about, contact. | Landing, Features or services, About, Pricing, Contact | What is the one action a visitor should take? Static pages, or content that changes (blog, CMS)? Which proof exists (clients, numbers, quotes)? Which languages? |
+| `booking` | Pick a time, place or service, confirm and pay; often on a phone. | Search, Results, Detail, Book, Confirmation, My bookings | What is booked (ride, stay, slot)? Is payment taken now, as a deposit, or later? Is there a map? Phone first? |
+| `portfolio` | Work, people and contact for a person or studio. | Home, Work, Case study, About, Contact | Whose work (person, studio, talent)? How many projects, and are there videos? Is there a private admin behind it? How do people get in touch? |
 
 ## Logo
 
@@ -100,11 +143,11 @@ Use `UIS.Reveal` for entrances (fade-up, fade, scale-in, slide, blur-in, with `s
 - **References first:** before designing a screen or section, look at real products on Mobbin (screens, flows, website sections) and cite what you borrowed.
 - **React Bits** (reactbits.dev): animated text, backgrounds and effects. Install the TS-TW or TS-CSS variant (`npx shadcn@latest add @react-bits/<Name>-TS-TW`) and replace its colors with `var(--uis-*)`.
 - **Untitled UI React** (MIT open-source components): install with its CLI, then import `@ui-system/core/untitled-ui.css` so its brand scale, greys and fonts follow this system.
-- Avatars come from DiceBear, animation from anime.js. Do not add a second icon set, avatar source or animation library.
+- Avatars come from DiceBear, animation from anime.js. Icons come from Hugeicons only. Do not add a second icon set, avatar source or animation library.
 
 ## Iconography
 
-Use `UIS.Icon` by name: stroke icons on a 24px grid at 1.75 stroke with round joins, drawn for this system and inheriting text color. No emoji, no second icon set. Icon-only buttons always carry a `label`.
+Every icon comes from **Hugeicons** (hugeicons.com), the free stroke-rounded set (MIT, `@hugeicons/core-free-icons`). Use `UIS.Icon` by name: 24px grid, 1.5 stroke, round caps and joins, inheriting text color. Sizes: 16 in tables and badges, 18 in buttons and nav items, 20–24 standalone. Status tones carry their own icon (`info`, `check-circle`, `warning`, `x-circle`). Need a new one? Pick the closest Hugeicons glyph and add a name; never draw a path, use emoji or mix in another set. Icon-only buttons always carry a `label`.
 
 ## Content fundamentals
 

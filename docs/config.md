@@ -5,6 +5,12 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 ## name
 Project name. Used by exports.
 
+## preset
+Optional preset, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [presets.md](presets.md).
+
+## kind
+Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Sets no values; tools read it for the page set and questions. See [kinds.md](kinds.md).
+
 ## brand
 
 | Key | Type | Default | Notes |
@@ -21,6 +27,7 @@ Project name. Used by exports.
 | `wordmarkCase` | `normal` `upper` | `normal` | Upper adds wide tracking. |
 | `wordmarkFont` | `display` `body` | `display` | |
 | `markTone` | `current` `primary` | `current` | `current` follows the text color (works on photos and dark bars); `primary` fills with the brand color. |
+| `wordmarkColor` | hex | | Wordmark color. Unset follows the text. Dark mode derives a 4.5:1 step; photos and inverse panels follow the text. |
 
 ## color
 
@@ -31,8 +38,10 @@ Project name. Used by exports.
 | `neutral` | `#77736B` | Tints every grey. `"auto"` borrows the primary's hue. |
 | `success` `warning` `danger` `info` | green, amber, red, blue | Status roles. |
 | `mode` | `light` | Default theme. Dark is always generated too. |
+| `pin` | | Exact light-mode values on generated roles: `{ "line": "#E5E2DE" }`. Any role below without `--uis-`. Unknown keys throw. |
+| `pinDark` | | Same for dark mode. Roles you leave out are derived from the scales. |
 
-Generated per role: `{role}`, `{role}-hover`, `{role}-ink` (text on the fill), `{role}-soft` (tinted background), `{role}-soft-ink`, `{role}-text` (the role as text on the page). Neutral roles: `bg`, `surface`, `surface-2`, `surface-3`, `line`, `line-strong`, `ink`, `ink-2`, `ink-3`, `inverse`, `inverse-ink`, `on-image`, `scrim`, `image-scrim`, `float-bg`, `float-border`, `focus`. Scales: `primary-50…950`, `accent-50…950`, `neutral-0…975`, and the status scales. All as CSS variables prefixed `--uis-`.
+Generated per role: `{role}`, `{role}-hover`, `{role}-ink` (text on the fill), `{role}-soft` (tinted background), `{role}-soft-ink`, `{role}-text` (the role as text on the page). Neutral roles: `bg`, `surface`, `surface-2`, `surface-3`, `line`, `line-strong`, `ink`, `ink-2`, `ink-3`, `inverse`, `inverse-ink`, `on-image`, `scrim`, `image-scrim`, `float-bg`, `float-border`, `focus`, `focus-field`, `focus-ring`, `search-bg`, `search-border`, `search-border-hover`, `nav-bg`, `nav-active-bg`, `nav-active-ink`, `nav-active-bar` (side nav start bar, `transparent` = none), `wordmark`. Scales: `primary-50…950`, `accent-50…950`, `neutral-0…975`, and the status scales. All as CSS variables prefixed `--uis-`.
 
 ## radius
 
@@ -40,7 +49,7 @@ Generated per role: `{role}`, `{role}-hover`, `{role}-ink` (text on the fill), `
 | --- | --- | --- |
 | `roundness` | `60` | 0–100. Scales every role. |
 | `pill` | `false` | Full pills for `chip`, `control`, `field`, `shell`. |
-| `overrides` | | Pin any role in px: `{ "card": 8 }`. |
+| `overrides` | | Pin any role in px: `{ "card": 8 }`. Roles: `chip` `control` `field` `search` `card` `panel` `media` `shell`, plus `avatar` (999 = circle). |
 
 See [radius.md](radius.md).
 
@@ -48,12 +57,18 @@ See [radius.md](radius.md).
 
 | Key | Default | Notes |
 | --- | --- | --- |
-| `preset` | `modern` | `modern` Inter Tight/Inter, `geometric` Geist, `editorial` Fraunces/Inter, `grotesk` Space Grotesk/Inter, `humanist` Manrope, `classic` Instrument Serif/Instrument Sans. |
+| `preset` | `modern` | `modern` Inter Tight/Inter, `geometric` Geist, `editorial` Fraunces/Inter, `grotesk` Space Grotesk/Inter, `humanist` Manrope, `classic` Instrument Serif/Instrument Sans, `retail` Archivo/Inter (uppercase 900 headings and buttons). |
 | `display` `body` `mono` | | Any Google Fonts family, overrides the preset. |
 | `buttonCase` | `normal` | `upper` for spaced capitals on buttons. |
 
 ## density
 `compact` (32/38/46 px controls), `comfortable` (36/44/52), `spacious` (40/48/56).
+
+## sizes
+Pin px over the density values: `sm`, `md`, `lg` (control heights), `pad` (card padding), `gap`, `ring` (field focus ring width, default 4), `check` (checkbox edge width, default 1.5), `hint` (space kept under every labelled field for its hint or error, default 18 = one line, so fields line up whether or not they have a hint; unlabelled fields reserve nothing; `0` removes the slot and lets hints push). Write hints and errors as one line: a longer one wraps and pushes what is below it.
+
+## space
+Spacing scale in px for token exports. Default `[4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]`.
 
 ## surface
 
@@ -62,6 +77,7 @@ See [radius.md](radius.md).
 | `float` | `solid` | `glass` frosts floating navs, docks and popovers. |
 | `shadow` | `medium` | `none`, `soft`, `medium`, `deep`. |
 | `border` | `hairline` | `none` removes card borders. |
+| `shadows` | | Exact light-mode `sm` `md` `lg` `float` box-shadows. Dark follows `shadow`. |
 
 ## nav
 
@@ -84,5 +100,6 @@ People without a photo get a DiceBear avatar seeded by their name (CC0). Pass `s
 | --- | --- | --- |
 | `enabled` | boolean | `true` |
 | `intensity` | `subtle`, `expressive` | `subtle` |
+| `timing` | `{ fast, base, slow }` ms, `easeOut`, `easeInOut`, `press` | 160 / 280 / 500, engine curves, `translateY(1px)` |
 
 Drives `Reveal` and `CountUp` (anime.js). Visitors with reduced motion always see the final state.

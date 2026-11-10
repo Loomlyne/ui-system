@@ -80,6 +80,10 @@
             "current",
             "primary"
           ]
+        },
+        "wordmarkColor": {
+          "type": "string",
+          "description": "Wordmark hex. Unset follows the text color."
         }
       }
     },
@@ -115,6 +119,20 @@
             "light",
             "dark"
           ]
+        },
+        "pin": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Exact light-mode values on generated roles (bg, line, ink-2, primary-hover, focus-field, search-bg, nav-bg...)."
+        },
+        "pinDark": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Exact dark-mode values on the same roles. Unpinned dark roles are derived."
         }
       }
     },
@@ -154,6 +172,12 @@
             },
             "shell": {
               "type": "number"
+            },
+            "search": {
+              "type": "number"
+            },
+            "avatar": {
+              "type": "number"
             }
           }
         }
@@ -169,7 +193,8 @@
             "editorial",
             "grotesk",
             "humanist",
-            "classic"
+            "classic",
+            "retail"
           ]
         },
         "display": {
@@ -219,6 +244,24 @@
             "hairline",
             "none"
           ]
+        },
+        "shadows": {
+          "type": "object",
+          "properties": {
+            "sm": {
+              "type": "string"
+            },
+            "md": {
+              "type": "string"
+            },
+            "lg": {
+              "type": "string"
+            },
+            "float": {
+              "type": "string"
+            }
+          },
+          "description": "Exact light-mode box-shadows."
         }
       }
     },
@@ -272,8 +315,86 @@
             "subtle",
             "expressive"
           ]
+        },
+        "timing": {
+          "type": "object",
+          "properties": {
+            "fast": {
+              "type": "number"
+            },
+            "base": {
+              "type": "number"
+            },
+            "slow": {
+              "type": "number"
+            },
+            "easeOut": {
+              "type": "string"
+            },
+            "easeInOut": {
+              "type": "string"
+            },
+            "press": {
+              "type": "string"
+            }
+          }
         }
       }
+    },
+    "preset": {
+      "enum": [
+        "ledger",
+        "atelier",
+        "retail-editorial"
+      ],
+      "description": "Preset: a way of designing, applied between the defaults and your keys. ledger = round and clean, atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/presets.md."
+    },
+    "kind": {
+      "enum": [
+        "shop",
+        "app",
+        "website",
+        "booking",
+        "portfolio"
+      ],
+      "description": "What you build, picked separately from the preset. Sets no values; tools read it for the page set and questions. See docs/kinds.md."
+    },
+    "sizes": {
+      "type": "object",
+      "properties": {
+        "sm": {
+          "type": "number"
+        },
+        "md": {
+          "type": "number"
+        },
+        "lg": {
+          "type": "number"
+        },
+        "pad": {
+          "type": "number"
+        },
+        "gap": {
+          "type": "number"
+        },
+        "ring": {
+          "type": "number"
+        },
+        "check": {
+          "type": "number"
+        },
+        "hint": {
+          "type": "number"
+        }
+      },
+      "description": "Pin control heights, card padding/gap, field focus ring width, checkbox edge width and the space reserved under a field for its hint or error, in px."
+    },
+    "space": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Spacing scale in px for token exports."
     }
   }
 }

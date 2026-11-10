@@ -68,10 +68,10 @@ export function Badge({ tone = 'neutral', solid, outline, dot, className, style,
 }
 
 /* ---------- Fields ---------- */
-let fieldId = 0;
+// React.useId: stable across server and client render, so label/aria ids hydrate.
 const useFieldId = (id?: string) => {
-  const ref = React.useRef(id ?? `uis-f${++fieldId}`);
-  return id ?? ref.current;
+  const auto = React.useId();
+  return id ?? `uis-f${auto.replace(/:/g, '')}`;
 };
 
 export interface FieldProps { label?: string; hint?: string; error?: string; id?: string; className?: string; style?: React.CSSProperties; children?: React.ReactNode }
@@ -80,7 +80,9 @@ export function Field({ label, hint, error, id, className, style, children }: Fi
     <div className={cx('uis-field', className)} style={style}>
       {label ? <label className="uis-label" htmlFor={id}>{label}</label> : null}
       {children}
-      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : null}
+      {/* A labelled field keeps one line for its hint or error (--uis-hint-reserve), so a hint never moves the fields around it.
+          Unlabelled fields reserve nothing; sizes.hint = 0 hides the empty slot (--uis-hint-slot). */}
+      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : label ? <span className="uis-hint" aria-hidden /> : null}
     </div>
   );
 }
@@ -92,14 +94,24 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   icon?: IconName | string;
   kbd?: string;
   size?: 'sm' | 'md';
+  /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in atelier). */
+  variant?: 'default' | 'search';
 }
-export function Input({ label, hint, error, icon, kbd, size = 'md', id, className, style, ...rest }: InputProps) {
+export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, type, className, style, ...rest }: InputProps) {
   const fid = useFieldId(id);
+  // Password fields always get a show/hide eye on the physical right, in RTL too.
+  const isPassword = type === 'password';
+  const [shown, setShown] = React.useState(false);
   const control = (
-    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd')}>
+    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd', isPassword && 'uis-control--reveal')}>
       {icon ? <Icon name={icon} /> : null}
-      <input id={fid} className={cx('uis-input', size === 'sm' && 'uis-input--sm', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
+      <input id={fid} type={isPassword && shown ? 'text' : type} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
       {kbd ? <span className="uis-kbd">{kbd}</span> : null}
+      {isPassword ? (
+        <button type="button" className="uis-reveal" aria-label={shown ? 'Hide password' : 'Show password'} aria-pressed={shown} aria-controls={fid} disabled={rest.disabled} onClick={() => setShown((v) => !v)}>
+          <Icon name={shown ? 'eye-off' : 'eye'} />
+        </button>
+      ) : null}
     </div>
   );
   if (!label && !hint && !error) return <div className={className} style={style}>{control}</div>;
@@ -208,7 +220,7 @@ export function Tooltip({ children, className, style }: { children?: React.React
   return <span role="tooltip" className={cx('uis-tooltip', className)} style={style}>{children}</span>;
 }
 
-export function Toast({ title, children, icon = 'check', action, className, style }: { title?: string; children?: React.ReactNode; icon?: IconName | string; action?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+export function Toast({ title, children, icon = 'check-circle', action, className, style }: { title?: string; children?: React.ReactNode; icon?: IconName | string; action?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
     <div role="status" className={cx('uis-toast', className)} style={style}>
       <Icon name={icon} className="uis-toast__icon" />
@@ -219,7 +231,7 @@ export function Toast({ title, children, icon = 'check', action, className, styl
 }
 
 export function Alert({ tone = 'info', title, children, icon, className, style }: { tone?: 'info' | 'success' | 'warning' | 'danger'; title?: string; children?: React.ReactNode; icon?: IconName | string; className?: string; style?: React.CSSProperties }) {
-  const ic = icon ?? (tone === 'success' ? 'check' : tone === 'info' ? 'help' : 'bolt');
+  const ic = icon ?? { info: 'info', success: 'check-circle', warning: 'warning', danger: 'x-circle' }[tone];
   return (
     <div role={tone === 'danger' ? 'alert' : 'status'} className={cx('uis-alert', tone !== 'info' && `uis-alert--${tone}`, className)} style={style}>
       <Icon name={ic} size={18} style={{ marginTop: 2 }} />

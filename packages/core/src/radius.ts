@@ -9,16 +9,17 @@ import type { RadiusConfig, RadiusRole } from './config';
  *   chip      0      10       999
  *   control   0      14       999   buttons, nav items, segmented tabs
  *   field     0      14       999   inputs, selects
+ *   search    0      14       999   search fields (same as field unless pinned)
  *   card      0      24       -
  *   panel     0      32       -     popovers, drawers, dialogs, inset panels
  *   media     0      22       -     images, video, thumbnails
  *   shell     0      22       999   floating nav bars, docks, islands
  */
 
-export const RADIUS_ROLES: RadiusRole[] = ['chip', 'control', 'field', 'card', 'panel', 'media', 'shell'];
+export const RADIUS_ROLES: RadiusRole[] = ['chip', 'control', 'field', 'search', 'card', 'panel', 'media', 'shell'];
 
-const MAX: Record<RadiusRole, number> = { chip: 10, control: 14, field: 14, card: 24, panel: 32, media: 22, shell: 22 };
-const PILL_ROLES: RadiusRole[] = ['chip', 'control', 'field', 'shell'];
+const MAX: Record<RadiusRole, number> = { chip: 10, control: 14, field: 14, search: 14, card: 24, panel: 32, media: 22, shell: 22 };
+const PILL_ROLES: RadiusRole[] = ['chip', 'control', 'field', 'search', 'shell'];
 export const PILL = 999;
 
 export interface RadiusTokens extends Record<RadiusRole, number> {
@@ -34,10 +35,12 @@ export function buildRadius(cfg: RadiusConfig): RadiusTokens {
   for (const role of RADIUS_ROLES) {
     out[role] = cfg.pill && PILL_ROLES.includes(role) ? PILL : Math.round(MAX[role] * t);
   }
-  for (const [role, px] of Object.entries(cfg.overrides ?? {})) {
-    if (typeof px === 'number' && Number.isFinite(px)) out[role as RadiusRole] = px;
-  }
   out.avatar = cfg.pill || t >= 0.7 ? '50%' : `${Math.round(16 * t)}px`;
+  for (const [role, px] of Object.entries(cfg.overrides ?? {})) {
+    if (typeof px !== 'number' || !Number.isFinite(px)) continue;
+    if (role === 'avatar') out.avatar = px >= PILL ? '50%' : `${px}px`;
+    else out[role as RadiusRole] = px;
+  }
   out.inner = Math.max(0, out.panel - 8);
   return out;
 }
