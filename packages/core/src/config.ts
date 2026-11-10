@@ -241,6 +241,12 @@ function merge<T>(base: T, patch: unknown): T {
 export function resolveConfig(input?: UIConfigInput): UIConfig {
   const id = presetId(input?.preset);
   const out = merge(merge(DEFAULT_CONFIG, id ? PRESETS[id].config : undefined), input ?? {});
+  // A font preset the input picks wins over the preset's own display/body fonts (fonts the input names still win).
+  const t = input?.type;
+  if (t?.preset) {
+    if (t.display === undefined) delete out.type.display;
+    if (t.body === undefined) delete out.type.body;
+  }
   if (id) out.preset = id;
   else delete out.preset;
   return out;
