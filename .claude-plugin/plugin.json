@@ -1,0 +1,10 @@
+{
+  "name": "ui-system",
+  "version": "0.1.0",
+  "description": "UI System as the universal design system: critical design rules plus a /ui command that wires it into any repo.",
+  "author": { "name": "Loomlyne" },
+  "homepage": "https://github.com/Loomlyne/ui-system",
+  "repository": "https://github.com/Loomlyne/ui-system",
+  "license": "MIT",
+  "keywords": ["design-system", "ui", "tokens", "react", "tailwind"]
+}

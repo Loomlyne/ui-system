@@ -1,0 +1,14 @@
+{
+  "name": "loomlyne",
+  "owner": { "name": "Loomlyne" },
+  "plugins": [
+    {
+      "name": "ui-system",
+      "source": "./",
+      "description": "UI System as the universal design system: critical design rules plus a /ui command that wires it into any repo.",
+      "homepage": "https://github.com/Loomlyne/ui-system",
+      "license": "MIT",
+      "keywords": ["design-system", "ui", "tokens"]
+    }
+  ]
+}

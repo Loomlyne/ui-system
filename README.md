@@ -64,6 +64,20 @@ ui.config.json  ──►  @ui-system/core  ──►  theme.css · tailwind.css
    - **Plain HTML, Framer embeds, Shopify**: link `theme.css` and `ui.css`, then use the classes (`uis-btn uis-btn--primary`, `uis-bar`, `uis-card`…). `ui.css` is served by jsDelivr: `https://cdn.jsdelivr.net/gh/Loomlyne/ui-system@main/packages/core/styles/ui.css`.
    - **Claude Design**: pick *UI System* in the Theme menu of any Design canvas, wrap each artboard in `UIS.Root` with the brand props. See [docs/claude-design.md](docs/claude-design.md).
 
+## Use it in any project (Claude Code plugin)
+
+Install once, then it works in every repo, local or cloud:
+
+```bash
+/plugin install ui-system --marketplace Loomlyne/ui-system
+```
+
+- Say "use UI System" in any UI prompt: the `ui-system` skill loads its critical rules.
+- Run `/ui-system:ui [preset] [kind] [what to build]`: detects the stack, installs `@ui-system/core` and `@ui-system/react`, writes `ui.config.json`, wires the theme, adds the rules to the repo's `CLAUDE.md`, and enables the plugin in `.claude/settings.json` for cloud sessions. On a repo with UI of its own it restyles onto UI System, one conflict at a time.
+- Any conflict with a rule: Claude stops and shows two pictures (follows the rule / follows the request) and asks.
+- `npx -p @ui-system/core ui-system check` fails on hard-coded colors, emoji, non-Hugeicons icons, banned motion libraries and fake avatars. Add it as the `ui:check` script.
+- Publishing the packages: run the "Publish packages" workflow (needs the `NPM_TOKEN` secret and the `@ui-system` npm org).
+
 ## The controls
 
 | Control | Values | What it changes |
