@@ -481,55 +481,65 @@ COMMON = {
                     {'label': '[Section]', 'items': [{'label': '[Item D]', 'icon': 'file'}, {'label': '[Settings]', 'icon': 'settings'}]}],
     'navUser': {'name': '[Person A]', 'meta': '[Role]'}, 'crumbs': ['[Product]', '[Page]'],
 }
-TWEAKS = {"skin": {"editor": "enum", "options": ["none"] + SKIN_ORDER, "default": "none", "section": "Skin"},
-          "preset": {"editor": "enum", "options": ["none", "ledger", "atelier", "retail-editorial"], "default": "none", "section": "Preset"},
-          "primary": {"editor": "color", "default": "#1C1B19", "section": "Color", "options": ["#1C1B19", "#2F5D50", "#2F6BD8", "#7A2E3A"]},
-          "accent": {"editor": "color", "default": "#E0562B", "section": "Color", "options": ["#E0562B", "#C4952E", "#2F6BD8", "#1E8E4E"]},
-          "neutral": {"editor": "color", "default": "#77736B", "section": "Color", "options": ["#77736B", "#6B7280", "#7C8579", "#8A7F6A"]},
-          "mode": {"editor": "enum", "options": ["auto", "light", "dark"], "default": "auto", "section": "Color"},
-          "roundness": {"editor": "range", "min": 0, "max": 100, "step": 5, "default": 60, "unit": "%", "section": "Shape"},
-          "pill": {"editor": "boolean", "default": False, "section": "Shape"},
-          "fontPreset": {"editor": "enum", "options": ["modern", "geometric", "editorial", "grotesk", "humanist", "classic", "retail"], "default": "modern", "section": "Type"},
-          "buttonCase": {"editor": "enum", "options": ["normal", "upper"], "default": "normal", "section": "Type"},
-          "surface": {"editor": "enum", "options": ["solid", "glass"], "default": "solid", "section": "Surface"},
-          "density": {"editor": "enum", "options": ["compact", "comfortable", "spacious"], "default": "comfortable", "section": "Surface"},
-          "wordmark": {"editor": "text", "default": "Brand", "section": "Logo"}, "caption": {"editor": "text", "default": "Tagline", "section": "Logo"},
-          "logoMark": {"editor": "enum", "options": ["monogram", "ring", "spark", "stack", "orbit", "none", "custom"], "default": "monogram", "section": "Logo"},
-          "logoVariant": {"editor": "enum", "options": ["lockup", "stacked", "mark", "wordmark"], "default": "lockup", "section": "Logo"},
-          "logoPlacement": {"editor": "enum", "options": ["left", "center", "right"], "default": "left", "section": "Logo"},
-          "logoSrc": {"editor": "text", "default": "", "section": "Logo"}, "markSrc": {"editor": "text", "default": "", "section": "Logo"}}
-ROOT_ATTRS = ('config="{{config}}" preset="{{preset}}" primary="{{primary}}" accent="{{accent}}" neutral="{{neutral}}" mode="{{mode}}" roundness="{{roundness}}" pill="{{pill}}" font-preset="{{fontPreset}}" '
-              'button-case="{{buttonCase}}" surface="{{surface}}" density="{{density}}" wordmark="{{wordmark}}" caption="{{caption}}" logo-mark="{{logoMark}}" logo-variant="{{logoVariant}}" '
-              'logo-placement="{{logoPlacement}}" logo-src="{{logoSrc}}" mark-src="{{markSrc}}" style="display: block;"')
-THEME_KEYS = ['primary', 'accent', 'neutral', 'roundness', 'pill', 'fontPreset', 'buttonCase', 'surface', 'density', 'wordmark', 'caption', 'logoMark', 'logoVariant', 'logoPlacement', 'logoSrc', 'markSrc']
-THEME_JS = ('''  theme() {
+# Tweaks (owner, 2026-11-10: simpler and grouped). One Style pick (engine preset or product skin); every other Tweak
+# starts at "style" and changes the look only when you pick a value, so saved panel defaults never fight the style.
+STYLE_OPTS = ['none', 'ledger', 'atelier'] + SKIN_ORDER
+TWEAKS = {"style": {"editor": "enum", "options": STYLE_OPTS, "default": "none", "section": "1 · Style"},
+          "mode": {"editor": "enum", "options": ["style", "light", "dark"], "default": "style", "section": "1 · Style"},
+          "colors": {"editor": "enum", "options": ["style", "custom"], "default": "style", "section": "2 · Colour"},
+          "primary": {"editor": "color", "default": "#1C1B19", "section": "2 · Colour", "options": ["#1C1B19", "#2F5D50", "#2F6BD8", "#7A2E3A"]},
+          "accent": {"editor": "color", "default": "#E0562B", "section": "2 · Colour", "options": ["#E0562B", "#C4952E", "#2F6BD8", "#1E8E4E"]},
+          "neutral": {"editor": "color", "default": "#77736B", "section": "2 · Colour", "options": ["#77736B", "#6B7280", "#7C8579", "#8A7F6A"]},
+          "shape": {"editor": "enum", "options": ["style", "sharp", "crisp", "soft", "rounded", "round", "pill"], "default": "style", "section": "3 · Shape and type"},
+          "type": {"editor": "enum", "options": ["style", "modern", "geometric", "editorial", "grotesk", "humanist", "classic", "retail"], "default": "style", "section": "3 · Shape and type"},
+          "buttons": {"editor": "enum", "options": ["style", "normal", "upper"], "default": "style", "section": "3 · Shape and type"},
+          "density": {"editor": "enum", "options": ["style", "compact", "comfortable", "spacious"], "default": "style", "section": "3 · Shape and type"},
+          "surface": {"editor": "enum", "options": ["style", "solid", "glass"], "default": "style", "section": "3 · Shape and type"}}
+LOGO_TWEAKS = {"wordmark": {"editor": "text", "default": "Brand", "section": "4 · Logo"},
+               "logoMark": {"editor": "enum", "options": ["monogram", "ring", "spark", "stack", "orbit", "none"], "default": "monogram", "section": "4 · Logo"},
+               "logoVariant": {"editor": "enum", "options": ["lockup", "stacked", "mark", "wordmark"], "default": "lockup", "section": "4 · Logo"},
+               "logoPlacement": {"editor": "enum", "options": ["left", "center", "right"], "default": "left", "section": "4 · Logo"}}
+SHAPES = {'sharp': [0, False], 'crisp': [25, False], 'soft': [50, False], 'rounded': [75, False], 'round': [90, False], 'pill': [90, True]}
+ROOT_ATTRS = 'config="{{config}}" mode="{{mode}}" style="display: block;"'
+THEME_JS = ("""  theme() {
     const p = this.props, U = window.UIS || {};
-    const D = ''' + js_inline({k: TWEAKS[k]['default'] for k in THEME_KEYS}) + ''';
-    const SK = ''' + js_inline(SKINS) + ''';
-    const S = p.skin && p.skin !== 'none' ? SK[p.skin] : null;
-    const P = p.preset && p.preset !== 'none' && U.PRESETS ? U.PRESETS[(U.presetId && U.presetId(p.preset)) || p.preset] : null;
-    // A Tweak never touched (undefined: the editor's default only seeds the panel) follows the skin and the preset;
-    // a Tweak you set wins over both, even when you set it back to the default value.
-    const t = { config: S ? S.config : {}, preset: P ? P.id : undefined };
-    for (const k in D) t[k] = p[k] !== undefined ? p[k] : (S || P) ? undefined : D[k];
-    if (!S) for (const k of ['wordmark', 'caption', 'logoPlacement', 'logoSrc', 'markSrc']) t[k] = p[k] === undefined ? D[k] : p[k];
-    t.mode = p.mode && p.mode !== 'auto' ? p.mode : (S ? S.mode : 'light');
-    t.skinStyle = 'display: block;' + (S ? ' ' + Object.keys(S.vars).map(function (k) { return k + ': ' + S.vars[k]; }).join('; ') : '');
+    const SK = """ + js_inline(SKINS) + """;
+    const SH = """ + js_inline(SHAPES) + """;
+    const st = p.style || 'none';
+    const S = SK[st] || null;
+    const P = !S && st !== 'none' ? st : null;
+    const on = function (v) { return v !== undefined && v !== null && v !== '' && v !== 'style'; };
+    // Style first (a product skin config, or an engine preset), then every Tweak you picked on top of it.
+    const c = JSON.parse(JSON.stringify(S ? S.config : (P ? { preset: P } : {})));
+    const sub = function (k) { return c[k] = c[k] || {}; };
+    if (p.colors === 'custom') { const col = sub('color'); col.primary = p.primary; col.accent = p.accent; col.neutral = p.neutral; delete col.pin; delete col.pinDark; }
+    if (on(p.shape) && SH[p.shape]) { const r = sub('radius'); r.roundness = SH[p.shape][0]; r.pill = SH[p.shape][1]; delete r.overrides; }
+    if (on(p.type)) { const ty = sub('type'); ty.preset = p.type; delete ty.display; delete ty.body; }
+    if (on(p.buttons)) sub('type').buttonCase = p.buttons;
+    if (on(p.density)) c.density = p.density;
+    if (on(p.surface)) sub('surface').float = p.surface;
+    if (p.wordmark !== undefined) { const b = sub('brand'); b.wordmark = p.wordmark; b.mark = p.logoMark; b.variant = p.logoVariant; b.placement = p.logoPlacement; }
+    const t = { config: c };
+    t.mode = on(p.mode) ? p.mode : (S ? S.mode : 'light');
+    t.skinStyle = 'display: block;' + (S && !(p.colors === 'custom') ? ' ' + Object.keys(S.vars).map(function (k) { return k + ': ' + S.vars[k]; }).join('; ') : '');
     let label = 'config error', tone = 'danger';
     try {
-      const th = U.buildTheme(U.configFromProps(t));
+      const th = U.buildTheme(c);
       const rep = U.contrastReport(th).filter(function (x) { return x.mode === t.mode; });
       const fails = rep.filter(function (x) { return !x.pass; }).length;
       if (!rep.length) { label = 'no text pairs checked'; tone = 'ink-3'; }
       else if (fails) label = fails + ' contrast FAIL';
       else { label = rep.length + '/' + rep.length + ' text pairs AA'; tone = 'success'; }
     } catch (e) { label = 'config error'; }
-    t.themeLine = (S ? 'skin ' + p.skin : 'no skin') + ' · ' + (P ? 'preset ' + P.id : 'no preset') + ' · ' + t.mode;
+    const picked = ['shape', 'type', 'buttons', 'density', 'surface'].filter(function (k) { return on(p[k]); });
+    if (p.colors === 'custom') picked.unshift('colours');
+    t.themeLine = 'style ' + st + ' · ' + t.mode + (picked.length ? ' · changed: ' + picked.join(', ') : '');
     t.checkLabel = label;
     t.checkStyle = 'font: 700 12px/1 var(--uis-font-mono); color: ' + (tone === 'ink-3' ? 'var(--uis-ink-3)' : 'var(--uis-' + tone + '-text)') + ';';
     return t;
   }
-''')
+""")
+
 
 
 def page(title, inner, script, props, h, root=True):
@@ -562,12 +572,12 @@ for f in F:
     name = 'C-' + f['id'] + '-States.dc.html'
     H = height(name, 2400)
     inner = ('<div style="{{skinStyle}}"><div style="width: 1440px; min-height: ' + str(H) + 'px; box-sizing: border-box; padding: 56px 64px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body);" data-measure="">' +
-             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Every state is drawn once. Try it in any product skin, preset, palette, shape, mode or type with the board Tweaks: a Tweak left at its default follows the skin, one you change wins.') +
+             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Every state is drawn once. Pick a Style in the Tweaks (an engine preset or a product), then change colour, shape, type, buttons, density or surface on top: a Tweak left on style follows the Style.') +
              '<div style="display: flex; gap: 16px; align-items: center; padding: 0 0 24px;"><span class="uis-caption" style="color: var(--uis-ink-2);">{{themeLine}}</span><span style="{{checkStyle}}">{{checkLabel}}</span></div>' +
              section('Coverage', 'The nine states every component is checked against. Gaps are not in UI System yet; they are never drawn as working controls.', coverage(f['cov'])) +
              f['states'] + '</div></div>')
     script = 'class Component extends DCLogic {\n' + THEME_JS + '  renderVals() {\n    return Object.assign({}, ' + js_inline(COMMON) + ', this.theme());\n  }\n}\n'
-    props = dict(TWEAKS, **{'$preview': {'width': 1440, 'height': H}})
+    props = dict(TWEAKS, **(LOGO_TWEAKS if f['id'].startswith('Nav') else {}), **{'$preview': {'width': 1440, 'height': H}})
     open(os.path.join(OUT, name), 'w').write(page(f['title'] + ' · states', inner, script, props, H))
     MADE[name] = [f['title'] + ' · states, sizes, icons', f['page'], 1440, H]
 
