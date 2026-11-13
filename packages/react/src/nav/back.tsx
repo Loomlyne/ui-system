@@ -146,7 +146,7 @@ export function AppDock({ items, sections, user, search = true, tip, className, 
         {search ? (
           <>
             <span className="uis-navsep" />
-            <button type="button" className="uis-appdock__search"><Icon name="search" />{typeof search === 'string' ? search : 'Search'}<span className="uis-kbd">⌘K</span></button>
+            <button type="button" className="uis-appdock__search"><Icon name="search" /><span className="uis-appdock__label">{typeof search === 'string' ? search : 'Search'}</span><span className="uis-kbd">⌘K</span></button>
           </>
         ) : null}
         {user ? <Avatar size="sm" name={user.name} initials={user.initials} src={user.src} style={{ margin: '0 4px' }} /> : null}
@@ -172,7 +172,9 @@ export function AppShell({ variant, children, header, ...p }: AppShellProps) {
   const v = pick(variant, theme.config.nav.back);
   const main = <main className="uis-app__main">{children}</main>;
   const cls = cx('uis-app', `uis-app--${v}`, p.className);
-  if (v === 'rail') return <div className={cls} style={p.style}><AppRail {...p} className={undefined} style={undefined} />{main}</div>;
+  /* Phones: sidebar and rail shells swap to the dock below 768px (CSS shows one or the other). */
+  const phoneDock = <AppDock sections={p.sections} user={p.user} search={p.search} tip={p.tip} className="uis-app__phonedock" />;
+  if (v === 'rail') return <div className={cls} style={p.style}><AppRail {...p} className={undefined} style={undefined} />{main}{phoneDock}</div>;
   if (v === 'topbar') return <div className={cls} style={p.style}><AppTopbar {...p} className={undefined} style={undefined} />{main}</div>;
   if (v === 'dock') {
     return (
@@ -189,7 +191,7 @@ export function AppShell({ variant, children, header, ...p }: AppShellProps) {
       </div>
     );
   }
-  return <div className={cls} style={p.style}><AppSidebar {...p} className={undefined} style={undefined} />{main}</div>;
+  return <div className={cls} style={p.style}><AppSidebar {...p} className={undefined} style={undefined} />{main}{phoneDock}</div>;
 }
 
 /* ---------- PageHeader ---------- */

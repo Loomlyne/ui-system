@@ -3,11 +3,15 @@
  *
  *   ui-system init [--preset ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]
  *   ui-system build [ui.config.json] [--out ui-theme] [--system]
+ *   ui-system check [dir] [--allow path,path]
+ *
+ * check scans source files for rule breaks (hard-coded colors, emoji, non-Hugeicons icon sets, banned motion and
+ * avatar libraries) and exits 1 when it finds any.
  *
  * build writes: theme.css, tailwind.css, tokens.json (Claude Design), theme.json
  */
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { resolve, join, relative, extname, sep, basename } from 'node:path';
 import { DEFAULT_CONFIG, RADIUS_PRESETS, presetId, type KindId, type UIConfigInput } from './config';
 import { PRESETS } from './presets';
 import { KINDS } from './kinds';
@@ -74,7 +78,7 @@ function init() {
   console.log(`Created ui.config.json${parts.length ? ` (${parts.join(', ')})` : ''}.`);
   if (id) {
     const p = PRESETS[id];
-    console.log(`\n${p.label}: ${p.note}\nAsk first:\n${p.questions.map((q) => `  - ${q}`).join('\n')}`);
+    console.log(`\n${p.label}: ${p.note}\nRules:\n${p.rules.map((r) => `  - ${r}`).join('\n')}\nNever:\n${p.never.map((r) => `  - ${r}`).join('\n')}\nAsk first:\n${p.questions.map((q) => `  - ${q}`).join('\n')}`);
   }
   if (kind) {
     const k = KINDS[kind];
@@ -102,9 +106,67 @@ function build() {
   console.log(`Built "${theme.config.name}" into ${out}: theme.css, tailwind.css, tokens.json, theme.json`);
 }
 
+const SKIP_DIRS = new Set(['node_modules', '.git', '.next', 'dist', 'out', 'build', 'ui-theme', 'coverage', '.turbo', '.claude', '.planning']);
+const SRC_EXT = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.css', '.html', '.vue', '.svelte', '.astro', '.liquid']);
+const COLOR_FN_RE = /\b(?:rgba?|hsla?|oklch|oklab)\(/;
+/* A hex colour, not an HTML entity (&#123;) or a word that ends in #. */
+const HEX_RE = /(?<![&\w])#([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b/g;
+/* All-digit 4 or 8 long (#1042, #20261113) reads as an order number or date, not a colour. */
+const isColor = (hex: string) => /[a-fA-F]/.test(hex) || hex.length === 3 || hex.length === 6;
+const hasColor = (line: string) => COLOR_FN_RE.test(line) || [...line.matchAll(HEX_RE)].some((m) => isColor(m[1]));
+const EMOJI_RE = /\p{Extended_Pictographic}/u;
+const BANNED_LIBS = 'lucide-react|lucide|react-icons|@heroicons|heroicons|@fortawesome|font-awesome|fontawesome|@tabler\\/icons|tabler-icons|@phosphor-icons|phosphor-icons|@radix-ui\\/react-icons|framer-motion|motion\\/react|gsap';
+/* import x from 'gsap', import 'gsap', import('gsap'), require('gsap') */
+const BANNED_IMPORT_RE = new RegExp(`(?:from\\s+|import\\s*\\(?\\s*|require\\s*\\(\\s*)['"](${BANNED_LIBS})(?:[/'"])`);
+/* <script src=".../gsap/3.12.5/gsap.min.js">, <link href=".../font-awesome/..."> */
+const BANNED_SRC_RE = new RegExp(`(?:src|href)\\s*=\\s*['"][^'"]*[/@](${BANNED_LIBS})[@/.-]`);
+const BANNED_URL_RE = /pravatar\.cc|randomuser\.me|unsplash\.com\/photos|thispersondoesnotexist/;
+
+function walk(dir: string, out: string[]) {
+  for (const name of readdirSync(dir)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const full = join(dir, name);
+    const st = statSync(full);
+    if (st.isDirectory()) walk(full, out);
+    else if (SRC_EXT.has(extname(name))) out.push(full);
+  }
+}
+
+function check() {
+  const root = resolve(args[1] && !args[1].startsWith('--') ? args[1] : '.');
+  const allow = (flag('allow') ?? '').split(',').filter(Boolean);
+  const files: string[] = [];
+  const single = statSync(root).isFile();
+  if (single) files.push(root);
+  else walk(root, files);
+  const found: string[] = [];
+  for (const f of files) {
+    const rel = single ? basename(f) : relative(root, f).split(sep).join('/');
+    if (allow.some((a) => rel === a || rel.startsWith(a))) continue;
+    const lines = readFileSync(f, 'utf8').split('\n');
+    lines.forEach((line, i) => {
+      if (line.includes('ui-system-allow')) return;
+      const at = `${rel}:${i + 1}`;
+      if (hasColor(line)) found.push(`${at}  hard-coded color: use a --uis-* variable or token`);
+      if (EMOJI_RE.test(line)) found.push(`${at}  emoji: use a Hugeicons icon`);
+      const m = BANNED_IMPORT_RE.exec(line) ?? BANNED_SRC_RE.exec(line);
+      if (m) found.push(`${at}  banned library "${m[1]}": icons are Hugeicons, motion is anime.js (Reveal, CountUp)`);
+      if (BANNED_URL_RE.test(line)) found.push(`${at}  fake or stock avatar source: use Avatar (DiceBear)`);
+    });
+  }
+  if (found.length) {
+    console.error(found.join('\n'));
+    console.error(`\n${found.length} UI System rule break(s) in ${files.length} files. Fix them, or ask the owner to allow one (add "ui-system-allow" on the line, or --allow <path>).`);
+    process.exit(1);
+  }
+  console.log(`UI System check: ${files.length} files, no rule breaks.`);
+}
+
 if (cmd === 'init') init();
 else if (cmd === 'build') build();
+else if (cmd === 'check') check();
 else {
   console.log('ui-system init [--preset ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]');
   console.log('ui-system build [ui.config.json] [--out ui-theme] [--system]');
+  console.log('ui-system check [dir] [--allow path,path]');
 }

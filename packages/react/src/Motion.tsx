@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { animate, stagger, createTimeline, onScroll, utils, eases } from 'animejs';
+import { animate, stagger, createTimeline, onScroll, utils, eases, cubicBezier } from 'animejs';
 import { cx, useUIS } from './context';
 
 /** anime.js, re-exported so projects and Claude Design (UIS.anime) use one engine. */
@@ -15,6 +15,12 @@ const EFFECTS: Record<RevealEffect, Record<string, [number | string, number | st
   'slide-right': { opacity: [0, 1], translateX: [-28, 0] },
   'blur-in': { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'] },
 };
+
+/** config.motion.timing.easeOut as an anime.js ease, so CSS and anime.js share one curve. Unset keeps the default. */
+function sharedEase(css: string | undefined, fallback: string) {
+  const m = css?.match(/cubic-bezier\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/);
+  return m ? cubicBezier(+m[1], +m[2], +m[3], +m[4]) : fallback;
+}
 
 const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -53,9 +59,9 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
     const run = () =>
       animate(targets as HTMLElement[], {
         ...params,
-        duration: duration ?? (expressive ? 950 : 620),
+        duration: duration ?? theme.config.motion?.timing?.slow ?? (expressive ? 950 : 620),
         delay: gap ? stagger(gap, { start: delay }) : delay,
-        ease: expressive ? 'out(4)' : 'out(3)',
+        ease: sharedEase(theme.config.motion?.timing?.easeOut, expressive ? 'out(4)' : 'out(3)'),
       });
     if (trigger === 'mount' || typeof IntersectionObserver === 'undefined') { run(); return; }
     const io = new IntersectionObserver((entries) => {
@@ -63,7 +69,7 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
     }, { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
-  }, [on, effect, gap, delay, duration, trigger, expressive]);
+  }, [on, effect, gap, delay, duration, trigger, expressive, theme.config.motion?.timing?.slow, theme.config.motion?.timing?.easeOut]);
   const Tag = as as 'div';
   return <Tag ref={ref as React.RefObject<HTMLDivElement>} className={cx('uis-reveal', className)} style={style}>{children}</Tag>;
 }
@@ -71,6 +77,8 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
 /** Counts a number up when it comes into view (stats, prices, KPIs). */
 export function CountUp({ to, from = 0, decimals = 0, prefix = '', suffix = '', duration, className, style }: { to: number; from?: number; decimals?: number; prefix?: string; suffix?: string; duration?: number; className?: string; style?: React.CSSProperties }) {
   const ref = React.useRef<HTMLSpanElement>(null);
+  const { theme } = useUIS();
+  const tm = theme.config.motion?.timing;
   const on = useMotionEnabled();
   const fmt = (n: number) => `${prefix}${n.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
   React.useEffect(() => {
@@ -81,7 +89,7 @@ export function CountUp({ to, from = 0, decimals = 0, prefix = '', suffix = '', 
     const io = new IntersectionObserver((entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       io.disconnect();
-      animate(box, { v: to, duration: duration ?? 1200, ease: 'out(3)', onUpdate: () => { el.textContent = fmt(box.v); } });
+      animate(box, { v: to, duration: duration ?? (tm?.slow ? tm.slow * 2 : 1200), ease: sharedEase(tm?.easeOut, 'out(3)'), onUpdate: () => { el.textContent = fmt(box.v); } });
     }, { threshold: 0.3 });
     io.observe(el);
     return () => io.disconnect();

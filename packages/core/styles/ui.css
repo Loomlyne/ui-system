@@ -228,7 +228,7 @@
 .uis-stat__delta { font: 600 12.5px/1 var(--uis-font-body); display: inline-flex; align-items: center; gap: 4px; }
 .uis-stat__delta--up { color: var(--uis-success-text); }
 .uis-stat__delta--down { color: var(--uis-danger-text); }
-.uis-table-wrap { border: 1px solid var(--uis-card-border); border-radius: var(--uis-r-card); overflow: hidden; background: var(--uis-surface); }
+.uis-table-wrap { border: 1px solid var(--uis-card-border); border-radius: var(--uis-r-card); overflow: hidden; overflow-x: auto; background: var(--uis-surface); }
 .uis-table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 14px/1.4 var(--uis-font-body); color: var(--uis-ink-2); }
 .uis-table th { text-align: left; font: 600 12px/1.2 var(--uis-font-body); color: var(--uis-ink-3); padding: 12px 16px; background: var(--uis-surface-2); border-bottom: 1px solid var(--uis-line); white-space: nowrap; }
 .uis-table td { padding: 14px 16px; border-bottom: 1px solid var(--uis-line); vertical-align: middle; }
@@ -456,7 +456,7 @@
 .uis-appdock__search .uis-icon { width: 17px; height: 17px; }
 .uis-apphead { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; padding: 0 24px; }
 
-.uis-pagehead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding: 28px 32px 20px; }
+.uis-pagehead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding: 28px clamp(16px, 3vw, 32px) 20px; }
 .uis-pagehead__title { font-family: var(--uis-font-display); font-weight: var(--uis-display-weight); letter-spacing: var(--uis-display-tracking); text-transform: var(--uis-display-case); font-stretch: var(--uis-display-stretch); font-size: 28px; line-height: 1.15; margin: 0; }
 .uis-pagehead__desc { font: 400 14.5px/1.5 var(--uis-font-body); color: var(--uis-ink-2); margin: 6px 0 0; }
 .uis-pagehead__actions { display: flex; gap: 8px; flex-shrink: 0; }
@@ -470,3 +470,16 @@
 @media (prefers-reduced-motion: reduce) {
   .uis *, .uis *::before, .uis *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
 }
+/* Phones: sidebar, inset and rail shells hand navigation to the dock; the dock search folds to an icon */
+.uis-app__phonedock { display: none; }
+@media (max-width: 767px) {
+  .uis-app--sidebar, .uis-app--rail, .uis-app--inset { grid-template-columns: minmax(0, 1fr); padding: 0; }
+  .uis-app--sidebar > .uis-sidebar, .uis-app--inset > .uis-sidebar, .uis-app--rail > .uis-rail { display: none; }
+  .uis-app__phonedock { display: flex; }
+  .uis-app--sidebar .uis-app__main, .uis-app--rail .uis-app__main, .uis-app--inset .uis-app__main { padding-bottom: 88px; border: 0; border-radius: 0; box-shadow: none; }
+  .uis-appdock { max-width: 100%; }
+  .uis-appdock__search { min-width: 0; width: 42px; padding: 0; justify-content: center; }
+  .uis-appdock__search .uis-appdock__label, .uis-appdock__search .uis-kbd { display: none; }
+}
+/* config.motion.enabled: false switches CSS micro states off too, same as reduced motion */
+.uis[data-uis-motion="off"] *, .uis[data-uis-motion="off"] *::before, .uis[data-uis-motion="off"] *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
