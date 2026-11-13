@@ -92,8 +92,8 @@ export function LogoMark(props: LogoMarkProps) {
       ) : (
         <>
           <mask id={`uis-${id}`}>
-            <rect width="32" height="32" rx={rx} fill="#fff" />
-            {text('#000')}
+            <rect width="32" height="32" rx={rx} fill="white" />
+            {text("black")}
           </mask>
           <rect width="32" height="32" rx={rx} fill="currentColor" mask={`url(#uis-${id})`} />
         </>

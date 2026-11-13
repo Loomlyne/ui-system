@@ -189,7 +189,7 @@ export const DEFAULT_CONFIG: UIConfig = {
   name: 'New Project',
   brand: {
     wordmark: 'Brand',
-    caption: 'Tagline',
+    caption: '',
     mark: 'monogram',
     variant: 'lockup',
     placement: 'left',

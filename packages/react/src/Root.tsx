@@ -164,7 +164,7 @@ export function Root(props: RootProps) {
   };
   return (
     <UISContext.Provider value={ctx}>
-      <div className={cx('uis', props.className)} data-uis-mode={props.vars === false ? undefined : mode} style={style}>
+      <div className={cx('uis', props.className)} data-uis-mode={props.vars === false ? undefined : mode} data-uis-motion={theme.config.motion?.enabled === false ? 'off' : undefined} style={style}>
         {props.children}
       </div>
     </UISContext.Provider>
