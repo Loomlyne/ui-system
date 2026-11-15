@@ -1,0 +1,47 @@
+331dfb4 2026-11-13 Merge pull request #9 from Loomlyne/claude/merge-simple-tweaks
+0026b9a 2026-11-13 Merge claude/simple-tweaks: grouped canvas Tweaks, font preset fix
+ea24082 2026-11-13 Merge pull request #8 from Loomlyne/claude/ui-plugin-skills
+277913a 2026-11-13 feat(plugin): /ui plugin with step router and rule files
+44cead0 2026-11-13 fix(core,react): motion split, phone shells, honest check
+d29bc88 2026-11-10 feat(canvas): simpler grouped Tweaks; font preset beats a preset's own fonts
+553b4ce 2026-11-10 Merge pull request #1 from Loomlyne/claude/senorita-preset-4b8147
+fcb8f59 2026-11-09 Merge pull request #2 from Loomlyne/claude/retail-preset-polish
+721c64a 2026-11-09 Merge pull request #3 from Loomlyne/claude/design-refresh
+e061732 2026-11-09 Merge pull request #6 from Loomlyne/claude/preset-restructure
+9db3ef4 2026-11-09 Merge pull request #7 from Loomlyne/claude/canvas-component-pages-0f2998
+c621a7a 2026-11-09 fix: PR #7 and #3 review findings
+6dcd092 2026-11-09 Merge origin/claude/preset-restructure (CountUp/Stat flex fix) into claude/canvas-component-pages-0f2998
+7281bd3 2026-11-09 feat(canvas): Tweaks over copies; skin Tweak on every component board, Themes grids to Archive
+3f72072 2026-11-09 fix(stat): CountUp and Stat no longer collapse in flex rows
+44125e0 2026-11-09 fix(canvas): preset sheet heights after the reserved hint slot
+83b08e0 2026-11-09 Merge remote-tracking branch 'origin/claude/preset-restructure' into claude/canvas-component-pages-0f2998
+281d215 2026-11-09 fix(canvas): Card states height after review reflow
+9f28079 2026-11-09 feat(field): reserve the hint slot so fields line up; review fixes on canvas generator
+9cfdbe7 2026-11-09 feat(canvas): one page per component family, generated; page reorganise
+77aeb88 2026-11-09 fix(preset): own-key preset and kind lookups, CLI flag validation, alias CSS gate; review fixes
+7cc430b 2026-11-09 feat(canvas): one sheet per preset with skins side by side; Start and Kinds boards
+0370b42 2026-11-09 docs(preset): presets are ways of designing; kinds doc; design-system README asks preset and kind first
+b758b2f 2026-11-09 feat(preset): atelier (was retail-editorial), kinds, preset rules and questions
+edf14f0 2026-11-09 chore(deps): bump source-map-js 1.2.1 -> 1.2.2 (#5)
+8218fcb 2026-11-08 chore(playground): bump next 16.3.6 -> 16.4.5 (#4)
+ff3cb31 2026-11-08 feat(canvas): ledger variants for Invios and Clickit, sheet heights fit tallest variant
+adb655e 2026-11-08 chore(canvas): generator for per-product preset sheets
+439e743 2026-11-08 docs: preset sheets page and local board check
+3354d9f 2026-11-08 docs: canvas detail rule and Patterns page
+77111cd 2026-11-08 fix(review): own-key icon lookup, useId field ids, disabled eye, kbd+eye spacing, hugeicons as devDependency
+aebdb5c 2026-11-08 feat(input): password show/hide eye on the right; record Hugeicons assets
+b105f30 2026-11-08 feat(icons): Hugeicons free set for every icon; design system overview and names
+c2752e8 2026-11-08 docs(preset): retail-editorial is the shared preset for Senorita and ALMAR
+92c940c 2026-11-07 docs(preset): ledger is the shared preset for Invios and Clickit
+80cc611 2026-11-07 feat(preset): ledger preset (Invios D-05 design language)
+1dd22b6 2026-11-07 Merge branch 'claude/senorita-preset-4b8147' into claude/retail-preset-polish
+8bc4a71 2026-11-07 fix(preset): drop preset pins when a seed changes; validate pins; review fixes
+7b03789 2026-11-07 fix(retail-editorial): review fixes on nav, search focus, dark active fill
+f752db2 2026-11-07 feat(bundle): expose PRESETS and contrastReport on window.UIS
+05e6083 2026-11-07 feat(retail-editorial): source sidebar, ink info, designed dark, search hover, 1px checkbox
+b6dabcc 2026-11-07 feat: retail-editorial preset (Senorita design language) as opt-in config preset
+0404be9 2026-09-27 Scope: dashboard-first; websites via Mobbin, mobile apps via Appllama
+65131c1 2026-09-27 DiceBear avatars, anime.js motion, library guide, design comment fixes
+36a30dd 2026-09-27 Keep the design system index identity across rebuilds
+2933bea 2026-09-27 UI System: config-driven design system with playground
+de9499a 2026-09-27 Initial commit

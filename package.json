@@ -6,7 +6,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.28.0",
   "scripts": {
-    "build": "pnpm --filter @ui-system/core run build && pnpm --filter @ui-system/react run build",
+    "build": "pnpm --filter @loomlyne/ui-system-core run build && pnpm --filter @loomlyne/ui-system-react run build",
     "typecheck": "pnpm -r run typecheck",
     "theme": "node packages/core/dist/cli.js build ui.config.json --out ui-theme",
     "design": "node scripts/build-design.mjs",

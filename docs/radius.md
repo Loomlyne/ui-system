@@ -25,7 +25,7 @@ One value, `radius.roundness` (0–100), drives every corner in the system, so a
 | `round` | 90 | yes |
 
 ```ts
-import { RADIUS_PRESETS } from '@ui-system/core';
+import { RADIUS_PRESETS } from '@loomlyne/ui-system-core';
 const config = { radius: RADIUS_PRESETS.round };
 ```
 

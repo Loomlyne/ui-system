@@ -324,7 +324,7 @@ Use \`UIS.Reveal\` for entrances (fade-up, fade, scale-in, slide, blur-in, with 
 
 - **References first:** before designing a screen or section, look at real products on Mobbin (screens, flows, website sections) and cite what you borrowed.
 - **React Bits** (reactbits.dev): animated text, backgrounds and effects. Install the TS-TW or TS-CSS variant (\`npx shadcn@latest add @react-bits/<Name>-TS-TW\`) and replace its colors with \`var(--uis-*)\`.
-- **Untitled UI React** (MIT open-source components): install with its CLI, then import \`@ui-system/core/untitled-ui.css\` so its brand scale, greys and fonts follow this system.
+- **Untitled UI React** (MIT open-source components): install with its CLI, then import \`@loomlyne/ui-system-core/untitled-ui.css\` so its brand scale, greys and fonts follow this system.
 - Avatars come from DiceBear, animation from anime.js. Icons come from Hugeicons only. Do not add a second icon set, avatar source or animation library.
 
 ## Iconography

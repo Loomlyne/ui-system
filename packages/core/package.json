@@ -1,5 +1,5 @@
 {
-  "name": "@ui-system/core",
+  "name": "@loomlyne/ui-system-core",
   "version": "0.1.0",
   "description": "UI System engine: config, OKLCH color scales, radius engine, fonts, CSS/Tailwind/Claude Design exports.",
   "license": "MIT",
@@ -30,7 +30,8 @@
   ],
   "scripts": {
     "build": "node build.mjs && tsc -p tsconfig.json --emitDeclarationOnly",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm run build"
   },
   "devDependencies": {
     "@types/node": "22"

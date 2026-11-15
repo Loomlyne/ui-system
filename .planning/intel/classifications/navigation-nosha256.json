@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/navigation.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Navigation",
+  "summary": "Component contract for UI System navigation: shared NavLink/NavAction/NavCta/NavSection data shape, frontend SiteNav variants, backend AppShell variants, props, and usage rules.",
+  "scope": ["NavLink", "NavAction", "NavCta", "NavSection", "SiteNav", "NavIsland", "NavBar", "NavStacked", "NavDock", "NavMinimal", "NavMobile", "AppShell", "AppSidebar", "AppRail", "AppTopbar", "AppDock", "PageHeader", "config.nav.front"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": "SPEC vs DOC ambiguity: guide-style prose with usage examples, but dominant content is TypeScript type contracts, per-component props tables, and hard rules (active marking, 4-6 top-level links, one primary CTA, icon-only buttons carry label); resolved to SPEC per ADR>SPEC>PRD>DOC rule. No frontmatter, no path/filename convention. Filename uses 'nosha256' instead of the 8-char SHA-256 path hash because this classifier had no shell to compute it; slug 'navigation' is unique under docs/."
+}

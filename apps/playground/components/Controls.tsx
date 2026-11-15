@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import { FONT_PRESETS, RADIUS_PRESETS, type FontPresetId } from '@ui-system/core';
-import { AVATAR_STYLES } from '@ui-system/react';
+import { FONT_PRESETS, RADIUS_PRESETS, type FontPresetId } from '@loomlyne/ui-system-core';
+import { AVATAR_STYLES } from '@loomlyne/ui-system-react';
 import { ColorField, Field, RangeField, Segmented, SelectField, TextField, UploadField } from './fields';
 import { STARTERS, type Config } from '@/lib/state';
 

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import { buildTheme, resolveConfig, toCSS, toDesignTokens, toTailwind } from '@ui-system/core';
-import { Alert, Button, Tabs } from '@ui-system/react';
+import { buildTheme, resolveConfig, toCSS, toDesignTokens, toTailwind } from '@loomlyne/ui-system-core';
+import { Alert, Button, Tabs } from '@loomlyne/ui-system-react';
 import { portable, type Config } from '@/lib/state';
 
 type Kind = 'config' | 'css' | 'tailwind' | 'tokens' | 'react' | 'html';
@@ -16,9 +16,9 @@ const FILES: Record<Kind, { label: string; file: string; mime: string }> = {
 };
 
 function reactSnippet(c: Config) {
-  return `// npm i @ui-system/react @ui-system/core
-import '@ui-system/react/ui.css';
-import { Root, SiteNav, AppShell, Button } from '@ui-system/react';
+  return `// npm i @loomlyne/ui-system-react @loomlyne/ui-system-core
+import '@loomlyne/ui-system-react/ui.css';
+import { Root, SiteNav, AppShell, Button } from '@loomlyne/ui-system-react';
 import config from './ui.config.json';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -72,7 +72,7 @@ export default function ExportPanel({ config, onImport }: { config: Config; onIm
   const text = React.useMemo(() => {
     const p = portable(config);
     switch (kind) {
-      case 'config': return JSON.stringify({ $schema: './node_modules/@ui-system/core/schema.json', ...p }, null, 2) + '\n';
+      case 'config': return JSON.stringify({ $schema: './node_modules/@loomlyne/ui-system-core/schema.json', ...p }, null, 2) + '\n';
       case 'css': return toCSS(buildTheme(p));
       case 'tailwind': return toTailwind();
       case 'tokens': return JSON.stringify(toDesignTokens(buildTheme(p)), null, 2) + '\n';

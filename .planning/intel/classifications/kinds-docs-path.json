@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/kinds.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Kinds",
+  "summary": "Explains UI System kinds (shop, app, website, booking, portfolio): what each is for, the pages drawn first, scope questions, and how kind pairs with preset and brand.",
+  "scope": ["kinds", "KINDS (packages/core/src/kinds.ts)", "ui.config.json kind field", "ui-system init CLI", "presets", "Start here canvas board", "shop", "app", "website", "booking", "portfolio"],
+  "cross_refs": ["packages/core/src/kinds.ts"],
+  "locked": false,
+  "precedence": null,
+  "notes": "Reference doc with a definition table; light SPEC signals (ui.config.json `kind` field, `ui-system init --preset --kind` CLI, source of truth in KINDS) but no schema/contract, so DOC. Embeds owner rules worth carrying as context: kind is picked separately from preset, sets no values, works in any preset; order of work is preset -> kind -> brand. Filename lacks the SHA-256 path hash: no shell available to compute it, so the path-derived suffix 'docs-path' is used instead."
+}

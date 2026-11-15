@@ -3,8 +3,8 @@
 ## Next.js (App Router)
 ```tsx
 // app/layout.tsx
-import '@ui-system/react/ui.css';
-import { Root } from '@ui-system/react';
+import '@loomlyne/ui-system-react/ui.css';
+import { Root } from '@loomlyne/ui-system-react';
 import config from '../ui.config.json';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -41,7 +41,7 @@ Every component has a class API: `uis-btn` (+ `--primary|--outline|--ghost|--sm|
 
 ## Framer
 - Quickest: paste `theme.css` + `ui.css` into *Site Settings › Custom Code › Head* (inside `<style>`), then use the classes in Embed components.
-- Code components: import from `@ui-system/react` in a Framer code component and wrap it in `Root`.
+- Code components: import from `@loomlyne/ui-system-react` in a Framer code component and wrap it in `Root`.
 - Framer variables: map `theme.json` values (`light` / `dark` objects) to Framer color styles.
 
 ## Shopify (Online Store 2.0)

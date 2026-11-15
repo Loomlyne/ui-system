@@ -206,7 +206,7 @@
 /*
  * UI System components. Framework-free: every class reads the --uis-*
  * variables that theme.css (or <Root>) provides, so one config restyles all.
- * Use with React (@ui-system/react) or as plain HTML classes.
+ * Use with React (@loomlyne/ui-system-react) or as plain HTML classes.
  */
 
 /* ---------- Base ---------- */

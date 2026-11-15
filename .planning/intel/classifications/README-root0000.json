@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/README.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "UI System",
+  "summary": "Repo overview of the brand-agnostic UI System: one ui.config.json drives tokens, components, navs and Claude Design output; covers setup, controls, plugin, commands and sync workflow.",
+  "scope": ["ui.config.json", "@ui-system/core", "@ui-system/react", "uis.bundle.js (window.UIS)", "apps/playground (GitHub Pages)", "design/claude-design-system", "ui-system CLI", "ui-system check", "Claude Code plugin /ui-system:ui", "config controls (color, radius, type, density, surface, brand, avatars, motion, nav)", "presets (ledger, atelier)", "kinds", "Logo", "frontend navs (NavIsland, NavBar, NavStacked, NavDock, NavMinimal, NavMobile)", "AppShell variants (sidebar, rail, inset, topbar, dock)", "DiceBear avatars", "anime.js v4 (Reveal, CountUp)", "React Bits", "Untitled UI React", "Mobbin", "Appllama", "Tailwind v4", "Claude Design sync"],
+  "cross_refs": ["docs/libraries.md", "docs/claude-design.md", "docs/config.md", "docs/presets.md", "docs/kinds.md", "docs/logo.md", "docs/navigation.md"],
+  "locked": false,
+  "precedence": null,
+  "notes": "Root README: onboarding/overview prose with quick-start steps. Mild SPEC signal from the controls table (config keys, allowed values, effects) but it summarises and defers to docs/config.md as the full reference, so DOC. Embedded rules (WCAG 4.5:1 text roles, never stock photos, packages are source of truth) are context worth surfacing. Filename hash suffix is a placeholder (root0000): no hashing tool was available to compute SHA-256 of the source path; follows sibling convention."
+}

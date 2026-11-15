@@ -58,7 +58,7 @@ function init() {
     process.exit(1);
   }
   const kind = kindFlag as KindId | undefined;
-  const out: UIConfigInput & { $schema: string } = { $schema: './node_modules/@ui-system/core/schema.json' };
+  const out: UIConfigInput & { $schema: string } = { $schema: './node_modules/@loomlyne/ui-system-core/schema.json' };
   if (id) out.preset = id;
   if (kind) out.kind = kind;
   if (id) {
