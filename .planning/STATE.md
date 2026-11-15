@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — steps 1, 2 and 4 passed. `@loomlyne/ui-system-core@0.1.0` is public (website Approve, 2026-11-15T16:03:05.800Z). Next: Koss approves staged `@loomlyne/ui-system-react@0.1.0` on npmjs.com (status `staged`, decisions/2026-11-15-npm-stage-first-publish.md)
-Last activity: 2026-11-15 — core 0.1.0 live; react 0.1.0 staged (status `staged` at 20:09 +0400)
+Status: In progress — both packages are public at 0.1.0. Steps 5, 6 and 9 passed. Next: step 7, trusted publishing (OIDC) for `publish.yml`, which needs a PR and Koss adding the publisher on both packages
+Last activity: 2026-11-15 — react 0.1.0 live at 16:10:39Z; clean-folder install and `ui-system check` passed
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -47,8 +47,8 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 1: `@loomlyne/ui-system-core@0.1.0` is public. No `LICENSE` file in that tarball (`"license": "MIT"` only). Placeholder `0.0.0-stage` is still on the registry. CLI `npm stage approve` and `npm stage reject` return 404 for this login; the Staged Packages tab is the approve path.
-- Phase 1: react `0.1.0` is staged (`01620e4e-1391-4a67-b0be-ae63c70334c1`), status `staged` at 20:09 +0400. If that approve fails, core 0.1.0 stays out alone and cannot be republished (fix forward with 0.1.1).
+- Phase 1: both 0.1.0 packages are public. Core tarball has no `LICENSE` file (`"license": "MIT"` only). React tarball includes `LICENSE`. Each name also has placeholder `0.0.0-stage`. A later version is the only way to add the core LICENSE file.
+- Phase 1: CLI `npm stage approve` and `npm stage reject` return 404 for this login. The Staged Packages tab is the approve path. The page can keep showing the row after the green "published successfully" banner.
 - Phases 3-5: a new preset reaches products only after a version bump and republish; decide at Phase 3 discuss whether each preset phase ends with a release.
 - Outside repo: Caractère .planning names `@ui-system/*`; its own session updates it.
 
@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 20:08 +0400
-Stopped at: Core 0.1.0 is live. React stage 01620e4e-1391-4a67-b0be-ae63c70334c1 is staged. Waiting on Koss to Approve it on npmjs.com.
+Last session: 2026-11-15 20:13 +0400
+Stopped at: Both 0.1.0 packages are public and the clean-folder check passed. Next is trusted publishing, waiting on Koss.
 Resume file: None
