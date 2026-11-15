@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/libraries.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Libraries and references",
+  "summary": "Guide to the outside libraries and reference sources UI System projects use (DiceBear, anime.js, Hugeicons, React Bits, Untitled UI, Mobbin, Appllama) and how each is wired to the theme.",
+  "scope": ["DiceBear avatars", "Avatar component", "anime.js v4", "Reveal", "CountUp", "Hugeicons", "Icon component", "React Bits", "Untitled UI React", "@ui-system/core/untitled-ui.css", "Mobbin", "Appllama MCP", "ui.config.json avatars and motion keys", "--uis-* variables"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": "No frontmatter or filename convention. Usage-guide structure (library table, how-to steps, code snippets) with no Status/Decision/Consequences, user stories or API contracts. Contains embedded rules worth extracting as constraints by the synthesizer: Hugeicons only for icons, DiceBear for people without photos (never stock or AI faces), anime.js must respect config.motion and reduced motion, React Bits recolored with --uis-* and 4.5:1 contrast, one effect per section, UI System components before Untitled UI, search Mobbin for 5-10 references and cite links before a new screen, dashboard-first scope. These library choices are also stated in CLAUDE.md as owner rules. External URLs only, no internal doc links. Output filename uses path-based slug instead of SHA-256 hash: no hashing tool available, matching sibling convention."
+}

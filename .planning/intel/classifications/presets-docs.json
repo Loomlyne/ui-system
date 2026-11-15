@@ -1,0 +1,37 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/presets.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Presets",
+  "summary": "Defines UI System design presets (atelier, ledger): config merge order, pin keys, exact light/dark color roles, radius, type, sizes, shadows, motion, contrast gate and known gaps.",
+  "scope": [
+    "presets",
+    "atelier preset",
+    "ledger preset",
+    "PRESETS (packages/core/src/presets.ts)",
+    "ui.config.json",
+    "color.pin / color.pinDark",
+    "radius.overrides",
+    "type.preset",
+    "sizes",
+    "space",
+    "surface.shadows",
+    "motion.timing",
+    "contrast gate (contrastReport)",
+    "ui-system init CLI",
+    "Root preset prop",
+    "playground Start from",
+    "kinds",
+    "brand"
+  ],
+  "cross_refs": [
+    "kinds.md",
+    "packages/core/src/presets.ts",
+    "01-UI-SPEC.md",
+    ".planning/sketches/ui-system-redesign/ui.config.json"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "No frontmatter or filename convention. Dominant signals are SPEC: config key table, exact token value tables per role (light and dark), radius/size/motion contracts, and a build-failing 4.5:1 contrast gate. Also carries owner sign-offs (dated 2026-11-07, 2026-11-09: dark palette, info tone, atelier rename, preset-vs-product rule) that read like decisions, but no ADR structure or Status field, so not ADR. Synthesizer may want to lift the signed-off items as decisions. Filename hash suffix not computed: classifier had no hashing tool (Read/Write/Grep/Glob only); used '-docs' path disambiguator instead of the SHA-256 prefix."
+}

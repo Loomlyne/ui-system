@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/claude-design.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "UI System in Claude Design",
+  "summary": "How-to guide for the UI System design system and canvas in Claude Design: designing a new project with UIS.Root and republishing after code changes.",
+  "scope": ["Claude Design", "UI System design system", "UI System canvas", "UIS.Root", "window.UIS component bundle", "Tweaks panel", "design/claude-design-system/project", "pnpm design publish workflow"],
+  "cross_refs": ["design/claude-design-system/project"],
+  "locked": false,
+  "precedence": null,
+  "notes": "No frontmatter or filename convention; tutorial/runbook structure with numbered steps, no decision, requirement or contract sections. Counts (36 components, 20 boards) may be stale versus CLAUDE.md canvas page layout. Output filename uses path-based slug instead of SHA-256 hash: no hashing tool available to this agent."
+}

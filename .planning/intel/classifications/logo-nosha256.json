@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/logo.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Logo",
+  "summary": "Contract for the Logo component: brand.variant arrangements, generated marks, real logo sources, per-nav placement behavior, clear space, minimum sizes and size scale.",
+  "scope": ["Logo component", "Root brand config", "brand.variant", "brand.mark", "markTone", "logoSrc", "markSrc", "markSvg", "brand.placement", "logoPlacement", "Island nav", "Bar nav", "Stacked nav", "Dock nav", "Minimal nav", "Sidebar nav", "Topbar nav", "Claude Design Tweaks"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": "SPEC vs DOC ambiguity: reads as component reference/guide, but defines config fields, enum values, per-nav placement table, and hard rules (min mark 20px, lockup 96px, stacked never in nav bar, never redraw a real company's mark). Resolved toward SPEC per ADR > SPEC > PRD > DOC rule. No path heuristic, no frontmatter. Filename deviates from {slug}-{sha256[:8]} convention: classifier had no shell to compute SHA-256 of the source path; no sibling named logo.md expected."
+}

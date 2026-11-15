@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/radius.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Radius: sharp to round",
+  "summary": "Defines the radius engine: radius.roundness (0-100) and radius.pill drive role-based --uis-r-* corner variables, five named presets, and rules for nesting, overrides and textareas.",
+  "scope": ["radius.roundness", "radius.pill", "radius.overrides", "--uis-r-* CSS variables", "RADIUS_PRESETS", "Tailwind rounded-* utilities", "monogram logo mark", "textarea radius cap"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": "No frontmatter or path convention. Content is a token contract (role/variable/value tables, preset table, config API, must-follow rules), so SPEC over DOC. Filename hash suffix is a placeholder: classifier had no shell to compute SHA-256 of the source path; filename is unique in docs/ so no collision expected."
+}

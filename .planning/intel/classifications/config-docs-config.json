@@ -1,0 +1,38 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/config.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "ui.config.json reference",
+  "summary": "Key-by-key reference for ui.config.json: types, defaults and allowed values for name, preset, kind, brand, color, radius, type, density, sizes, space, surface, nav, avatars and motion.",
+  "scope": [
+    "ui.config.json",
+    "packages/core/src/config.ts defaults",
+    "packages/core/schema.json",
+    "preset (ledger, atelier)",
+    "kind",
+    "brand / logo / mark",
+    "color roles and --uis- CSS variables",
+    "pin / pinDark",
+    "radius roles",
+    "type presets",
+    "density and sizes",
+    "space scale",
+    "surface (float, shadow, border)",
+    "nav front/back variants (SiteNav, AppShell)",
+    "avatars (DiceBear)",
+    "motion (Reveal, CountUp, anime.js)"
+  ],
+  "cross_refs": [
+    "presets.md",
+    "kinds.md",
+    "radius.md",
+    "libraries.md",
+    "packages/core/src/config.ts",
+    "packages/core/schema.json",
+    "./node_modules/@ui-system/core/schema.json"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "No filename/path SPEC convention (lives in docs/), so medium. Content is a config schema contract: key/type/default/allowed-value tables, generated --uis- role names, error behavior (unknown pin keys throw). Reads like reference DOC too, but the data-model contract dominates; resolved to SPEC per ambiguity rule. Output filename uses path-derived suffix 'docs-config' instead of SHA-256 hash: no shell available to compute it."
+}

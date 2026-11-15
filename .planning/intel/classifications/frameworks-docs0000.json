@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/koss/Developer/ui-system/docs/frameworks.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Using UI System in each stack",
+  "summary": "Integration guide showing how to wire UI System theme and component CSS into Next.js, Tailwind v4, plain HTML, Framer, Shopify and Claude Design.",
+  "scope": ["Next.js App Router", "Root component", "theme.css", "ui.css", "Tailwind v4 utilities", "uis-* class API", "dark mode (data-uis-mode)", "Framer", "Shopify Online Store 2.0", "ui.config.json", "theme.json", "Claude Design"],
+  "cross_refs": ["claude-design.md"],
+  "locked": false,
+  "precedence": null,
+  "notes": "Tutorial/how-to structure with code snippets; no decision, requirements or formal contracts. Mild SPEC signal (lists class API names and Tailwind utility names) but they are illustrative usage, not a contract. Filename hash suffix is a placeholder (docs0000): no hashing tool was available to compute SHA-256 of the source path."
+}
