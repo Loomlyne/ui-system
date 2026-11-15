@@ -11,8 +11,8 @@
 - [x] **PUB-01**: Koss is logged in to npm on this Mac (`npm whoami` prints his user) — his step
 - [x] **PUB-02**: An npm org Koss owns holds the packages: `@ui-system` was taken, so org `loomlyne` (`npm org ls loomlyne` → koussayz - owner), packages `@loomlyne/ui-system-core` / `-react`, renamed by PR #10
 - [ ] **PUB-03**: After 0.1.0 exists, `publish.yml` publishes by trusted publishing (OIDC, no `NPM_TOKEN`) and both packages list Loomlyne/ui-system `publish.yml` as trusted publisher (replaces the token requirement, Koss 2026-11-15)
-- [ ] **PUB-04**: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main`
-- [ ] **PUB-05**: After Koss's yes, Koss publishes from `main` in his terminal (core first, 2FA) both packages at 0.1.0 publicly: `npm view @loomlyne/ui-system-core version` and `npm view @loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists `dist/index.js` and `dist/index.d.ts`
+- [x] **PUB-04**: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main` (2026-11-15, `01ae60c`)
+- [ ] **PUB-05**: After Koss's yes, Koss publishes from `main` in his terminal (core first, 2FA) both packages at 0.1.0 publicly: `npm view @loomlyne/ui-system-core version` and `npm view @loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists `dist/index.js` and `dist/index.d.ts`. Core `0.1.0` is public (2026-11-15T16:03:05.800Z). React is staged, not approved.
 - [ ] **PUB-06**: A clean folder outside this repo installs both packages from npm and `npx -p @loomlyne/ui-system-core ui-system check` runs (milestone success metric); result recorded in `.planning/` with verified / not verified / failed
 
 ### Docs (DOCS) — stale docs from .planning/INGEST-CONFLICTS.md
@@ -68,8 +68,8 @@ None yet.
 | PUB-01 | Phase 1 | Complete |
 | PUB-02 | Phase 1 | Complete |
 | PUB-03 | Phase 1 | Pending |
-| PUB-04 | Phase 1 | Pending |
-| PUB-05 | Phase 1 | Pending |
+| PUB-04 | Phase 1 | Complete |
+| PUB-05 | Phase 1 | Partial — core 0.1.0 public; react staged |
 | PUB-06 | Phase 1 | Pending |
 | DOCS-01 | Phase 2 | Pending |
 | DOCS-02 | Phase 2 | Pending |

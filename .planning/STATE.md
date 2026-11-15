@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — steps 1, 2 and 4 passed. PR #10 is on main as 01ae60c. Direct publish of core returned 403 with no browser challenge. Next: Koss stages core (decisions/2026-11-15-npm-stage-first-publish.md), then approves with 2FA
-Last activity: 2026-11-15 — Koss chose npm stage publish for the first 0.1.0
+Status: In progress — steps 1, 2 and 4 passed. `@loomlyne/ui-system-core@0.1.0` is public (website Approve, 2026-11-15T16:03:05.800Z). Next: Koss approves staged `@loomlyne/ui-system-react@0.1.0` on npmjs.com (status `staged`, decisions/2026-11-15-npm-stage-first-publish.md)
+Last activity: 2026-11-15 — core 0.1.0 live; react 0.1.0 staged (status `staged` at 20:09 +0400)
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -47,8 +47,8 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 1: direct publish is blocked (403, no auth URL). Next is his `npm stage publish` of core, then `npm stage approve` with 2FA. A new name also publishes public placeholder `0.0.0-stage`.
-- Phase 1: core and react publish separately; if react fails after core succeeds, 0.1.0 of core is out alone and cannot be re-published at 0.1.0 (fix forward with 0.1.1).
+- Phase 1: `@loomlyne/ui-system-core@0.1.0` is public. No `LICENSE` file in that tarball (`"license": "MIT"` only). Placeholder `0.0.0-stage` is still on the registry. CLI `npm stage approve` and `npm stage reject` return 404 for this login; the Staged Packages tab is the approve path.
+- Phase 1: react `0.1.0` is staged (`01620e4e-1391-4a67-b0be-ae63c70334c1`), status `staged` at 20:09 +0400. If that approve fails, core 0.1.0 stays out alone and cannot be republished (fix forward with 0.1.1).
 - Phases 3-5: a new preset reaches products only after a version bump and republish; decide at Phase 3 discuss whether each preset phase ends with a release.
 - Outside repo: Caractère .planning names `@ui-system/*`; its own session updates it.
 
@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 20:01 +0400
-Stopped at: CLI approve of b74d2561-66e4-4b04-9630-1519381fe7e9 returned 404. Waiting on Koss to approve that stage on npmjs.com.
+Last session: 2026-11-15 20:08 +0400
+Stopped at: Core 0.1.0 is live. React stage 01620e4e-1391-4a67-b0be-ae63c70334c1 is staged. Waiting on Koss to Approve it on npmjs.com.
 Resume file: None
