@@ -32,7 +32,7 @@ A product repo picks a preset, a kind and a brand, installs UI System from npm, 
 
 Milestone v0.1 "Published and current". Detail and IDs in REQUIREMENTS.md.
 
-- [ ] `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 on npm via `publish.yml` (driver: Caractère Phase 1). Both `0.1.0` are public as of 2026-11-15. Branch `oidc-publish` drops `NPM_TOKEN`. The publisher on npm is not added yet.
+- [ ] `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 on npm via `publish.yml` (driver: Caractère Phase 1). Both `0.1.0` are public as of 2026-11-15, published from the terminal, not from `publish.yml`. PR #11 is on main. Both packages trust that workflow. The workflow has not published a version.
 - [ ] Docs match shipped code and owner decisions
 - [ ] Preset `mist` (glass, soft)
 - [ ] Preset `signal` (bold pill and yellow)

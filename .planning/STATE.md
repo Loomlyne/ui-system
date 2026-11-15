@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — both packages are public at 0.1.0. Steps 5, 6 and 9 passed. Step 7 is PR #11 (`oidc-publish`): `publish.yml` drops `NPM_TOKEN`. Waiting on the PR landing, then Koss adds the trusted publisher on both packages
-Last activity: 2026-11-15 — OIDC publish workflow on branch oidc-publish
+Status: In progress — both packages are public at 0.1.0. Steps 5, 6, 7 and 9 passed. PR #11 is on main as `29cb7b6`. Both packages trust `publish.yml`. Do not dispatch while the version is `0.1.0`
+Last activity: 2026-11-15 — trusted publishers added for core and react
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 20:18 +0400
-Stopped at: OIDC publish workflow is on branch oidc-publish. Waiting on the PR, then Koss adds the trusted publisher. Do not dispatch for 0.1.0.
+Last session: 2026-11-15 20:31 +0400
+Stopped at: PR #11 is on main and both trusted publishers exist. The workflow was not dispatched. 0.1.0 is already public.
 Resume file: None
