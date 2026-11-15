@@ -49,11 +49,11 @@ Milestone v0.1 "Published and current". Detail and IDs in REQUIREMENTS.md.
 ## Context
 
 - Monorepo, pnpm. `packages/core/src/*` (cli, color, config, exports, index, kinds, presets, radius, theme, type), `packages/core/styles/ui.css` (`uis-*` classes on `--uis-*` vars), `packages/react` (Root, Logo, primitives, nav/front, nav/back, Icon, Motion; `build.mjs` emits ESM + IIFE bundle), `apps/playground` (Next.js 16 static export), `scripts/` (design build, catalog, assets, `canvas/*.py`).
-- CI: `ci.yml`, `pages.yml`, `publish.yml` (manual dispatch, `--access public`, needs repo secret `NPM_TOKEN`).
+- CI: `ci.yml`, `pages.yml`, `publish.yml` (manual dispatch, `--access public`; moves to trusted publishing after 0.1.0).
 - Live playground: https://loomlyne.github.io/ui-system/
 - Claude Design artifacts: "UI System · Design System" (namespace `UIS`), "UI System · Canvas", "UI System · Retail decisions (archive)".
 - Skins in the canvas skin Tweak: Senorita, ALMAR (atelier); Invios, Clickit (ledger); Vamos, Koussay, Sahti, Obox (no engine preset).
-- Known state 2026-11-15: `npm view @loomlyne/ui-system-core` and `@loomlyne/ui-system-react` return E404; `NPM_TOKEN` not set; publish workflow never run; Koss not logged in to npm on this Mac.
+- Known state 2026-11-15: packages not yet on npm (E404); Koss logged in as koussayz and owns org `loomlyne`; publish workflow never run.
 - Stale docs list: .planning/INGEST-CONFLICTS.md (INFO entries).
 
 ## Constraints
@@ -64,7 +64,7 @@ Milestone v0.1 "Published and current". Detail and IDs in REQUIREMENTS.md.
 - **Contrast**: every text role 4.5:1 in light and dark; `pnpm design` fails below (D-12, C-03).
 - **Libraries**: Hugeicons, DiceBear, anime.js v4, React Bits, Untitled UI only (C-07); `ui-system check` enforces.
 - **Change protocol**: component/prop change → `design-catalog.mjs`, `pnpm build && pnpm design`, publish design system with `design-system.json` last, re-copy bundle into canvas `ds/uis/` (C-09); check boards locally before publishing (C-10).
-- **Secrets**: npm login, org, token and `NPM_TOKEN` secret are Koss's steps in his terminal; never typed into chat or a file.
+- **Secrets**: npm login, org and 2FA are Koss's steps in his terminal; never typed into chat or a file.
 - **Gates**: publish to npm, merge, push `main` need Koss's word.
 
 ## Key Decisions
@@ -93,7 +93,7 @@ Locked (owner word, dated). Full text: .planning/intel/decisions.md.
 | D-17 | `retail-editorial` renamed `atelier`, alias kept | 2026-11-09 | Locked, shipped |
 | D-18 | Ledger follows Invios D-05/D-12 and signed sketch; pins nothing | 2026-11-07 | Locked, shipped |
 | D-19 | Merge order defaults → preset → your keys; seed change drops that seed's pins | 2026-11-07 | Locked, shipped |
-| D-20 | Publish `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 to npm in milestone 1 via `publish.yml`; runbook in .planning/decisions/2026-11-15-npm-publish.md | 2026-11-15 | Locked, in progress |
+| D-20 | Publish `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 to npm in milestone 1 (scope `@ui-system` taken → `@loomlyne`); first publish by Koss locally with 2FA, then trusted publishing; decisions/2026-11-15-npm-*.md | 2026-11-15 | Locked, in progress |
 </decisions>
 
 ## Evolution

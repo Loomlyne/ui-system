@@ -8,6 +8,8 @@ Checks run: LOCKED-vs-LOCKED (no ADRs, owner decisions checked against each othe
 
 ### WARNINGS (1)
 
+> Resolved 2026-11-15 by Koss: publish in milestone 1 under `@loomlyne/ui-system-*` (decisions/2026-11-15-npm-*.md).
+
 [WARNING] Docs describe npm install flows, but the packages are not on npm
   Found: /Users/koss/Developer/ui-system/README.md says `/ui-system:ui` "installs @ui-system/core and @ui-system/react" and tells users to run `npx -p @ui-system/core ui-system check`; /Users/koss/Developer/ui-system/docs/frameworks.md and /Users/koss/Developer/ui-system/docs/libraries.md import `@ui-system/react` and `@ui-system/core/untitled-ui.css`. Checked 2026-11-15: `npm view @ui-system/core` returns 404. `.github/workflows/publish.yml` exists (manual dispatch, needs `NPM_TOKEN`); both packages are at 0.1.0. The plugin itself shipped in 277913a (PR #8, 2026-11-13).
   Impact: the roadmapper would mark the plugin install, `ui-system check` via npx and the framework guides as shipped and working outside this repo, when they fail today. The `@ui-system` npm scope may also be unclaimed or owned by someone else; publishing needs the owner's npm login and token.

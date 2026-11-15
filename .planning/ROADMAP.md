@@ -41,16 +41,16 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
 **Goal**: A product repo (first Caractère) installs `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 from npm
 **Depends on**: Nothing (first phase)
 **Requirements**: PUB-01, PUB-02, PUB-03, PUB-04, PUB-05, PUB-06
-**Success Criteria** (what must be TRUE; owner runbook, .planning/decisions/2026-11-15-npm-publish.md, verbatim; every password, 2FA or token step is Koss's, one numbered step at a time, wait for "done", then check):
-  1. Koss: `npm login` (browser). Check: `npm whoami`.
-  2. Check scope: `npm view @loomlyne/ui-system-core`; `npm org ls ui-system`. If org missing, Koss: npmjs.com → avatar → Add Organization → `ui-system` → Free. If the name is taken, STOP and ask about renaming the scope (e.g. `@loomlyne/*`), done by PR.
-  3. Koss: npmjs.com → Access Tokens → Generate New Token → Granular. Name `ui-system-publish`, 90 days, Packages and scopes Read and write, only the ui-system org, Bypass 2FA if shown. Copy once.
-  4. Koss: `gh secret set NPM_TOKEN -R Loomlyne/ui-system` (hidden prompt). Check: `gh secret list`.
-  5. Claude: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on main.
-  6. Ask Koss: "Publish @loomlyne/ui-system-core and @loomlyne/ui-system-react 0.1.0 publicly to npm now?" On yes: `gh workflow run publish.yml -R Loomlyne/ui-system`, then `gh run watch`.
-  7. Verify: `npm view @loomlyne/ui-system-core version` and `@loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists dist/index.js and dist/index.d.ts.
+**Success Criteria** (what must be TRUE; owner runbook .planning/decisions/2026-11-15-npm-publish.md as amended by decisions/2026-11-15-npm-scope-loomlyne.md and decisions/2026-11-15-npm-first-publish-local.md; every password or 2FA step is Koss's, one numbered step at a time, wait for "done", then check):
+  1. [x] Koss: `npm login` (browser). Check: `npm whoami` → koussayz (2026-11-15).
+  2. [x] Scope: `@ui-system` taken → Koss chose org `loomlyne`, packages `@loomlyne/ui-system-core` + `@loomlyne/ui-system-react`; `npm org ls loomlyne` → koussayz - owner; rename by PR #10 (2026-11-15).
+  3. ~~Token + `NPM_TOKEN` secret~~ dropped (Koss, 2026-11-15): bypass-2FA tokens lose direct publish ~Jan 2027; first publish is local.
+  4. Claude: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main` after PR #10 merges.
+  5. Ask Koss: "Publish @loomlyne/ui-system-core and @loomlyne/ui-system-react 0.1.0 publicly to npm now?" On yes, Koss in his terminal on `main`: `pnpm --filter @loomlyne/ui-system-core publish --access public`, then the same for `-react` (core first; `prepack` builds; 2FA in browser).
+  6. Verify: `npm view @loomlyne/ui-system-core version` and `@loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists dist/index.js and dist/index.d.ts.
+  7. Trusted publishing: `publish.yml` moves to OIDC (no `NPM_TOKEN`) by PR; Koss adds trusted publisher (Loomlyne/ui-system, `publish.yml`) on both packages' Settings.
   8. Record in .planning/ and report verified / not verified / failed. Last line: PUBLISHED @loomlyne/ui-system-core@<v> @loomlyne/ui-system-react@<v>, or what blocked.
-  9. (Added, milestone success metric, PUB-06) A clean folder outside the repo installs both packages from npm and `npx -p @loomlyne/ui-system-core ui-system check` runs.
+  9. (Milestone success metric, PUB-06) A clean folder outside the repo installs both packages from npm and `npx -p @loomlyne/ui-system-core ui-system check` runs.
 **Plans**: TBD
 
 ### Phase 2: Docs refresh

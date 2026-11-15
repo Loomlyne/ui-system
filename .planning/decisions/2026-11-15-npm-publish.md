@@ -1,3 +1,5 @@
+> Superseded in part: scope → decisions/2026-11-15-npm-scope-loomlyne.md; steps 3-4 and workflow route → decisions/2026-11-15-npm-first-publish-local.md. Live steps: ROADMAP Phase 1.
+
 # Decision: publish @ui-system/core and @ui-system/react to npm (2026-11-15)
 
 **Decided by:** Koss (owner), 2026-11-15, during GSD ingest conflict gate.

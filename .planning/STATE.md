@@ -47,11 +47,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 1: npm login, org, token and `NPM_TOKEN` secret are Koss's steps; nothing moves until step 1 is done.
-- Phase 1: `@ui-system` scope may be taken; if so, stop and ask about a rename (e.g. `@loomlyne/*`), by PR.
-- Phase 1: `publish.yml` publishes core then react in separate steps; if react fails after core succeeds, 0.1.0 of core is out alone and cannot be re-published at 0.1.0 (fix forward with 0.1.1).
+- Phase 1: publish waits on PR #10 merge (his Ship), then his local `pnpm publish` with 2FA.
+- Phase 1: core and react publish separately; if react fails after core succeeds, 0.1.0 of core is out alone and cannot be re-published at 0.1.0 (fix forward with 0.1.1).
 - Phases 3-5: a new preset reaches products only after a version bump and republish; decide at Phase 3 discuss whether each preset phase ends with a release.
-- Outside repo: user memory `product-presets.md` still describes the superseded per-product preset model (INGEST-CONFLICTS INFO); fix via `learn-from-work`, not in this repo.
+- Outside repo: Caractère .planning names `@ui-system/*`; its own session updates it.
 
 ## Deferred Items
 

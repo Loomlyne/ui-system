@@ -76,7 +76,7 @@ Install once, then it works in every repo, local or cloud:
 - Run `/ui-system:ui [preset] [kind] [what to build]`: detects the stack, installs `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react`, writes `ui.config.json`, wires the theme, adds the rules to the repo's `CLAUDE.md`, and enables the plugin in `.claude/settings.json` for cloud sessions. On a repo with UI of its own it restyles onto UI System, one conflict at a time.
 - Any conflict with a rule: Claude stops and shows two pictures (follows the rule / follows the request) and asks.
 - `npx -p @loomlyne/ui-system-core ui-system check` fails on hard-coded colors, emoji, non-Hugeicons icons, banned motion libraries and fake avatars. Add it as the `ui:check` script.
-- Publishing the packages: run the "Publish packages" workflow (needs the `NPM_TOKEN` secret and the `@loomlyne` npm org).
+- Publishing the packages: run the "Publish packages" workflow (`@loomlyne` npm org; auth moves to trusted publishing, see `.planning/ROADMAP.md` Phase 1).
 
 ## The controls
 

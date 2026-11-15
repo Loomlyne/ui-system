@@ -8,11 +8,11 @@
 
 ### Publish (PUB) — owner runbook, .planning/decisions/2026-11-15-npm-publish.md
 
-- [ ] **PUB-01**: Koss is logged in to npm on this Mac (`npm whoami` prints his user) — his step
-- [ ] **PUB-02**: The `@ui-system` npm org exists and Koss can publish to it (`npm org ls ui-system`); if the name is taken, work stops and the scope rename is his decision, done by PR
-- [ ] **PUB-03**: Repo secret `NPM_TOKEN` holds a granular token (`ui-system-publish`, 90 days, read and write, ui-system org only); `gh secret list -R Loomlyne/ui-system` shows it — his steps
+- [x] **PUB-01**: Koss is logged in to npm on this Mac (`npm whoami` prints his user) — his step
+- [x] **PUB-02**: An npm org Koss owns holds the packages: `@ui-system` was taken, so org `loomlyne` (`npm org ls loomlyne` → koussayz - owner), packages `@loomlyne/ui-system-core` / `-react`, renamed by PR #10
+- [ ] **PUB-03**: After 0.1.0 exists, `publish.yml` publishes by trusted publishing (OIDC, no `NPM_TOKEN`) and both packages list Loomlyne/ui-system `publish.yml` as trusted publisher (replaces the token requirement, Koss 2026-11-15)
 - [ ] **PUB-04**: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main`
-- [ ] **PUB-05**: After Koss's yes, the "Publish packages" workflow publishes both packages at 0.1.0 publicly: `npm view @loomlyne/ui-system-core version` and `npm view @loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists `dist/index.js` and `dist/index.d.ts`
+- [ ] **PUB-05**: After Koss's yes, Koss publishes from `main` in his terminal (core first, 2FA) both packages at 0.1.0 publicly: `npm view @loomlyne/ui-system-core version` and `npm view @loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists `dist/index.js` and `dist/index.d.ts`
 - [ ] **PUB-06**: A clean folder outside this repo installs both packages from npm and `npx -p @loomlyne/ui-system-core ui-system check` runs (milestone success metric); result recorded in `.planning/` with verified / not verified / failed
 
 ### Docs (DOCS) — stale docs from .planning/INGEST-CONFLICTS.md
@@ -65,8 +65,8 @@ None yet.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PUB-01 | Phase 1 | In Progress |
-| PUB-02 | Phase 1 | Pending |
+| PUB-01 | Phase 1 | Complete |
+| PUB-02 | Phase 1 | Complete |
 | PUB-03 | Phase 1 | Pending |
 | PUB-04 | Phase 1 | Pending |
 | PUB-05 | Phase 1 | Pending |
