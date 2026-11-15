@@ -3,7 +3,7 @@ import {
   buildTheme, resolveConfig,
   type AvatarStyle, type BackNav, type Density, type MotionIntensity, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
   type KindId, type LegacyPresetId, type Mode, type Placement, type PresetId, type ShadowDepth, type UIConfigInput,
-} from '@loomlyne/core';
+} from '@loomlyne/ui-system-core';
 import { UISContext, cx } from './context';
 
 /**

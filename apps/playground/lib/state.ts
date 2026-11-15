@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, PRESETS, resolveConfig, type UIConfig, type UIConfigInput } from '@loomlyne/core';
+import { DEFAULT_CONFIG, PRESETS, resolveConfig, type UIConfig, type UIConfigInput } from '@loomlyne/ui-system-core';
 
 export type Config = UIConfig;
 

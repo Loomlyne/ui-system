@@ -23,14 +23,14 @@ Ask preset (`ledger` or `atelier`), then kind (`shop`, `app`, `website`, `bookin
 
 ## 4. Install
 
-Check the package is published: `npm view @loomlyne/react version`.
+Check the package is published: `npm view @loomlyne/ui-system-react version`.
 
-- Published: add `@loomlyne/core` and `@loomlyne/react` with the repo's package manager.
+- Published: add `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` with the repo's package manager.
 - Not published (E404): stop and give Koss one numbered step: run the "Publish packages" workflow in github.com/Loomlyne/ui-system (needs the `NPM_TOKEN` secret). For a plain HTML or Framer repo you may continue meanwhile with the CDN link from `${CLAUDE_PLUGIN_ROOT}/docs/frameworks.md`.
 
 ## 5. Wire it
 
-1. `npx -p @loomlyne/core ui-system init --preset <preset> --kind <kind> --name "<brand>"` writes `ui.config.json` and prints the preset's rules, never-list and questions. Read that output.
+1. `npx -p @loomlyne/ui-system-core ui-system init --preset <preset> --kind <kind> --name "<brand>"` writes `ui.config.json` and prints the preset's rules, never-list and questions. Read that output.
 2. Wire the theme for the detected stack by following `${CLAUDE_PLUGIN_ROOT}/docs/frameworks.md` (if that path is missing, read the same file at github.com/Loomlyne/ui-system/blob/main/docs/frameworks.md). For Expo, export tokens with the core CLI and use `tokens.json`.
 3. Add a `ui:check` script to `package.json` (`ui-system check`) and include it in the repo's gate or pre-push check. Run it once and report the result.
 4. Add this block to the repo's `CLAUDE.md` (create it if missing), so the rules hold in every later session, local or cloud:

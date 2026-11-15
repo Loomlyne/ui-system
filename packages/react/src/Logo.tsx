@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { LogoMark as MarkKind, LogoVariant } from '@loomlyne/core';
+import type { LogoMark as MarkKind, LogoVariant } from '@loomlyne/ui-system-core';
 import { cx, pick, useUIS } from './context';
 
 export interface LogoMarkProps {

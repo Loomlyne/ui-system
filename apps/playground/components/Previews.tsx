@@ -1,10 +1,10 @@
 'use client';
 import * as React from 'react';
-import { buildTheme, NEUTRAL_STEPS, SCALE_STEPS, contrast } from '@loomlyne/core';
+import { buildTheme, NEUTRAL_STEPS, SCALE_STEPS, contrast } from '@loomlyne/ui-system-core';
 import {
   Alert, AppShell, Avatar, AvatarGroup, Badge, Button, Card, Checkbox, Chips, Icon, Input, Kbd, Logo, Menu, NavMobile,
   PageHeader, Popover, Progress, Reveal, Root, Select, SiteNav, Stat, Switch, Table, Tabs, Textarea, Toast, Tooltip,
-} from '@loomlyne/react';
+} from '@loomlyne/ui-system-react';
 import type { Config } from '@/lib/state';
 
 /* ---------- Scaled device frame ---------- */

@@ -25,9 +25,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm typecheck
-      - run: pnpm --filter @loomlyne/core publish --access public --no-git-checks
+      - run: pnpm --filter @loomlyne/ui-system-core publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: pnpm --filter @loomlyne/react publish --access public --no-git-checks
+      - run: pnpm --filter @loomlyne/ui-system-react publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

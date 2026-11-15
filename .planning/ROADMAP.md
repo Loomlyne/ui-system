@@ -29,7 +29,7 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: npm publish** - `@loomlyne/core` and `@loomlyne/react` 0.1.0 public on npm via `publish.yml` (in progress)
+- [ ] **Phase 1: npm publish** - `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 public on npm via `publish.yml` (in progress)
 - [ ] **Phase 2: Docs refresh** - README, CLAUDE.md and docs/*.md match shipped code and owner decisions
 - [ ] **Phase 3: Preset mist** - glass, soft preset, picture-first, contrast-safe, full canvas sheet
 - [ ] **Phase 4: Preset signal** - bold pill and yellow preset, same gates
@@ -38,19 +38,19 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
 ## Phase Details
 
 ### Phase 1: npm publish
-**Goal**: A product repo (first Caractère) installs `@loomlyne/core` and `@loomlyne/react` 0.1.0 from npm
+**Goal**: A product repo (first Caractère) installs `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` 0.1.0 from npm
 **Depends on**: Nothing (first phase)
 **Requirements**: PUB-01, PUB-02, PUB-03, PUB-04, PUB-05, PUB-06
 **Success Criteria** (what must be TRUE; owner runbook, .planning/decisions/2026-11-15-npm-publish.md, verbatim; every password, 2FA or token step is Koss's, one numbered step at a time, wait for "done", then check):
   1. Koss: `npm login` (browser). Check: `npm whoami`.
-  2. Check scope: `npm view @loomlyne/core`; `npm org ls ui-system`. If org missing, Koss: npmjs.com → avatar → Add Organization → `ui-system` → Free. If the name is taken, STOP and ask about renaming the scope (e.g. `@loomlyne/*`), done by PR.
+  2. Check scope: `npm view @loomlyne/ui-system-core`; `npm org ls ui-system`. If org missing, Koss: npmjs.com → avatar → Add Organization → `ui-system` → Free. If the name is taken, STOP and ask about renaming the scope (e.g. `@loomlyne/*`), done by PR.
   3. Koss: npmjs.com → Access Tokens → Generate New Token → Granular. Name `ui-system-publish`, 90 days, Packages and scopes Read and write, only the ui-system org, Bypass 2FA if shown. Copy once.
   4. Koss: `gh secret set NPM_TOKEN -R Loomlyne/ui-system` (hidden prompt). Check: `gh secret list`.
   5. Claude: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on main.
-  6. Ask Koss: "Publish @loomlyne/core and @loomlyne/react 0.1.0 publicly to npm now?" On yes: `gh workflow run publish.yml -R Loomlyne/ui-system`, then `gh run watch`.
-  7. Verify: `npm view @loomlyne/core version` and `@loomlyne/react version` print 0.1.0; `npm pack @loomlyne/react --dry-run` lists dist/index.js and dist/index.d.ts.
-  8. Record in .planning/ and report verified / not verified / failed. Last line: PUBLISHED @loomlyne/core@<v> @loomlyne/react@<v>, or what blocked.
-  9. (Added, milestone success metric, PUB-06) A clean folder outside the repo installs both packages from npm and `npx -p @loomlyne/core ui-system check` runs.
+  6. Ask Koss: "Publish @loomlyne/ui-system-core and @loomlyne/ui-system-react 0.1.0 publicly to npm now?" On yes: `gh workflow run publish.yml -R Loomlyne/ui-system`, then `gh run watch`.
+  7. Verify: `npm view @loomlyne/ui-system-core version` and `@loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists dist/index.js and dist/index.d.ts.
+  8. Record in .planning/ and report verified / not verified / failed. Last line: PUBLISHED @loomlyne/ui-system-core@<v> @loomlyne/ui-system-react@<v>, or what blocked.
+  9. (Added, milestone success metric, PUB-06) A clean folder outside the repo installs both packages from npm and `npx -p @loomlyne/ui-system-core ui-system check` runs.
 **Plans**: TBD
 
 ### Phase 2: Docs refresh
@@ -59,7 +59,7 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
 **Requirements**: DOCS-01, DOCS-02, DOCS-03, DOCS-04, DOCS-05, DOCS-06, DOCS-07, DOCS-08
 **Success Criteria** (what must be TRUE):
   1. Every INFO entry in .planning/INGEST-CONFLICTS.md about a stale doc is fixed in the doc it names (claude-design, config, navigation, radius, logo, presets, README, CLAUDE.md layout)
-  2. README install, plugin and `npx -p @loomlyne/core ui-system check` steps, run as written in a clean folder, work against npm
+  2. README install, plugin and `npx -p @loomlyne/ui-system-core ui-system check` steps, run as written in a clean folder, work against npm
   3. Claude Design names, canvas pages and Tweak groups in the docs match D-02, D-06, D-09 and the live canvas
   4. A doc reader finds `brand.caption` default `''`, the motion split, phone shell behaviour and the `search` radius role, matching the code
 **Plans**: TBD

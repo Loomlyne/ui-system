@@ -5,7 +5,7 @@ import * as loreleiNeutral from '@dicebear/lorelei-neutral';
 import * as thumbs from '@dicebear/thumbs';
 import * as glass from '@dicebear/glass';
 import * as shapes from '@dicebear/shapes';
-import type { AvatarStyle } from '@loomlyne/core';
+import type { AvatarStyle } from '@loomlyne/ui-system-core';
 import { cx, pick, useUIS } from './context';
 
 /**

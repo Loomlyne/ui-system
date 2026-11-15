@@ -1,7 +1,7 @@
 /*
  * Untitled UI React adapter. Import after Untitled UI's own theme.css:
  *   @import "./styles/theme.css";          (Untitled UI)
- *   @import "@loomlyne/core/untitled-ui.css";
+ *   @import "@loomlyne/ui-system-core/untitled-ui.css";
  * Its brand scale, grey scale and font roles then follow ui.config.json.
  * Dark mode: Untitled UI uses .dark-mode; UI System sets data-uis-mode="dark".
  */

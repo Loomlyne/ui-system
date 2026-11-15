@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { buildTheme, resolveConfig, type BrandConfig, type Placement, type Theme } from '@loomlyne/core';
+import { buildTheme, resolveConfig, type BrandConfig, type Placement, type Theme } from '@loomlyne/ui-system-core';
 
 export interface UISContextValue {
   theme: Theme;

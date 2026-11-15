@@ -9,7 +9,7 @@ UI System (github.com/Loomlyne/ui-system) is the one design system for every pro
 
 ## 0. Is it set up here?
 
-Check the open repo for `ui.config.json` and a dependency on `@loomlyne/react` or `@loomlyne/core`.
+Check the open repo for `ui.config.json` and a dependency on `@loomlyne/ui-system-react` or `@loomlyne/ui-system-core`.
 
 - Missing: run the `/ui-system:ui` command (setup) before designing anything.
 - Present: read `ui.config.json`. Its `preset`, `kind` and `brand` are the contract for this repo. Do not change them without being asked.
@@ -20,7 +20,7 @@ Check the open repo for `ui.config.json` and a dependency on `@loomlyne/react` o
 2. **Kind** = what is built (`shop`, `app`, `website`, `booking`, `portfolio`).
 3. **Brand** on top (wordmark, mark, colors). A product may override anything; the preset is the base.
 
-Print the preset's own rules, never-list and questions with `npx -p @loomlyne/core ui-system init --preset <id> --kind <id>` (or read `packages/core/src/presets.ts` and `kinds.ts` in the UI System repo). Those printed rules are part of this skill. Follow them. Ask the printed questions before designing when the answers are not already in the repo.
+Print the preset's own rules, never-list and questions with `npx -p @loomlyne/ui-system-core ui-system init --preset <id> --kind <id>` (or read `packages/core/src/presets.ts` and `kinds.ts` in the UI System repo). Those printed rules are part of this skill. Follow them. Ask the printed questions before designing when the answers are not already in the repo.
 
 ## 2. Track
 
@@ -34,12 +34,12 @@ Never design a website or app from imagination. Never copy another product's bra
 
 ## 3. Hard rules (never break)
 
-1. **No hard-coded color, radius, font or shadow.** Web uses `--uis-*` variables or the Tailwind utilities from `@loomlyne/core/tailwind.css`. Mobile uses the exported tokens. A new visual value goes into the engine (`ui.config.json`), never inline.
+1. **No hard-coded color, radius, font or shadow.** Web uses `--uis-*` variables or the Tailwind utilities from `@loomlyne/ui-system-core/tailwind.css`. Mobile uses the exported tokens. A new visual value goes into the engine (`ui.config.json`), never inline.
 2. **Contrast.** Every text role keeps 4.5:1 in light and dark. Seed colors change, roles are re-derived; never pin a role that fails.
 3. **Icons: Hugeicons only** (free stroke-rounded set, `@hugeicons/core-free-icons`, through UI System's `Icon`). No emoji, no hand-drawn paths, no other icon set. Mobile follows the Appllama skill.
 4. **People without a photo: `Avatar`** (DiceBear, CC0, name as seed). A real photo only when the user supplies one. No stock photos, AI faces, pravatar or randomuser.
 5. **Motion: the split rule (`rules/motion.md`).** CSS in `ui.css` for hover, press and focus; anime.js v4 through `Reveal`, `CountUp`, `anime` for entrances, reveals and counts; both on the shared `--uis-dur*` / `--uis-ease*` tokens. No GSAP, no Framer Motion. Respect `motion.enabled` and reduced motion. Dashboards stay subtle; a site gets at most one expressive moment per page. `CountUp` shows real figures only.
-6. **Components first.** Use UI System components before anything else. Extra effects: React Bits (`npx shadcn@latest add @react-bits/<Name>-TS-TW`), recolored with `--uis-*`. Extra app components: Untitled UI React plus `@loomlyne/core/untitled-ui.css`.
+6. **Components first.** Use UI System components before anything else. Extra effects: React Bits (`npx shadcn@latest add @react-bits/<Name>-TS-TW`), recolored with `--uis-*`. Extra app components: Untitled UI React plus `@loomlyne/ui-system-core/untitled-ui.css`.
 7. **Every component works three ways:** React props, plain `uis-*` CSS classes, and plain data props (slots also accept children).
 8. **Honest UI.** No fake testimonials, logos of real companies, invented metrics or people. Sample data is labelled as sample. Never invent prices, rates, legal copy or amounts, not even placeholders: ask.
 9. **A shown control works end to end.** No dead buttons, no fake toggles, no placeholder links.
@@ -55,7 +55,7 @@ If a request, an existing design, a reference or a library conflicts with a rule
 
 ## 5. Automatic check
 
-`npx -p @loomlyne/core ui-system check` scans source for hard-coded colors, emoji, non-Hugeicons icon sets, banned motion libraries (framer-motion, gsap) and fake avatar sources. It exits 1 on any break. Run it before saying done and keep it in the repo's gate (`package.json` script `ui:check`). Never silence it by editing the check or adding `ui-system-allow` yourself: a flagged line is a conflict, so go through section 4.
+`npx -p @loomlyne/ui-system-core ui-system check` scans source for hard-coded colors, emoji, non-Hugeicons icon sets, banned motion libraries (framer-motion, gsap) and fake avatar sources. It exits 1 on any break. Run it before saying done and keep it in the repo's gate (`package.json` script `ui:check`). Never silence it by editing the check or adding `ui-system-allow` yourself: a flagged line is a conflict, so go through section 4.
 
 ## 6. When the user must choose
 

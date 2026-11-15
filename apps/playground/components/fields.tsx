@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Button, Icon } from '@loomlyne/react';
+import { Button, Icon } from '@loomlyne/ui-system-react';
 
 export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
