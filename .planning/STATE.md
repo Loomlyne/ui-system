@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — Koss said run the OIDC publish. Core and react are `0.1.1` so the workflow does not republish `0.1.0`. Dispatch is next
-Last activity: 2026-11-15 — version bumped to 0.1.1 for the trusted-publishing run
+Status: In progress — first OIDC dispatch `43736162443` (`92f00d1`) failed before publish. Node.js v24.22.2 leaves `process.versions.npm` empty. The check now calls `npm --version` and exits below 11.5.1. `0.1.1` is not on npm. One dispatch of this fix is next
+Last activity: 2026-11-15 — npm check fixed after run 43736162443
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -61,5 +61,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-11-15
-Stopped at: Core and react are 0.1.1. Next is dispatch of publish.yml from main. Do not republish 0.1.0.
+Stopped at: Check fix is in this commit. Next is one dispatch of publish.yml from that commit. Do not re-run 92f00d1. Do not republish 0.1.0. Do not dispatch again for 0.1.1 if the new run succeeds.
 Resume file: None
