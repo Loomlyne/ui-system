@@ -1,6 +1,6 @@
 {
   "name": "@loomlyne/ui-system-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "UI System React components: Root theme provider, Logo, primitives, frontend navs and backend app shells.",
   "license": "MIT",
   "type": "module",
