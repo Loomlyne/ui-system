@@ -8,6 +8,7 @@ permissions:
 
 concurrency:
   group: publish
+  # A second click must not kill a publish that already started.
   cancel-in-progress: false
 
 jobs:
@@ -15,19 +16,24 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 22
+          filter: blob:none
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          # Prefix restore reaches the cache main already filled. No registry-url:
+          # that input writes _authToken, and pnpm skips OIDC when a token is set.
           cache: pnpm
-          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm typecheck
+      # Same job as the build: the tarball must be this build. pnpm 10.28 calls npm publish.
+      # npm 11.5.1 or newer exchanges the GitHub OIDC token. Provenance is automatic
+      # for this public repo. Do not set NODE_AUTH_TOKEN or NPM_TOKEN.
+      - name: Use npm 11.20.0
+        run: npm install -g npm@11.20.0
       - run: pnpm --filter @loomlyne/ui-system-core publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: pnpm --filter @loomlyne/ui-system-react publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
