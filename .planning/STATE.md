@@ -10,7 +10,7 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 ## Current Position
 
 Phase: 1 of 5 (npm publish)
-Plan: 0 of TBD (runbook in .planning/decisions/2026-11-15-npm-publish.md serves as the plan until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
+Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
 Status: In progress — steps 1-2 passed (npm whoami = koussayz; org loomlyne, koussayz owner; packages @loomlyne/ui-system-core + @loomlyne/ui-system-react). Next: PR (GSD setup + rename) → Koss Ship → Koss publishes 0.1.0 locally (decisions/2026-11-15-npm-first-publish-local.md) → trusted publishing
 Last activity: 2026-11-15 — package names set to @loomlyne/ui-system-{core,react}; build, typecheck, design pass
 
@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 18:05 +04
-Stopped at: Roadmap created; Phase 1 runbook step 1 (Koss `npm login`)
+Last session: 2026-11-15 18:41 +0400
+Stopped at: PR #10 reviewed (Sonnet, Grok), waiting on Koss Ship; then Phase 1 step 4
 Resume file: None

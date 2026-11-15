@@ -26,7 +26,7 @@ Ask preset (`ledger` or `atelier`), then kind (`shop`, `app`, `website`, `bookin
 Check the package is published: `npm view @loomlyne/ui-system-react version`.
 
 - Published: add `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react` with the repo's package manager.
-- Not published (E404): stop and give Koss one numbered step: run the "Publish packages" workflow in github.com/Loomlyne/ui-system (needs the `NPM_TOKEN` secret). For a plain HTML or Framer repo you may continue meanwhile with the CDN link from `${CLAUDE_PLUGIN_ROOT}/docs/frameworks.md`.
+- Not published (E404): stop and give Koss one numbered step: publish from `main` of github.com/Loomlyne/ui-system: `pnpm install --frozen-lockfile && pnpm build`, then `pnpm --filter @loomlyne/ui-system-core publish --access public`, then the same for `@loomlyne/ui-system-react` (core first). For a plain HTML or Framer repo you may continue meanwhile with the CDN link from `${CLAUDE_PLUGIN_ROOT}/docs/frameworks.md`.
 
 ## 5. Wire it
 

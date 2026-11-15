@@ -6,7 +6,7 @@
 
 ## v1 Requirements (milestone v0.1)
 
-### Publish (PUB) — owner runbook, .planning/decisions/2026-11-15-npm-publish.md
+### Publish (PUB) — owner runbook decisions/2026-11-15-npm-publish.md, amended by -npm-scope-loomlyne.md and -npm-first-publish-local.md
 
 - [x] **PUB-01**: Koss is logged in to npm on this Mac (`npm whoami` prints his user) — his step
 - [x] **PUB-02**: An npm org Koss owns holds the packages: `@ui-system` was taken, so org `loomlyne` (`npm org ls loomlyne` → koussayz - owner), packages `@loomlyne/ui-system-core` / `-react`, renamed by PR #10
