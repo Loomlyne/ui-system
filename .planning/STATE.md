@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 19:55 +0400
-Stopped at: Core staged as b74d2561-66e4-4b04-9630-1519381fe7e9. Waiting on Koss to reject it so the next stage includes packages/core/LICENSE
+Last session: 2026-11-15 19:58 +0400
+Stopped at: Waiting on Koss to approve stage b74d2561-66e4-4b04-9630-1519381fe7e9 (core 0.1.0). Reject returned 404.
 Resume file: None
