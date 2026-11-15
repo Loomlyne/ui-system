@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 19:58 +0400
-Stopped at: Waiting on Koss to approve stage b74d2561-66e4-4b04-9630-1519381fe7e9 (core 0.1.0). Reject returned 404.
+Last session: 2026-11-15 20:01 +0400
+Stopped at: CLI approve of b74d2561-66e4-4b04-9630-1519381fe7e9 returned 404. Waiting on Koss to approve that stage on npmjs.com.
 Resume file: None
