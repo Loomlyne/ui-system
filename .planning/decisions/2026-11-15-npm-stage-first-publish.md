@@ -1,0 +1,6 @@
+# Decision: first publish goes through npm stage, then 2FA approve (2026-11-15)
+
+**Decided by:** Koss, 2026-11-15 19:50 +0400. Amends decisions/2026-11-15-npm-first-publish-local.md. The "no token" choice stands.
+**Finding:** After `npm login` (session for koussayz, org loomlyne owner, 2FA mode `auth-and-writes`), `pnpm --filter @loomlyne/ui-system-core publish --access public` returned 403 twice. The registry body is `Two-factor authentication or granular access token with bypass 2fa enabled is required to publish packages.` No `www-authenticate` header and no `authUrl`, so npm 11.20.0 cannot open a browser. A direct PUT with the same login token returns that same body. `POST /-/stage/package/@loomlyne%2fui-system-core` returns 400 `name is required`, so the login can stage.
+**Options:** `npm stage publish`, then `npm stage approve` (2FA in the browser). A new package also gets a public placeholder `0.0.0-stage`. · One-day granular token with Bypass 2FA, then revoke it.
+**Chosen:** Stage, then approve. Core first, from `packages/core` (no `workspace:*` dependency): `npm stage publish --access public`. Approve only after the stage id is checked. React is staged only after core `0.1.0` is on the registry, and the tarball must be packed with pnpm so `workspace:*` becomes `0.1.0`.
