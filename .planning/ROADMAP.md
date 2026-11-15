@@ -45,7 +45,7 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
   1. [x] Koss: `npm login` (browser). Check: `npm whoami` → koussayz (2026-11-15).
   2. [x] Scope: `@ui-system` taken → Koss chose org `loomlyne`, packages `@loomlyne/ui-system-core` + `@loomlyne/ui-system-react`; `npm org ls loomlyne` → koussayz - owner; rename by PR #10 (2026-11-15).
   3. ~~Token + `NPM_TOKEN` secret~~ dropped (Koss, 2026-11-15): bypass-2FA tokens lose direct publish ~Jan 2027; first publish is local.
-  4. Claude: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main` after PR #10 merges.
+  4. [x] Claude: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main` after PR #10 merges (2026-11-15, `01ae60c`).
   5. Ask Koss: "Publish @loomlyne/ui-system-core and @loomlyne/ui-system-react 0.1.0 publicly to npm now?" On yes, Koss in his terminal on `main`: `pnpm --filter @loomlyne/ui-system-core publish --access public`, then the same for `-react` (core first; `prepack` builds; 2FA in browser).
   6. Verify: `npm view @loomlyne/ui-system-core version` and `@loomlyne/ui-system-react version` print 0.1.0; `npm pack @loomlyne/ui-system-react --dry-run` lists dist/index.js and dist/index.d.ts.
   7. Trusted publishing: `publish.yml` moves to OIDC (no `NPM_TOKEN`) by PR; Koss adds trusted publisher (Loomlyne/ui-system, `publish.yml`) on both packages' Settings.

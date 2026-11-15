@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — steps 1-2 passed (npm whoami = koussayz; org loomlyne, koussayz owner; packages @loomlyne/ui-system-core + @loomlyne/ui-system-react). Next: PR (GSD setup + rename) → Koss Ship → Koss publishes 0.1.0 locally (decisions/2026-11-15-npm-first-publish-local.md) → trusted publishing
-Last activity: 2026-11-15 — package names set to @loomlyne/ui-system-{core,react}; build, typecheck, design pass
+Status: In progress — steps 1, 2 and 4 passed. PR #10 squash-merged to main as 01ae60c (2026-11-15). Next: Koss publishes 0.1.0 locally (decisions/2026-11-15-npm-first-publish-local.md), then trusted publishing
+Last activity: 2026-11-15 — PR #10 on main; frozen install, build and typecheck passed on 01ae60c
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -47,7 +47,7 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 1: publish waits on PR #10 merge (his Ship), then his local `pnpm publish` with 2FA.
+- Phase 1: publish waits on his yes, then his local `pnpm publish` with 2FA. PR #10 is on main.
 - Phase 1: core and react publish separately; if react fails after core succeeds, 0.1.0 of core is out alone and cannot be re-published at 0.1.0 (fix forward with 0.1.1).
 - Phases 3-5: a new preset reaches products only after a version bump and republish; decide at Phase 3 discuss whether each preset phase ends with a release.
 - Outside repo: Caractère .planning names `@ui-system/*`; its own session updates it.
@@ -60,6 +60,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-11-15 18:41 +0400
-Stopped at: PR #10 reviewed (Sonnet, Grok), waiting on Koss Ship; then Phase 1 step 4
+Last session: 2026-11-15 19:15 +0400
+Stopped at: Phase 1 step 4 passed on main (01ae60c). Next is step 5, his publish yes
 Resume file: None
