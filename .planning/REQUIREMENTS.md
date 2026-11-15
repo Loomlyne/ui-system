@@ -12,8 +12,8 @@
 - [ ] **PUB-02**: The `@ui-system` npm org exists and Koss can publish to it (`npm org ls ui-system`); if the name is taken, work stops and the scope rename is his decision, done by PR
 - [ ] **PUB-03**: Repo secret `NPM_TOKEN` holds a granular token (`ui-system-publish`, 90 days, read and write, ui-system org only); `gh secret list -R Loomlyne/ui-system` shows it — his steps
 - [ ] **PUB-04**: `pnpm install --frozen-lockfile && pnpm build && pnpm typecheck` pass on `main`
-- [ ] **PUB-05**: After Koss's yes, the "Publish packages" workflow publishes both packages at 0.1.0 publicly: `npm view @ui-system/core version` and `npm view @ui-system/react version` print 0.1.0; `npm pack @ui-system/react --dry-run` lists `dist/index.js` and `dist/index.d.ts`
-- [ ] **PUB-06**: A clean folder outside this repo installs both packages from npm and `npx -p @ui-system/core ui-system check` runs (milestone success metric); result recorded in `.planning/` with verified / not verified / failed
+- [ ] **PUB-05**: After Koss's yes, the "Publish packages" workflow publishes both packages at 0.1.0 publicly: `npm view @loomlyne/core version` and `npm view @loomlyne/react version` print 0.1.0; `npm pack @loomlyne/react --dry-run` lists `dist/index.js` and `dist/index.d.ts`
+- [ ] **PUB-06**: A clean folder outside this repo installs both packages from npm and `npx -p @loomlyne/core ui-system check` runs (milestone success metric); result recorded in `.planning/` with verified / not verified / failed
 
 ### Docs (DOCS) — stale docs from .planning/INGEST-CONFLICTS.md
 

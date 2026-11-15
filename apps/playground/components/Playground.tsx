@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import { DEFAULT_CONFIG, resolveConfig } from '@ui-system/core';
-import { Badge, Button, IconButton, Root, Tabs } from '@ui-system/react';
+import { DEFAULT_CONFIG, resolveConfig } from '@loomlyne/core';
+import { Badge, Button, IconButton, Root, Tabs } from '@loomlyne/react';
 import Controls from './Controls';
 import ExportPanel from './ExportPanel';
 import { UploadField } from './fields';

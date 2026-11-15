@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (runbook in .planning/decisions/2026-11-15-npm-publish.md serves as the plan until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — runbook step 1 waiting on Koss: `npm login` (browser), then Claude checks `npm whoami`
-Last activity: 2026-11-15 — GSD set up from ingest (PROJECT, REQUIREMENTS, ROADMAP, STATE); npm publish decision recorded
+Status: In progress — step 1 passed (npm whoami = koussayz); step 2: @ui-system scope taken → renamed to @loomlyne (decisions/2026-11-15-npm-scope-loomlyne.md); waiting on Koss to create npm org `loomlyne`
+Last activity: 2026-11-15 — scope renamed to @loomlyne in 35 files; build, typecheck, design pass
 
 Progress: [░░░░░░░░░░] 0%
 

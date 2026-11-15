@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { FrontNav, LogoVariant, Placement } from '@ui-system/core';
+import type { FrontNav, LogoVariant, Placement } from '@loomlyne/core';
 import { cx, pick, usePlacement, useUIS } from '../context';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';

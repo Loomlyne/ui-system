@@ -1,6 +1,6 @@
 # ui.config.json reference
 
-Every key is optional. Missing keys fall back to the neutral defaults in `packages/core/src/config.ts`. Add `"$schema": "./node_modules/@ui-system/core/schema.json"` (or the repo path `packages/core/schema.json`) for autocomplete.
+Every key is optional. Missing keys fall back to the neutral defaults in `packages/core/src/config.ts`. Add `"$schema": "./node_modules/@loomlyne/core/schema.json"` (or the repo path `packages/core/schema.json`) for autocomplete.
 
 ## name
 Project name. Used by exports.

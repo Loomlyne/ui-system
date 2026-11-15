@@ -4,6 +4,6 @@ export default {
   output: 'export',
   basePath: pages ? '/ui-system' : '',
   images: { unoptimized: true },
-  transpilePackages: ['@ui-system/core', '@ui-system/react'],
+  transpilePackages: ['@loomlyne/core', '@loomlyne/react'],
   trailingSlash: true,
 };

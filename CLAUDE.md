@@ -27,7 +27,7 @@ Brand-agnostic design system. One `ui.config.json` per project drives colors, ra
 - People without a photo: `Avatar` (DiceBear, CC0). Never stock or invented photos.
 - Animation: anime.js v4 through `Reveal`, `CountUp`, `anime`. Respect `config.motion` and reduced motion.
 - Extra effects: React Bits (`npx shadcn@latest add @react-bits/<Name>-TS-TW`), recolored with `--uis-*`.
-- Extra app components: Untitled UI React + `@ui-system/core/untitled-ui.css`.
+- Extra app components: Untitled UI React + `@loomlyne/core/untitled-ui.css`.
 - Search Mobbin for references before designing a new screen or section; cite the links.
 - `node scripts/build-assets.mjs` regenerates design/assets (icons, marks, avatars); new files must be uploaded as design-system assets and recorded in design/assets.json.
 

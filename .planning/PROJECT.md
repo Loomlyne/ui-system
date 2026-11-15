@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A brand-agnostic design system. One `ui.config.json` per project drives colors, radius, type, logo and navigation; nothing client-specific is baked into the defaults. It ships as `@ui-system/core` (engine, CLI, CSS), `@ui-system/react` (components, nav, app shells) and a `window.UIS` bundle for Claude Design. Owner: Koss. Users: Koss's product repos (Caractère, Senorita, ALMAR, Invios, Clickit, Vamos, Sahti, Obox, Koussay) and Claude sessions building them.
+A brand-agnostic design system. One `ui.config.json` per project drives colors, radius, type, logo and navigation; nothing client-specific is baked into the defaults. It ships as `@loomlyne/core` (engine, CLI, CSS), `@loomlyne/react` (components, nav, app shells) and a `window.UIS` bundle for Claude Design. Owner: Koss. Users: Koss's product repos (Caractère, Senorita, ALMAR, Invios, Clickit, Vamos, Sahti, Obox, Koussay) and Claude sessions building them.
 
 ## Core Value
 
@@ -32,7 +32,7 @@ A product repo picks a preset, a kind and a brand, installs UI System from npm, 
 
 Milestone v0.1 "Published and current". Detail and IDs in REQUIREMENTS.md.
 
-- [ ] `@ui-system/core` and `@ui-system/react` 0.1.0 on npm via `publish.yml` (driver: Caractère Phase 1)
+- [ ] `@loomlyne/core` and `@loomlyne/react` 0.1.0 on npm via `publish.yml` (driver: Caractère Phase 1)
 - [ ] Docs match shipped code and owner decisions
 - [ ] Preset `mist` (glass, soft)
 - [ ] Preset `signal` (bold pill and yellow)
@@ -53,7 +53,7 @@ Milestone v0.1 "Published and current". Detail and IDs in REQUIREMENTS.md.
 - Live playground: https://loomlyne.github.io/ui-system/
 - Claude Design artifacts: "UI System · Design System" (namespace `UIS`), "UI System · Canvas", "UI System · Retail decisions (archive)".
 - Skins in the canvas skin Tweak: Senorita, ALMAR (atelier); Invios, Clickit (ledger); Vamos, Koussay, Sahti, Obox (no engine preset).
-- Known state 2026-11-15: `npm view @ui-system/core` and `@ui-system/react` return E404; `NPM_TOKEN` not set; publish workflow never run; Koss not logged in to npm on this Mac.
+- Known state 2026-11-15: `npm view @loomlyne/core` and `@loomlyne/react` return E404; `NPM_TOKEN` not set; publish workflow never run; Koss not logged in to npm on this Mac.
 - Stale docs list: .planning/INGEST-CONFLICTS.md (INFO entries).
 
 ## Constraints
@@ -93,7 +93,7 @@ Locked (owner word, dated). Full text: .planning/intel/decisions.md.
 | D-17 | `retail-editorial` renamed `atelier`, alias kept | 2026-11-09 | Locked, shipped |
 | D-18 | Ledger follows Invios D-05/D-12 and signed sketch; pins nothing | 2026-11-07 | Locked, shipped |
 | D-19 | Merge order defaults → preset → your keys; seed change drops that seed's pins | 2026-11-07 | Locked, shipped |
-| D-20 | Publish `@ui-system/core` and `@ui-system/react` 0.1.0 to npm in milestone 1 via `publish.yml`; runbook in .planning/decisions/2026-11-15-npm-publish.md | 2026-11-15 | Locked, in progress |
+| D-20 | Publish `@loomlyne/core` and `@loomlyne/react` 0.1.0 to npm in milestone 1 via `publish.yml`; runbook in .planning/decisions/2026-11-15-npm-publish.md | 2026-11-15 | Locked, in progress |
 </decisions>
 
 ## Evolution

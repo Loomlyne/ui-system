@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '@ui-system/react/ui.css';
+import '@loomlyne/react/ui.css';
 import './globals.css';
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-system/react",
+  "name": "@loomlyne/react",
   "version": "0.1.0",
   "description": "UI System React components: Root theme provider, Logo, primitives, frontend navs and backend app shells.",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "@dicebear/notionists-neutral": "^9.4.2",
     "@dicebear/shapes": "^9.4.2",
     "@dicebear/thumbs": "^9.4.2",
-    "@ui-system/core": "workspace:*",
+    "@loomlyne/core": "workspace:*",
     "animejs": "^4.5.0"
   },
   "devDependencies": {

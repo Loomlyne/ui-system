@@ -1,5 +1,5 @@
 {
-  "name": "@ui-system/core",
+  "name": "@loomlyne/core",
   "version": "0.1.0",
   "description": "UI System engine: config, OKLCH color scales, radius engine, fonts, CSS/Tailwind/Claude Design exports.",
   "license": "MIT",

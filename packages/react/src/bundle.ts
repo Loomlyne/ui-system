@@ -4,4 +4,4 @@ export * from './index';
 export {
   buildTheme, resolveConfig, DEFAULT_CONFIG, RADIUS_PRESETS, FONT_PRESETS, PRESETS, PRESET_ALIASES, presetId, KINDS, contrastReport,
   toCSS, toTailwind, toDesignTokens, allPresetFontsUrl, googleFontsUrl, contrast, scaleFrom,
-} from '@ui-system/core';
+} from '@loomlyne/core';
