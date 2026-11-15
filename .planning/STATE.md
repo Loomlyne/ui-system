@@ -11,7 +11,7 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — both packages are public at 0.1.0. Steps 5, 6 and 9 passed. Step 7 is the `oidc-publish` branch: `publish.yml` drops `NPM_TOKEN`. Waiting on the PR landing, then Koss adds the trusted publisher on both packages
+Status: In progress — both packages are public at 0.1.0. Steps 5, 6 and 9 passed. Step 7 is PR #11 (`oidc-publish`): `publish.yml` drops `NPM_TOKEN`. Waiting on the PR landing, then Koss adds the trusted publisher on both packages
 Last activity: 2026-11-15 — OIDC publish workflow on branch oidc-publish
 
 Progress: [░░░░░░░░░░] 0%
