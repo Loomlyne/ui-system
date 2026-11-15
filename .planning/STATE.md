@@ -11,7 +11,7 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (runbook in .planning/decisions/2026-11-15-npm-publish.md serves as the plan until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
-Status: In progress — steps 1-2 passed (npm whoami = koussayz; org loomlyne, koussayz owner; packages @loomlyne/ui-system-core + @loomlyne/ui-system-react). Next: step 3 token / publish auth
+Status: In progress — steps 1-2 passed (npm whoami = koussayz; org loomlyne, koussayz owner; packages @loomlyne/ui-system-core + @loomlyne/ui-system-react). Next: PR (GSD setup + rename) → Koss Ship → Koss publishes 0.1.0 locally (decisions/2026-11-15-npm-first-publish-local.md) → trusted publishing
 Last activity: 2026-11-15 — package names set to @loomlyne/ui-system-{core,react}; build, typecheck, design pass
 
 Progress: [░░░░░░░░░░] 0%
