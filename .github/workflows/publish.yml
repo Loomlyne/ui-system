@@ -31,9 +31,10 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       # Same job as the build: the tarball must be this build. pnpm 10.28 calls npm publish.
-      # npm 11.5.1 or newer exchanges the GitHub OIDC token. Provenance is automatic
-      # for this public repo. Do not set NODE_AUTH_TOKEN or NPM_TOKEN.
-      - name: Use npm 11.20.0
-        run: npm install -g npm@11.20.0
+      # Node 24 ships npm 11.19.1, which is past the 11.5.1 trusted-publishing line.
+      # Do not install npm from the registry in this job. Do not set NODE_AUTH_TOKEN or NPM_TOKEN.
+      # Provenance is automatic for this public repo.
+      - name: Check npm can use trusted publishing
+        run: node -e 'const [major, minor] = process.versions.npm.split(".").map(Number); if (major < 11 || (major === 11 && minor < 5)) { console.error("npm " + process.versions.npm + " is below 11.5.1"); process.exit(1); }'
       - run: pnpm --filter @loomlyne/ui-system-core publish --access public --no-git-checks
       - run: pnpm --filter @loomlyne/ui-system-react publish --access public --no-git-checks
