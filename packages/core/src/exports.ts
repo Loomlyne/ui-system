@@ -1,7 +1,7 @@
 import type { Mode } from './config';
 import { NEUTRAL_STEPS, SCALE_STEPS } from './color';
 import { TYPE_SCALE } from './type';
-import type { Theme, Vars } from './theme';
+import type { Tokens, Vars } from './tokens';
 
 export const DEFAULT_SPACE = [4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96];
 
@@ -22,7 +22,7 @@ export interface CSSOptions {
 }
 
 /** Plain CSS variables for any stack: plain HTML, Framer, Shopify, Next.js. */
-export function toCSS(theme: Theme, opts: CSSOptions = {}): string {
+export function toCSS(theme: Tokens, opts: CSSOptions = {}): string {
   const { selector = ':root', fonts = true, system = false } = opts;
   const mode: Mode = theme.config.color.mode;
   const other: Mode = mode === 'light' ? 'dark' : 'light';
@@ -114,7 +114,7 @@ const RADIUS_USAGE: Record<string, string> = {
  * with a light and a dark theme. Only hex and rgba values, so every token
  * survives the importer.
  */
-export function toDesignTokens(theme: Theme) {
+export function toDesignTokens(theme: Tokens) {
   const mode = theme.config.color.mode;
   const other: Mode = mode === 'light' ? 'dark' : 'light';
   const themes = [
@@ -189,7 +189,7 @@ export function toDesignTokens(theme: Theme) {
 }
 
 /** Resolved values as plain JSON (useful for Framer variables or native apps). */
-export function toJSON(theme: Theme) {
+export function toJSON(theme: Tokens) {
   return {
     name: theme.config.name,
     config: theme.config,

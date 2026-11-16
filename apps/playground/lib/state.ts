@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, PRESETS, resolveConfig, type UIConfig, type UIConfigInput } from '@loomlyne/ui-system-core';
+import { DEFAULT_CONFIG, THEMES, resolveConfig, type UIConfig, type UIConfigInput } from '@loomlyne/ui-system-core';
 
 export type Config = UIConfig;
 
@@ -27,8 +27,8 @@ export const STARTERS: Array<{ id: string; label: string; config: UIConfigInput 
     id: 'friendly', label: 'Friendly app',
     config: { color: { primary: '#5B4BDB', accent: '#F2A93B', neutral: '#6E6A80', mode: 'light' }, radius: { roundness: 100, pill: true }, type: { preset: 'humanist', buttonCase: 'normal' }, density: 'spacious', surface: { float: 'solid', shadow: 'medium', border: 'none' }, brand: { mark: 'orbit' }, nav: { front: 'island', back: 'dock' } },
   },
-  // Named design languages from core (ui.config.json "preset"), so the playground and projects pick the same values.
-  ...Object.values(PRESETS).map((p) => ({ id: p.id, label: p.label, config: p.config })),
+  // Themes from core (ui.config.json "theme": ledger, atelier), so the playground and projects pick the same values.
+  ...Object.values(THEMES).map((p) => ({ id: p.id, label: p.label, config: p.config })),
 ];
 
 export function fromStarter(id: string, keepBrand?: Config['brand']): Config {

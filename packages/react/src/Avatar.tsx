@@ -50,8 +50,8 @@ export interface AvatarProps {
 }
 
 export function Avatar({ name = '', initials, src, avatarStyle, size = 'md', className, style }: AvatarProps) {
-  const { theme } = useUIS();
-  const kind = pick(avatarStyle, theme.config.avatars?.style ?? 'notionists-neutral');
+  const { tokens } = useUIS();
+  const kind = pick(avatarStyle, tokens.config.avatars?.style ?? 'notionists-neutral');
   const ini = initials ?? name.replace(/[^\p{L}\p{N}\s]/gu, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
   const svg = React.useMemo(() => (src || kind === 'initials' ? '' : avatarSvg(name || ini || 'guest', kind as Exclude<AvatarStyle, 'initials'>)), [src, kind, name, ini]);
   return (

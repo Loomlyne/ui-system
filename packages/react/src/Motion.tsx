@@ -26,8 +26,8 @@ const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(pre
 
 /** True when the theme allows motion and the visitor has not asked for less. */
 export function useMotionEnabled() {
-  const { theme } = useUIS();
-  return theme.config.motion?.enabled !== false && !reduced();
+  const { tokens } = useUIS();
+  return tokens.config.motion?.enabled !== false && !reduced();
 }
 
 export interface RevealProps {
@@ -47,9 +47,9 @@ export interface RevealProps {
 /** Entrance animation powered by anime.js. Follows config.motion and reduced motion. */
 export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0, duration, trigger = 'view', className, style, children }: RevealProps) {
   const ref = React.useRef<HTMLElement>(null);
-  const { theme } = useUIS();
+  const { tokens } = useUIS();
   const on = useMotionEnabled();
-  const expressive = theme.config.motion?.intensity === 'expressive';
+  const expressive = tokens.config.motion?.intensity === 'expressive';
   React.useEffect(() => {
     const el = ref.current;
     if (!el || !on) return;
@@ -59,9 +59,9 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
     const run = () =>
       animate(targets as HTMLElement[], {
         ...params,
-        duration: duration ?? theme.config.motion?.timing?.slow ?? (expressive ? 950 : 620),
+        duration: duration ?? tokens.config.motion?.timing?.slow ?? (expressive ? 950 : 620),
         delay: gap ? stagger(gap, { start: delay }) : delay,
-        ease: sharedEase(theme.config.motion?.timing?.easeOut, expressive ? 'out(4)' : 'out(3)'),
+        ease: sharedEase(tokens.config.motion?.timing?.easeOut, expressive ? 'out(4)' : 'out(3)'),
       });
     if (trigger === 'mount' || typeof IntersectionObserver === 'undefined') { run(); return; }
     const io = new IntersectionObserver((entries) => {
@@ -69,7 +69,7 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
     }, { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
-  }, [on, effect, gap, delay, duration, trigger, expressive, theme.config.motion?.timing?.slow, theme.config.motion?.timing?.easeOut]);
+  }, [on, effect, gap, delay, duration, trigger, expressive, tokens.config.motion?.timing?.slow, tokens.config.motion?.timing?.easeOut]);
   const Tag = as as 'div';
   return <Tag ref={ref as React.RefObject<HTMLDivElement>} className={cx('uis-reveal', className)} style={style}>{children}</Tag>;
 }
@@ -77,8 +77,8 @@ export function Reveal({ as = 'div', effect = 'fade-up', stagger: gap, delay = 0
 /** Counts a number up when it comes into view (stats, prices, KPIs). */
 export function CountUp({ to, from = 0, decimals = 0, prefix = '', suffix = '', duration, className, style }: { to: number; from?: number; decimals?: number; prefix?: string; suffix?: string; duration?: number; className?: string; style?: React.CSSProperties }) {
   const ref = React.useRef<HTMLSpanElement>(null);
-  const { theme } = useUIS();
-  const tm = theme.config.motion?.timing;
+  const { tokens } = useUIS();
+  const tm = tokens.config.motion?.timing;
   const on = useMotionEnabled();
   const fmt = (n: number) => `${prefix}${n.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
   React.useEffect(() => {

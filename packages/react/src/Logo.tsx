@@ -25,7 +25,7 @@ const useUid = (): string => {
  * the roundness setting, and color follows either the text color or primary.
  */
 export function LogoMark(props: LogoMarkProps) {
-  const { brand, theme } = useUIS();
+  const { brand, tokens } = useUIS();
   const mark = pick(props.mark, brand.mark);
   const tone = pick(props.tone, brand.markTone);
   const src = props.src ?? brand.markSrc;
@@ -42,8 +42,8 @@ export function LogoMark(props: LogoMarkProps) {
     return <span className={cls} style={{ color: tone === 'primary' ? 'var(--uis-primary)' : undefined, ...props.style }} aria-hidden dangerouslySetInnerHTML={{ __html: svg }} />;
   }
 
-  const t = Math.min(1, Math.max(0, theme.config.radius.roundness / 100));
-  const rx = theme.config.radius.pill ? 16 : Math.round(3 + 11 * t);
+  const t = Math.min(1, Math.max(0, tokens.config.radius.roundness / 100));
+  const rx = tokens.config.radius.pill ? 16 : Math.round(3 + 11 * t);
   const fontSize = initials.length > 1 ? 13 : 17;
   const text = (color: string) => (
     <text x="16" y="16.5" textAnchor="middle" dominantBaseline="central" fill={color}

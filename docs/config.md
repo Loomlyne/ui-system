@@ -5,8 +5,8 @@ Every key is optional. Missing keys fall back to the neutral defaults in `packag
 ## name
 Project name. Used by exports.
 
-## preset
-Optional preset, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [presets.md](presets.md).
+## theme
+Optional theme, a way of designing, applied between the defaults and your keys: `ledger` (round) or `atelier` (sharp; `retail-editorial` is its old name). See [themes.md](themes.md).
 
 ## kind
 Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Sets no values; tools read it for the page set and questions. See [kinds.md](kinds.md).
@@ -57,8 +57,8 @@ See [radius.md](radius.md).
 
 | Key | Default | Notes |
 | --- | --- | --- |
-| `preset` | `modern` | `modern` Inter Tight/Inter, `geometric` Geist, `editorial` Fraunces/Inter, `grotesk` Space Grotesk/Inter, `humanist` Manrope, `classic` Instrument Serif/Instrument Sans, `retail` Archivo/Inter (uppercase 900 headings and buttons). |
-| `display` `body` `mono` | | Any Google Fonts family, overrides the preset. |
+| `theme` | `modern` | `modern` Inter Tight/Inter, `geometric` Geist, `editorial` Fraunces/Inter, `grotesk` Space Grotesk/Inter, `humanist` Manrope, `classic` Instrument Serif/Instrument Sans, `retail` Archivo/Inter (uppercase 900 headings and buttons). |
+| `display` `body` `mono` | | Any Google Fonts family, overrides the font preset. |
 | `buttonCase` | `normal` | `upper` for spaced capitals on buttons. |
 
 ## density

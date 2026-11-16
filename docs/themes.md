@@ -1,30 +1,32 @@
-# Presets
+# Themes
 
-A preset is a way of designing, not a product: colors, shape, type, control sizes, spacing, shadows and motion, plus the rules and questions that come with them. A project opts in; the defaults never change.
+Themes were called presets until 2026-11-16. The old names still work: `"preset"` in ui.config.json, `<Root preset>`, `--preset`, `PRESETS`, `presetId` and `buildTheme` (now `buildTokens`, which returns `Tokens`).
 
-| preset | look | seen in |
+A theme is a way of designing, not a product: colors, shape, type, control sizes, spacing, shadows and motion, plus the rules and questions that come with them. A project opts in; the defaults never change.
+
+| theme | look | seen in |
 | --- | --- | --- |
 | `ledger` | Round and clean: pill controls, soft 22px cards, Poppins, no shadows, one gold action per page. | Invios, Clickit |
 | `atelier` | Sharp and editorial: square 2px controls, condensed caps headings, 52px dark buttons, photos carry the colour. | Senorita, ALMAR |
 
 Later, one at a time with pictures first: `mist` (glass, soft), `signal` (bold pill and yellow), `studio` (colour pop).
 
-Three picks, in this order: the **preset** (how it looks), the **kind** (what you build, see [kinds.md](kinds.md)), then your **brand** on top. A product may change anything; the preset is the base. Products are only examples ("seen in"), never part of a preset's name. An improvement found inside a product is drafted as a change to the preset with a picture and lands only on the owner's yes.
+Three picks, in this order: the **theme** (how it looks), the **kind** (what you build, see [kinds.md](kinds.md)), then your **brand** on top. A product may change anything; the theme is the base. Products are only examples ("seen in"), never part of a theme's name. An improvement found inside a product is drafted as a change to the theme with a picture and lands only on the owner's yes.
 
 ```json
-{ "preset": "atelier", "kind": "shop", "brand": { "wordmark": "Client" } }
+{ "theme": "atelier", "kind": "shop", "brand": { "wordmark": "Client" } }
 ```
 
-`retail-editorial` is the old name of `atelier` (renamed 2026-11-09) and still resolves to it; the CSS is identical. Each preset also carries `rules`, `never` and `questions` in `PRESETS`; `ui-system init --preset <id> --kind <id>` prints them.
+`retail-editorial` is the old name of `atelier` (renamed 2026-11-09) and still resolves to it; the CSS is identical. Each theme also carries `rules`, `never` and `questions` in `THEMES`; `ui-system init --theme <id> --kind <id>` prints them.
 
-Order: defaults, then the preset, then every key you write. Anything you set wins over the preset.
+Order: defaults, then the theme, then every key you write. Anything you set wins over the theme.
 
 Two rules follow from that order:
 
-- **New seed, new roles.** Change a seed (`primary`, `accent`, `neutral`, `success`, `warning`, `danger`, `info`) and the preset's pins on that seed's roles (`primary-hover`, `primary-ink`…, or every grey for `neutral`) are dropped, so the engine derives them for your colour and the contrast gate still holds. Pins you write yourself always stay.
-- **Radius pins stay.** The preset pins radius roles in `radius.overrides`, and those beat `roundness` and `pill`. To reshape a preset, write your own `radius.overrides` (e.g. `{ "control": 999 }` for pill buttons). In React and Claude Design: `<Root preset="atelier">`. In the playground: **Start from › Atelier**.
+- **New seed, new roles.** Change a seed (`primary`, `accent`, `neutral`, `success`, `warning`, `danger`, `info`) and the theme's pins on that seed's roles (`primary-hover`, `primary-ink`…, or every grey for `neutral`) are dropped, so the engine derives them for your colour and the contrast gate still holds. Pins you write yourself always stay.
+- **Radius pins stay.** The theme pins radius roles in `radius.overrides`, and those beat `roundness` and `pill`. To reshape a theme, write your own `radius.overrides` (e.g. `{ "control": 999 }` for pill buttons). In React and Claude Design: `<Root theme="atelier">`. In the playground: **Start from › Atelier**.
 
-Presets live in `packages/core/src/presets.ts` (`PRESETS`). They use only normal config keys, so a preset is also a readable example of the pin options:
+Themes live in `packages/core/src/themes.ts` (`THEMES`). They use only normal config keys, so a theme is also a readable example of the pin options:
 
 | Key | What it pins |
 | --- | --- |
@@ -37,7 +39,7 @@ Presets live in `packages/core/src/presets.ts` (`PRESETS`). They use only normal
 | `surface.shadows` | Exact light-mode `sm`/`md`/`lg`/`float` shadows. Dark mode follows `surface.shadow`. |
 | `motion.timing` | `fast`/`base`/`slow` in ms, `easeOut`, `easeInOut`, `press`. |
 
-Every preset passes the contrast gate in `pnpm design`: `contrastReport()` checks each text pair (`ink*` on `bg`/`surface`/`surface-2`, `*-ink` on fills, `*-soft-ink` on `*-soft`, `*-text` on `bg`) at 4.5:1 in light and dark, and the build fails below that.
+Every theme passes the contrast gate in `pnpm design`: `contrastReport()` checks each text pair (`ink*` on `bg`/`surface`/`surface-2`, `*-ink` on fills, `*-soft-ink` on `*-soft`, `*-text` on `bg`) at 4.5:1 in light and dark, and the build fails below that.
 
 ## atelier
 
@@ -71,7 +73,7 @@ Label "Atelier" (formerly `retail-editorial`). Seen in Senorita (the source) and
 
 ### Color (dark, designed)
 
-The source has no dark mode. These values were designed for the preset and signed off on 2026-11-07 (canvas "UI System · Retail preset options", option A). Every text pair passes 4.5:1; field edges 3.64:1 (the resting search pill excepted, see Known gaps).
+The source has no dark mode. These values were designed for the theme and signed off on 2026-11-07 (canvas "UI System · Retail theme options", option A). Every text pair passes 4.5:1; field edges 3.64:1 (the resting search pill excepted, see Known gaps).
 
 | Role | Value |
 | --- | --- |
@@ -121,7 +123,7 @@ Website nav `bar`, app nav `sidebar`, wordmark-only logo, `initials` avatars.
 
 ## ledger
 
-Label "Ledger". Seen in Invios (the source) and Clickit (moves onto it when rebuilt, keeping its yellow `#ffcc00`, dark mode and own font on top). A changed seed drops nothing here because the preset pins nothing. Source: Invios decisions D-05 (ui-system round radius, light and dark both live) and D-12 (Poppins, numbers tabular), 2026-10-05, plus the signed sketch `.planning/sketches/ui-system-redesign/ui.config.json`. It pins nothing: every value comes from seeds through the engine, so dark mode follows the same rules as the light one. Checked against the sketch's generated `ui-theme/theme.json`: 334 of 340 variables identical in light and dark; the 6 that differ are the fonts (Poppins per D-12 replaces the sketch's Geist).
+Label "Ledger". Seen in Invios (the source) and Clickit (moves onto it when rebuilt, keeping its yellow `#ffcc00`, dark mode and own font on top). A changed seed drops nothing here because the theme pins nothing. Source: Invios decisions D-05 (ui-system round radius, light and dark both live) and D-12 (Poppins, numbers tabular), 2026-10-05, plus the signed sketch `.planning/sketches/ui-system-redesign/ui.config.json`. It pins nothing: every value comes from seeds through the engine, so dark mode follows the same rules as the light one. Checked against the sketch's generated `ui-theme/theme.json`: 334 of 340 variables identical in light and dark; the 6 that differ are the fonts (Poppins per D-12 replaces the sketch's Geist).
 
 ### Seeds
 

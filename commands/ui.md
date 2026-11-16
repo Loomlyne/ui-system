@@ -1,6 +1,6 @@
 ---
 description: Wire UI System into the current repo (install, config, theme) or re-apply its rules to a UI task
-argument-hint: "[preset] [kind] [what to build]"
+argument-hint: "[theme] [kind] [what to build]"
 ---
 
 Apply the `ui-system` skill. Its rules are mandatory for this whole task.
@@ -19,7 +19,7 @@ If the repo already has UI of its own and no UI System, this is an existing repo
 
 ## 3. Ask (only what the arguments did not answer)
 
-Ask preset (`ledger` or `atelier`), then kind (`shop`, `app`, `website`, `booking`, `portfolio`), then brand (wordmark, primary color). One question at a time, each with a picture of the options first and the recommended one first.
+Ask theme (`ledger` or `atelier`), then kind (`shop`, `app`, `website`, `booking`, `portfolio`), then brand (wordmark, primary color). One question at a time, each with a picture of the options first and the recommended one first.
 
 ## 4. Install
 
@@ -30,14 +30,14 @@ Check the package is published: `npm view @loomlyne/ui-system-react version`.
 
 ## 5. Wire it
 
-1. `npx -p @loomlyne/ui-system-core ui-system init --preset <preset> --kind <kind> --name "<brand>"` writes `ui.config.json` and prints the preset's rules, never-list and questions. Read that output.
+1. `npx -p @loomlyne/ui-system-core ui-system init --theme <theme> --kind <kind> --name "<brand>"` writes `ui.config.json` and prints the theme's rules, never-list and questions. Read that output.
 2. Wire the theme for the detected stack by following `${CLAUDE_PLUGIN_ROOT}/docs/frameworks.md` (if that path is missing, read the same file at github.com/Loomlyne/ui-system/blob/main/docs/frameworks.md). For Expo, export tokens with the core CLI and use `tokens.json`.
 3. Add a `ui:check` script to `package.json` (`ui-system check`) and include it in the repo's gate or pre-push check. Run it once and report the result.
 4. Add this block to the repo's `CLAUDE.md` (create it if missing), so the rules hold in every later session, local or cloud:
 
 ```
 ## UI System
-This repo uses UI System (preset: <preset>, kind: <kind>). `ui.config.json` is the single theme source.
+This repo uses UI System (theme: <theme>, kind: <kind>). `ui.config.json` is the single theme source.
 Use the `ui-system` skill for any UI work. `ui:check` must pass. Any conflict with a rule: stop and ask the owner with two pictures (follows the rule / follows the request). No hard-coded colors, radii, fonts or shadows; Hugeicons only; Avatar for people; anime.js through Reveal/CountUp; 4.5:1 text contrast.
 ```
 

@@ -12,15 +12,15 @@ UI System (github.com/Loomlyne/ui-system) is the one design system for every pro
 Check the open repo for `ui.config.json` and a dependency on `@loomlyne/ui-system-react` or `@loomlyne/ui-system-core`.
 
 - Missing: run the `/ui-system:ui` command (setup) before designing anything.
-- Present: read `ui.config.json`. Its `preset`, `kind` and `brand` are the contract for this repo. Do not change them without being asked.
+- Present: read `ui.config.json`. Its `theme`, `kind` and `brand` are the contract for this repo. Do not change them without being asked.
 
 ## 1. Three picks, in this order
 
-1. **Preset** = how it looks (`ledger` round and clean, `atelier` sharp and editorial). A preset is a way of designing, never a product name.
+1. **Theme** = how it looks (`ledger` round and clean, `atelier` sharp and editorial). A theme is a way of designing, never a product name.
 2. **Kind** = what is built (`shop`, `app`, `website`, `booking`, `portfolio`).
-3. **Brand** on top (wordmark, mark, colors). A product may override anything; the preset is the base.
+3. **Brand** on top (wordmark, mark, colors). A product may override anything; the theme is the base.
 
-Print the preset's own rules, never-list and questions with `npx -p @loomlyne/ui-system-core ui-system init --preset <id> --kind <id>` (or read `packages/core/src/presets.ts` and `kinds.ts` in the UI System repo). Those printed rules are part of this skill. Follow them. Ask the printed questions before designing when the answers are not already in the repo.
+Print the theme's own rules, never-list and questions with `npx -p @loomlyne/ui-system-core ui-system init --theme <id> --kind <id>` (or read `packages/core/src/themes.ts` and `kinds.ts` in the UI System repo). Those printed rules are part of this skill. Follow them. Ask the printed questions before designing when the answers are not already in the repo.
 
 ## 2. Track
 
@@ -47,11 +47,11 @@ Never design a website or app from imagination. Never copy another product's bra
 
 ## 4. Conflicts: stop and ask with two pictures
 
-If a request, an existing design, a reference or a library conflicts with a rule in section 3 or with the preset's rules and never-list, do not pick a side and do not bend the rule. Stop, then:
+If a request, an existing design, a reference or a library conflicts with a rule in section 3 or with the theme's rules and never-list, do not pick a side and do not bend the rule. Stop, then:
 
 1. Name the rule and what conflicts with it, in one sentence.
 2. Show two pictures: option A follows the rule, option B follows the request. Render real mockups (images or a local page), not descriptions.
-3. Ask one question, recommended option first, and wait. The owner's answer for this case is final; if he says it should become a standing exception, record it in the repo's `CLAUDE.md` or a preset proposal, never silently.
+3. Ask one question, recommended option first, and wait. The owner's answer for this case is final; if he says it should become a standing exception, record it in the repo's `CLAUDE.md` or a theme proposal, never silently.
 
 ## 5. Automatic check
 
@@ -78,7 +78,7 @@ The craft lives in separate skills, so a session loads none of them until a step
 
 | Step | Load | Then read |
 |---|---|---|
-| Plan a screen or section | `frontend-design` (direction only); in a `.planning/` repo `gsd-ui-phase` | overrides: the preset always wins |
+| Plan a screen or section | `frontend-design` (direction only); in a `.planning/` repo `gsd-ui-phase` | overrides: the theme always wins |
 | Show the owner options or a conflict | `gsd-sketch` (or a local page on `dist/uis.bundle.js`) | §4, §6 |
 | Lay out | `better-layout` | overrides |
 | Type | `better-typography` | overrides |
@@ -99,4 +99,4 @@ If a skill is not installed, work from SKILL.md plus `rules/overrides.md`, and s
 
 ## 10. When the library itself changes
 
-Only inside the ui-system repo (see its `CLAUDE.md`): update `scripts/design-catalog.mjs`, run `pnpm build && pnpm design`, then sync the Claude Design System. Improvements found in a product come back as a picture-first proposal for the preset, landing on the owner's yes.
+Only inside the ui-system repo (see its `CLAUDE.md`): update `scripts/design-catalog.mjs`, run `pnpm build && pnpm design`, then sync the Claude Design System. Improvements found in a product come back as a picture-first proposal for the theme, landing on the owner's yes.

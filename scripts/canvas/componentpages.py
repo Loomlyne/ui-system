@@ -422,9 +422,9 @@ fam(id='NavBack', title='App navigation parts', page='Nav · App', what='Sidebar
 
 
 # ------------------------------------------------------------------ preset and product rows for the theme boards
-ROWS = [dict(key='Default', tag='no preset · engine defaults', config={}, vars={}),
-        dict(key='ledger', tag='preset · round and clean', config={'preset': 'ledger'}, vars={}),
-        dict(key='atelier', tag='preset · sharp and editorial', config={'preset': 'atelier'}, vars={})]
+ROWS = [dict(key='Default', tag='no theme · engine defaults', config={}, vars={}),
+        dict(key='ledger', tag='theme · round and clean', config={'preset': 'ledger'}, vars={}),
+        dict(key='atelier', tag='theme · sharp and editorial', config={'preset': 'atelier'}, vars={})]
 SKIN_FROM_PRESET = {}
 for ps in PRESET_SHEETS:
     for v in ps['variants']:
@@ -572,7 +572,7 @@ for f in F:
     name = 'C-' + f['id'] + '-States.dc.html'
     H = height(name, 2400)
     inner = ('<div style="{{skinStyle}}"><div style="width: 1440px; min-height: ' + str(H) + 'px; box-sizing: border-box; padding: 56px 64px; background: var(--uis-bg); color: var(--uis-ink); font-family: var(--uis-font-body);" data-measure="">' +
-             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Every state is drawn once. Pick a Style in the Tweaks (an engine preset or a product), then change colour, shape, type, buttons, density or surface on top: a Tweak left on style follows the Style.') +
+             header(f, 'Component · ' + f['page'] + ' · states, sizes, icons', f['what'] + ' Every state is drawn once. Pick a Style in the Tweaks (an engine theme or a product), then change colour, shape, type, buttons, density or surface on top: a Tweak left on style follows the Style.') +
              '<div style="display: flex; gap: 16px; align-items: center; padding: 0 0 24px;"><span class="uis-caption" style="color: var(--uis-ink-2);">{{themeLine}}</span><span style="{{checkStyle}}">{{checkLabel}}</span></div>' +
              section('Coverage', 'The nine states every component is checked against. Gaps are not in UI System yet; they are never drawn as working controls.', coverage(f['cov'])) +
              f['states'] + '</div></div>')

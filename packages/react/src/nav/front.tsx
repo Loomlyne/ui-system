@@ -294,8 +294,8 @@ export function NavMobile({ variant = 'sheet', links, actions, cta, logoPlacemen
 /* ---------- SiteNav: pick a front nav by name (defaults to config.nav.front) ---------- */
 export type SiteNavProps = { variant?: FrontNav } & NavDockProps & NavIslandProps & NavBarProps & NavStackedProps & NavMinimalProps;
 export function SiteNav({ variant, ...props }: SiteNavProps) {
-  const { theme } = useUIS();
-  const v = pick(variant, theme.config.nav.front);
+  const { tokens } = useUIS();
+  const v = pick(variant, tokens.config.nav.front);
   if (v === 'dock') return <NavDock {...props} />;
   if (v === 'bar') return <NavBar {...(props as NavBarProps)} />;
   if (v === 'stacked') return <NavStacked {...(props as NavStackedProps)} />;

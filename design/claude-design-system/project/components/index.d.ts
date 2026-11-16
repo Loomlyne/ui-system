@@ -4,7 +4,8 @@ type Placement = 'left' | 'center' | 'right';
 type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
-type PresetId = 'atelier' | 'ledger';
+type ThemeId = 'atelier' | 'ledger';
+type LegacyThemeId = 'retail-editorial';
 type KindId = 'shop' | 'app' | 'website' | 'booking' | 'portfolio';
 type Density = 'compact' | 'comfortable' | 'spacious';
 type FloatSurface = 'solid' | 'glass';
@@ -13,7 +14,7 @@ type FrontNav = 'dock' | 'island' | 'bar' | 'stacked' | 'minimal';
 type BackNav = 'sidebar' | 'rail' | 'inset' | 'topbar' | 'dock';
 type UIConfigInput = Record<string, unknown>;
 type BrandConfig = Record<string, unknown>;
-type Theme = Record<string, unknown>;
+type Tokens = Record<string, unknown>;
 
 // Avatar.d.ts
 export declare const AVATAR_STYLES: readonly ["notionists-neutral", "lorelei-neutral", "thumbs", "glass", "shapes", "initials"];
@@ -566,8 +567,10 @@ export declare function CountUp({ to, from, decimals, prefix, suffix, duration, 
  */
 export interface RootProps {
     config?: UIConfigInput;
-    /** Preset, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
-    preset?: PresetId | LegacyPresetId;
+    /** Theme, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+    theme?: ThemeId | LegacyThemeId;
+    /** @deprecated Use `theme`. */
+    preset?: ThemeId | LegacyThemeId;
     /** What you build (shop, app, website, booking, portfolio). Sets no values. */
     kind?: KindId;
     primary?: string;
@@ -624,7 +627,10 @@ export declare function Root(props: RootProps): React.JSX.Element;
 
 // context.d.ts
 export interface UISContextValue {
-    theme: Theme;
+    /** Every computed value for the current config (colors, radius, type, CSS variables). */
+    tokens: Tokens;
+    /** @deprecated Use `tokens`. */
+    theme: Tokens;
     brand: BrandConfig;
 }
 export declare const UISContext: React.Context<UISContextValue>;

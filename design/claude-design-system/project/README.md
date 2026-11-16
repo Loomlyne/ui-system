@@ -5,21 +5,21 @@ UI System is a brand-agnostic design system. It ships structure, not a brand: ev
 | part | what it gives you | where |
 |---|---|---|
 | Engine | Three color seeds, a roundness dial, a font preset and a density become every `--uis-*` variable, light and dark, contrast-checked at 4.5:1. | Root props, `ui.config.json` |
-| Presets | Ways of designing on top of the engine: `ledger` (round and clean) and `atelier` (sharp and editorial). Not tied to a product. | Root `preset` |
+| Themes | Ways of designing on top of the engine: `ledger` (round and clean) and `atelier` (sharp and editorial). Not tied to a product. | Root `theme` |
 | Kinds | What you build, picked separately: shop, app, website, booking, portfolio. Each names its pages and questions; sets no values. | Root `kind` |
 | 38 components | Buttons, forms, feedback, data, overlays, 6 website navs, 5 app shells, motion. | Components in this design system |
 | Icons | Hugeicons free stroke-rounded set (MIT), 85 named icons. | `UIS.Icon`, Assets › Icons |
 | Marks and avatars | Placeholder logo marks until the client's logo exists; DiceBear avatars for people without a photo. | Assets › Marks, Avatars |
 
-The working canvas is **UI System · Canvas**: Start here (the preset, kind and brand questions), Foundations, Components, Patterns, Navigation, Use cases, Presets (one sheet per preset, products shown as skins side by side) and Kinds (page sets), every board driven by the same Tweaks.
+The working canvas is **UI System · Canvas**: Start here (the theme, kind and brand questions), Foundations, Components, Patterns, Navigation, Use cases, Themes (one sheet per theme, products shown as skins side by side) and Kinds (page sets), every board driven by the same Tweaks.
 
 ## Start every design here
 
 1. Mount the bundle and wrap each artboard or page in `UIS.Root`. Pass the project's brand as props on Root, never on individual components:
    `<x-import component-from-global-scope="UIS.Root" primary="#…" accent="#…" roundness="{{60}}" pill="{{false}}" font-preset="modern" wordmark="Client" logo-mark="monogram" logo-placement="left">…</x-import>`
 2. Build screens from the real components (`UIS.NavIsland`, `UIS.AppShell`, `UIS.Button`…). Style your own markup with the `--uis-*` variables Root writes (`var(--uis-primary)`, `var(--uis-ink-2)`, `var(--uis-r-card)`), never raw hex.
-3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Archivo:wdth,wght@75..125,700..900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every preset), or the single-preset URL `theme.fontsUrl` returns.
-4. Before any design, ask the preset questions (corners square or round, headings condensed caps or calm sans, photos or numbers lead) and the kind questions (see Kinds). Then add `preset="ledger"` or `preset="atelier"` and `kind="…"` on Root; any other prop still wins, and the brand goes on top.
+3. Load fonts with one Google Fonts link in `<helmet>`: `https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Space+Grotesk:wght@400..700&family=Space+Mono:wght@400;700&family=Manrope:wght@400..800&family=Archivo:wdth,wght@75..125,700..900&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap` (every font preset), or the single URL `buildTokens(config).fontsUrl` returns.
+4. Before any design, ask the theme questions (corners square or round, headings condensed caps or calm sans, photos or numbers lead) and the kind questions (see Kinds). Then add `theme="ledger"` or `theme="atelier"` and `kind="…"` on Root; any other prop still wins, and the brand goes on top.
 5. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
 
 The same config drives code: `ui.config.json` in the repo builds theme.css, a Tailwind v4 theme and this tokens.json (`ui-system build`).
@@ -60,7 +60,7 @@ Presets: sharp 0, crisp 25, soft 50, rounded 75, round 90 + pill. Nested element
 
 Pick a preset with `fontPreset` (all Google Fonts), or override `displayFont`/`bodyFont` with any Google family.
 
-| preset | display | body | mono | fits |
+| font preset | display | body | mono | fits |
 |---|---|---|---|---|
 | `modern` | Inter Tight | Inter | JetBrains Mono | Tight neutral sans. Works for SaaS, agencies, dashboards. |
 | `geometric` | Geist | Geist | Geist Mono | Clean geometric sans with a technical edge. |
@@ -72,11 +72,11 @@ Pick a preset with `fontPreset` (all Google Fonts), or override `displayFont`/`b
 
 Styles: `display-2xl` 80, `display-xl` 64, `display-l` 48, `display-m` 36 in the display face (they shrink on small screens); `h1` 30, `h2` 24, `h3` 20, `body-l` 18, `body` 16, `body-s` 14, `label` 13, `caption` 12, `overline` 11 uppercase. CSS classes carry the same names with a `uis-` prefix. `buttonCase="upper"` sets buttons and the menu button in spaced capitals. Sentence case everywhere else.
 
-## Presets
+## Themes
 
-A preset is a way of designing, not a product (color pins, shape, type, sizes, shadows, motion, plus rules and questions). Products appear only as "seen in" examples and may override anything. `retail-editorial` is the old name of `atelier` and still works. A project opts in with `preset` on Root or `"preset"` in ui.config.json; every other prop still wins, and the defaults never change. `color.pin` holds exact light-mode values and `color.pinDark` exact dark-mode values; roles a preset leaves unpinned are derived. A new seed drops the preset's pins for that seed's roles, so the contrast gate still holds.
+A theme is a way of designing, not a product (color pins, shape, type, sizes, shadows, motion, plus rules and questions). Products appear only as "seen in" examples and may override anything. `retail-editorial` is the old name of `atelier` and still works. Themes were called presets until 2026-11-16; `preset` still works everywhere `theme` does. A project opts in with `theme` on Root or `"theme"` in ui.config.json; every other prop still wins, and the defaults never change. `color.pin` holds exact light-mode values and `color.pinDark` exact dark-mode values; roles a theme leaves unpinned are derived. A new seed drops the theme's pins for that seed's roles, so the contrast gate still holds.
 
-| preset | look | seen in | ask first |
+| theme | look | seen in | ask first |
 |---|---|---|---|
 | `atelier` | Sharp and editorial. Square 2px controls, warm ink on white, uppercase condensed headings, 52px dark buttons, grey search pill. Photos carry the colour. | Senorita, ALMAR | What photo leads each page? What are the collections or categories? What is the one action per page (add to bag, book)? Light only, or dark too? |
 | `ledger` | Round and clean. Near-black ink on warm off-white, gold for the one primary action per page, pill controls and soft 22px cards, Poppins, no shadows, no motion. | Invios, Clickit | What is the one action on this page? Which numbers must line up? Light, dark, or both? Which status words are used (paid, draft, overdue)? |
@@ -89,7 +89,7 @@ Atelier decisions (signed 2026-11-07 as retail-editorial): app sidebar on off-wh
 
 ## Kinds
 
-What you build, picked separately from the preset; any kind works in any preset and sets no values. Ask its questions first, then draw its pages in the chosen preset.
+What you build, picked separately from the theme; any kind works in any theme and sets no values. Ask its questions first, then draw its pages in the chosen theme.
 
 | kind | for | pages | ask first |
 |---|---|---|---|

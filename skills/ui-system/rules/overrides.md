@@ -4,7 +4,7 @@ Read when: you are about to load, or have just loaded, any skill named in the SK
 
 ## Applies to every outside skill
 
-1. UI System's hard rules (SKILL.md §3) and the repo's preset come first. A skill's advice that breaks one is a conflict: go to SKILL.md §4 (two pictures, ask). Never bend a rule silently.
+1. UI System's hard rules (SKILL.md §3) and the repo's theme come first. A skill's advice that breaks one is a conflict: go to SKILL.md §4 (two pictures, ask). Never bend a rule silently.
 2. Every value a skill gives (a colour, radius, size, duration, curve or shadow) goes into `ui.config.json` or a `--uis-*` variable. Never put it inline in a component.
 3. Icons in any example become Hugeicons through `Icon`. Emoji and other icon sets are dropped.
 4. People in any example become `Avatar` (DiceBear). Sample data is labelled as sample. No invented prices, metrics, logos or quotes.
@@ -14,7 +14,7 @@ Read when: you are about to load, or have just loaded, any skill named in the SK
 
 | Skill | Keep | Override |
 |---|---|---|
-| `frontend-design` | Thinking about direction, hierarchy and one strong idea per page | **The preset always wins.** No new fonts or palettes. A different font only when the owner names it for this project; record it in `ui.config.json` (`type`). "Bold" happens inside the preset and brand seeds. References come from Mobbin or Appllama, never imagination. |
+| `frontend-design` | Thinking about direction, hierarchy and one strong idea per page | **The theme always wins.** No new fonts or palettes. A different font only when the owner names it for this project; record it in `ui.config.json` (`type`). "Bold" happens inside the theme and brand seeds. References come from Mobbin or Appllama, never imagination. |
 | `better-ui` | Concentric radius, optical alignment, hit areas, surface depth, its exact values | Motion follows `rules/motion.md`. Radii come from radius roles (`--uis-r-*`). Icons are Hugeicons. |
 | `better-layout` | Grouping, reading order, progressive disclosure | Dashboards use UI System shells (AppShell, sidebar, rail, topbar, dock). Spacing comes from density tokens. |
 | `better-typography` | Wrapping, tabular numbers, line length, OpenType details | Fonts and the scale come from the font preset (`type.ts`). Never pick a font on its advice. |
@@ -26,7 +26,7 @@ Read when: you are about to load, or have just loaded, any skill named in the SK
 | `web-perf` | Everything | Only on a deployed or built site. Fonts load through `Root`'s `fontsUrl`; don't add a second font loader. |
 | `theme-factory`, `brand-guidelines` | The idea of a reusable theme or brand pack | A brand or theme enters only as `ui.config.json` seeds (primary, accent, neutral, mode, fontPreset, logo). Never use their built-in palettes or Anthropic's brand. |
 | `web-artifacts-builder` | Building a larger HTML page or artifact | Load `dist/uis.bundle.js` (`window.UIS`) so the page uses real components and tokens. |
-| `gsd-ui-phase`, `gsd-ui-review`, `gsd-sketch` | The UI-SPEC contract, the 6-pillar score, quick sketches | Only in a repo with `.planning/`. The spec names preset, kind, track and cited references. Sketches use the UI System bundle and always show at least 2 options. |
+| `gsd-ui-phase`, `gsd-ui-review`, `gsd-sketch` | The UI-SPEC contract, the 6-pillar score, quick sketches | Only in a repo with `.planning/`. The spec names theme, kind, track and cited references. Sketches use the UI System bundle and always show at least 2 options. |
 | `webapp-testing` | Playwright on the local app | Also check light and dark, 375 px width, keyboard, and `ui-system check` (SKILL.md §8). |
-| `canvas-design`, `algorithmic-art`, `dataviz`, `artifact-design`, `artifact-diagramming` | Their own craft for posters, art, charts and published pages | For a UI System product, colours come from the theme (`UIS.buildTheme`), Hugeicons for icons, and no fake data in charts. |
+| `canvas-design`, `algorithmic-art`, `dataviz`, `artifact-design`, `artifact-diagramming` | Their own craft for posters, art, charts and published pages | For a UI System product, colours come from the theme (`UIS.buildTokens`), Hugeicons for icons, and no fake data in charts. |
 | `anatomy` | Everything | Follow `rules/anatomy.md`. |

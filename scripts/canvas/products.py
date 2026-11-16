@@ -1,5 +1,5 @@
 # Product preset data for the per-product design sheets.
-# Values come from the canvas "Product preset · X" study boards (read from each product's source by an
+# Values come from the canvas "Product theme · X" study boards (read from each product's source by an
 # earlier session). Stand-in fonts are marked. Text roles with alpha were flattened onto their page so
 # the contrast check can measure them.
 
@@ -33,11 +33,11 @@ PRODUCTS.append(dict(
            (1, 'Size boxes are 44px squares; sold-out sizes stay visible, struck through.'),
            (0, 'Never use burgundy for text or buttons.'),
            (0, 'Never put white text on the sand banner (2.65:1): ink only.')],
-    gaps='Shipped CSS is 2px square; decision O5 (2026-11-07) says pill. The engine preset ships the square one. The resting search pill has no edge (under WCAG 1.4.11).',
-    source='retail-editorial engine preset · packages/core/src/presets.ts · Senorita Phase 1 storefront and admin CSS.',
+    gaps='Shipped CSS is 2px square; decision O5 (2026-11-07) says pill. The engine theme ships the square one. The resting search pill has no edge (under WCAG 1.4.11).',
+    source='retail-editorial engine theme · packages/core/src/themes.ts · Senorita Phase 1 storefront and admin CSS.',
     default='Shipped CSS',
     variants=[
-        V('Shipped CSS', '2px square · engine preset', 'Exactly the retail-editorial preset. Recommended.', 'light',
+        V('Shipped CSS', '2px square · engine theme', 'Exactly the retail-editorial theme. Recommended.', 'light',
           {'preset': 'atelier', 'brand': {'wordmark': 'Senorita'}}),
         V('Decision O5', 'Pill controls, 22px cards', 'retail-editorial with O5 radii: controls 999, cards 22. Same colour and type.', 'light',
           {'preset': 'atelier', 'brand': {'wordmark': 'Senorita'}, 'radius': {'overrides': {'control': 999, 'field': 999, 'chip': 999, 'card': 22, 'panel': 22}}}),
@@ -64,7 +64,7 @@ PRODUCTS.append(dict(
     source='Shipped: _ds/linear-design-system tokens. Planned: ui-system-redesign sketch theme.json (decision D-05).',
     default='Ledger (D-05)',
     variants=[
-        V('Ledger (D-05)', 'ledger preset · Poppins · pill', 'Invios on the ledger engine preset, which implements D-05 and D-12. Invios itself is a study, not an engine preset; it pins nothing on ledger: every value comes from the seeds. Recommended.', 'light',
+        V('Ledger (D-05)', 'ledger theme · Poppins · pill', 'Invios on the ledger engine theme, which implements D-05 and D-12. Invios itself is a study, not an engine theme; it pins nothing on ledger: every value comes from the seeds. Recommended.', 'light',
           ledger(), {'--uis-display-weight': '600', '--uis-heading-weight': '600'}, POPPINS),
         V('Shipped today', 'Dark Linear kit · Geist', 'Values from the vendored Linear kit. Buttons 27/32/36px are under the 44px touch target.', 'dark',
           {'type': {'preset': 'geometric'},

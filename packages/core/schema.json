@@ -341,13 +341,22 @@
         }
       }
     },
+    "theme": {
+      "enum": [
+        "ledger",
+        "atelier",
+        "retail-editorial"
+      ],
+      "description": "Theme: a way of designing, applied between the defaults and your keys. ledger = round and clean, atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/themes.md."
+    },
     "preset": {
       "enum": [
         "ledger",
         "atelier",
         "retail-editorial"
       ],
-      "description": "Preset: a way of designing, applied between the defaults and your keys. ledger = round and clean, atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/presets.md."
+      "description": "Deprecated: old name of \"theme\". Still read when \"theme\" is not set.",
+      "deprecated": true
     },
     "kind": {
       "enum": [

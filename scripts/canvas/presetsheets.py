@@ -194,7 +194,7 @@ def skins_block(p):
             '<span class="uis-body-s" style="color: var(--uis-ink-2);">{{k.note}}</span></div>')
     return ('<section style="display: flex; flex-direction: column; gap: 20px; padding: 36px 0; border-top: 1px solid var(--uis-line);">'
             '<div style="display: flex; align-items: baseline; gap: 16px;"><h2 class="uis-h2" style="margin: 0;">Skins side by side</h2>'
-            '<span class="uis-body-s" style="color: var(--uis-ink-2);">Same preset. Each product changes what it needs on top (colours, logo, fonts, anything). The outlined one is shown in full below.</span></div>'
+            '<span class="uis-body-s" style="color: var(--uis-ink-2);">Same theme. Each product changes what it needs on top (colours, logo, fonts, anything). The outlined one is shown in full below.</span></div>'
             '<div style="display: grid; grid-template-columns: repeat(' + str(len(p['variants'])) + ', minmax(0, 1fr)); gap: 20px; align-items: start;">'
             '<sc-for list="{{skins}}" as="k" hint-placeholder-count="' + str(len(p['variants'])) + '">' + card + '</sc-for></div></section>')
 
@@ -205,9 +205,9 @@ def sheet(p):
     mobile = p.get('mobile')
     title = p['name'] + ' · design sheet'
 
-    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine preset · ' + esc(p.get('preset', 'atelier'))) if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine preset yet'))
+    status = (X('Badge', 'tone="success" dot="{{yes}}"', 'Engine theme · ' + esc(p.get('preset', 'atelier'))) if p['engine'] else X('Badge', 'tone="warning" dot="{{yes}}"', 'Study · not an engine theme yet'))
     header = ('<header style="display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 48px; align-items: end; padding-bottom: 36px;">'
-              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Preset · ' if is_preset else 'Product preset · ') + esc(p.get('tagline', p.get('kind', ''))) + '</span>'
+              '<div style="display: flex; flex-direction: column; gap: 14px;"><span class="uis-overline">' + ('Theme · ' if is_preset else 'Product theme · ') + esc(p.get('tagline', p.get('kind', ''))) + '</span>'
               '<h1 class="uis-display-xl">' + esc(p['name']) + '</h1><p class="uis-body-l" style="color: var(--uis-ink-2); max-width: 720px;">' + esc(p['summary']) + '</p></div>'
               '<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;">' + status +
               '<span class="uis-overline" style="margin-top: 4px;">' + ('Skin' if is_preset else 'Variant') + ' shown in full below</span><strong class="uis-h3">{{vKey}}</strong><span class="uis-body-s">{{vTag}} · {{modeLabel}}</span>'
@@ -218,16 +218,16 @@ def sheet(p):
     qs = ('<div class="uis-card" style="display: flex; flex-direction: column; gap: 10px;"><span class="uis-overline">Ask before any design</span>'
           '<ol class="uis-body-s" style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">' + ''.join('<li>' + esc(q) + '</li>' for q in p.get('questions', [])) + '</ol>'
           '<span class="uis-caption">Then pick the kind (Start here, Kinds page) and put the brand on top. A product may change anything; improvements come back here as a proposal.</span></div>') if p.get('questions') else ''
-    s1 = section('01', 'How it thinks', ('The rules every screen in this preset follows, whatever is built on it.' if is_preset else 'The product rules every screen follows. Read before designing anything new for ' + esc(p['name']) + '.'),
+    s1 = section('01', 'How it thinks', ('The rules every screen in this theme follows, whatever is built on it.' if is_preset else 'The product rules every screen follows. Read before designing anything new for ' + esc(p['name']) + '.'),
                  '<div class="uis-card" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px;">' + ''.join(rule(do, esc(t)) for do, t in p['rules']) + '</div>' + qs +
                  X('Alert', 'tone="warning" title="Gaps and conflicts"', esc(p['gaps'])) +
-                 '<p class="uis-caption" style="margin: 0;">Source: ' + esc(p['source']) + (' Engine preset: packages/core/src/presets.ts.' if is_preset else ' Values from the "Product preset · ' + esc(p['name']) + '" study on the Presets page.') + '</p>')
+                 '<p class="uis-caption" style="margin: 0;">Source: ' + esc(p['source']) + (' Engine theme: packages/core/src/themes.ts.' if is_preset else ' Values from the "Product theme · ' + esc(p['name']) + '" study on the Themes page.') + '</p>')
 
     sw = ('<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px;"><sc-for list="{{swatches}}" as="s" hint-placeholder-count="36">'
           '<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;"><div style="height: 64px; border-radius: var(--uis-r-inner); background: {{s.css}}; border: 1px solid var(--uis-line);"></div>'
           '<span style="font: 600 12px/1.2 var(--uis-font-mono); color: var(--uis-ink);">{{s.role}}</span><span style="font: 400 11.5px/1.2 var(--uis-font-mono); color: var(--uis-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.hex}}</span>'
           '<span class="uis-caption" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{s.use}}</span><span style="font: 600 10.5px/1 var(--uis-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: {{s.srcInk}};">{{s.src}}</span></div></sc-for></div>')
-    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this ' + ('skin' if is_preset else 'variant') + '. <strong>Source</strong> = pinned ' + ('by the preset or the skin' if is_preset else 'from the product') + '. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
+    s2 = section('02', 'Colour roles', 'Every role the components read, computed by the engine for this ' + ('skin' if is_preset else 'variant') + '. <strong>Source</strong> = pinned ' + ('by the theme or the skin' if is_preset else 'from the product') + '. <strong>Derived</strong> = the engine made it from the seeds; check it before shipping.', sw +
                  '<p class="uis-caption" style="margin: 0;">Seeds: {{seeds}}</p>')
 
     ct = ('<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;"><sc-for list="{{pairs}}" as="k" hint-placeholder-count="35">'
@@ -319,7 +319,7 @@ def sheet(p):
     s12 = section('12', 'Sample screen', 'A real ' + p['name'] + ' screen built only from UI System parts in this variant.',
                   '<div style="border: 1px solid var(--uis-line); border-radius: 16px; overflow: hidden; background: var(--uis-bg);">' + scr + '</div>')
 
-    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this.' + (' Skins may change anything on top of the preset.' if is_preset else ' It becomes a named engine preset only on your word.'),
+    s13 = section('13', 'ui.config.json', 'The exact config behind this sheet. Paste it into a ' + p['name'] + ' project and the components look like this.' + (' Skins may change anything on top of the theme.' if is_preset else ' It becomes a named engine theme only on your word.'),
                   '<pre style="margin: 0; padding: 20px; max-height: 620px; overflow: auto; border-radius: var(--uis-r-card); background: var(--uis-surface-2); border: 1px solid var(--uis-line); font: 400 12.5px/1.55 var(--uis-font-mono); color: var(--uis-ink); white-space: pre;">{{configJson}}</pre>'
                   '<p class="uis-caption" style="margin: 0;">{{fontNote}}</p>')
 
@@ -397,7 +397,7 @@ def sheet(p):
     const fam = function (s) { return String(s || '').split(',')[0].replace(/['"]/g, '').trim(); };
     const V = function (k) { return vars['--uis-' + k] || ''; };
     const c = cfg.color;
-    const seeds = seedKeys.filter(function (k) { return seedSet[k]; }).map(function (k) { return k + ' ' + seedSet[k]; }).join(' · ') || 'preset seeds';
+    const seeds = seedKeys.filter(function (k) { return seedSet[k]; }).map(function (k) { return k + ' ' + seedSet[k]; }).join(' · ') || 'theme seeds';
     return {
       wrap: wrap, skins: skins, err: err, hasErr: !!err, yes: true, no: false,
       s14: 14, s16: 16, s18: 18, s20: 20, s22: 22, p27: 27, p40: 40, p68: 68, p100: 100,

@@ -35,7 +35,7 @@ anime.animate('.hero h1', { opacity: [0, 1], translateY: [24, 0], ease: 'out(3)'
 
 ## Untitled UI React
 1. Follow its installation guide (Tailwind v4 + React Aria), add components with its CLI.
-2. After its `theme.css`, import `@loomlyne/ui-system-core/untitled-ui.css`: brand scale → `primary`, greys → `neutral`, fonts → the preset.
+2. After its `theme.css`, import `@loomlyne/ui-system-core/untitled-ui.css`: brand scale → `primary`, greys → `neutral`, fonts → the font preset.
 3. Use UI System components first; reach for Untitled UI for what this library does not have.
 
 ## Scope

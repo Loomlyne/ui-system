@@ -20,7 +20,7 @@ for f, (title, page, w, h) in M.items():
     pid = 'c-' + page.lower().replace(' · ', '-').replace(' ', '-')
     if pid not in [p for p, _ in FAMILY_PAGES]:
         FAMILY_PAGES.append((pid, page))
-PAGES = ([('start', 'Start here'), ('foundations', 'Foundations'), ('presets', 'Presets'), ('kinds', 'Kinds'), ('components', 'Components · overview')] +
+PAGES = ([('start', 'Start here'), ('foundations', 'Foundations'), ('presets', 'Themes'), ('kinds', 'Kinds'), ('components', 'Components · overview')] +
          [(pid, 'Components › ' + name) for pid, name in FAMILY_PAGES] +
          [('patterns', 'Patterns'), ('navigation', 'Navigation · shells'), ('usecases', 'Use cases'), ('archive', 'Archive')])
 assert len(PAGES) <= 40
@@ -94,7 +94,7 @@ def note(nid, new_only=False, **k):
 note('t-comp', page='components', x=0, y=-300, text='Components · overview', maxW=2960)
 note('n-comp', page='components', x=3040, y=0, w=480, text=(
     'At rest (left) and states (right).\n\nEvery component family now has its own page (the Components › pages): '
-    'states, sizes and icons on the left board, every preset and product skin in light and dark on the right.\n\n'
+    'states, sizes and icons on the left board, every theme and product skin in light and dark on the right.\n\n'
     'The older sheets that grouped several families are on the Archive page, kept as they were.'))
 if 't-sheets' in notes:  # the old sheets title moves with them
     note('t-sheets', page='archive', x=0, y=2100, text='Superseded component sheets (now one page per family)', maxW=5960)
@@ -111,11 +111,11 @@ if THEMES_TITLE_Y is not None:
          text='Superseded per-skin grids (2026-11-09): each States board now has a skin Tweak')
 note('t-front', text='Navigation · whole website bars')
 note('t-back', text='Navigation · whole app shells')
-OLD_NOTE_TEXT = ('Left: every state, size and icon placement. Its Tweaks work like every other board (preset, colours, mode, shape, type).\n\n'
-                 'Right: the same parts in every preset (none, ledger, atelier) and every product skin, light and dark, each with its contrast count.\n\n'
+OLD_NOTE_TEXT = ('Left: every state, size and icon placement. Its Tweaks work like every other board (theme, colours, mode, shape, type).\n\n'
+                 'Right: the same parts in every theme (none, ledger, atelier) and every product skin, light and dark, each with its contrast count.\n\n'
                  'Gaps on the coverage row are states UI System does not have yet.')
 NOTE_TEXT = ('Every state, size and icon placement, drawn once.\n\n'
-             'Try it in any product skin, preset, palette, shape, mode or type with this board\'s Tweaks: a Tweak left at its default follows the skin, one you change wins. '
+             'Try it in any product skin, theme, palette, shape, mode or type with this board\'s Tweaks: a Tweak left at its default follows the skin, one you change wins. '
              'The line under the title shows the live contrast check.\n\n'
              'Gaps on the coverage row are states UI System does not have yet. The older per-skin grids are on Archive.')
 GAPS = {}
@@ -129,13 +129,13 @@ for f, (title, page, w, h) in M.items():
         if n and n.get('text') == OLD_NOTE_TEXT:
             n.update(text=NOTE_TEXT, x=w + GAP_X)
 howto = notes.get('howto')
-OLD_HOWTO = '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Presets (one sheet per preset, products as skins), Kinds (what you build).'
+OLD_HOWTO = '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Themes (one sheet per theme, products as skins), Kinds (what you build).'
 if FIRST and howto and OLD_HOWTO not in howto['text']:
     print('warning: howto note text changed; page list line not updated')
 if FIRST and howto:
     howto['text'] = howto['text'].replace(
-        '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Presets (one sheet per preset, products as skins), Kinds (what you build).',
-        '1. Pages, top left: Start here, Foundations, Presets (one sheet per preset, products as skins), Kinds (what you build), Components overview, then one page per component family (Components › …), Patterns, Navigation shells, Use cases, Archive.')
+        '1. Pages, top left: Start here, Foundations, Components (with one detailed sheet per component), Patterns (articles, places, website sections, commerce, app), Navigation, Use cases, Themes (one sheet per theme, products as skins), Kinds (what you build).',
+        '1. Pages, top left: Start here, Foundations, Themes (one sheet per theme, products as skins), Kinds (what you build), Components overview, then one page per component family (Components › …), Patterns, Navigation shells, Use cases, Archive.')
 if FIRST:
     N['launch'] = {'page': 'start', 'view': 'canvas'}
 json.dump(N, open(out, 'w'), ensure_ascii=False)

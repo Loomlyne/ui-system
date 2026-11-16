@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {
-  buildTheme, resolveConfig,
+  buildTokens, resolveConfig,
   type AvatarStyle, type BackNav, type Density, type MotionIntensity, type FloatSurface, type FontPresetId, type FrontNav, type LogoMark, type LogoVariant,
-  type KindId, type LegacyPresetId, type Mode, type Placement, type PresetId, type ShadowDepth, type UIConfigInput,
+  type KindId, type LegacyThemeId, type Mode, type Placement, type ThemeId, type ShadowDepth, type UIConfigInput,
 } from '@loomlyne/ui-system-core';
 import { UISContext, cx } from './context';
 
@@ -13,8 +13,10 @@ import { UISContext, cx } from './context';
  */
 export interface RootProps {
   config?: UIConfigInput;
-  /** Preset, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
-  preset?: PresetId | LegacyPresetId;
+  /** Theme, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+  theme?: ThemeId | LegacyThemeId;
+  /** @deprecated Use `theme`. */
+  preset?: ThemeId | LegacyThemeId;
   /** What you build (shop, app, website, booking, portfolio). Sets no values. */
   kind?: KindId;
   // color
@@ -80,7 +82,8 @@ export function configFromProps(p: RootProps): UIConfigInput {
   const base = p.config ?? {};
   return {
     ...base,
-    preset: def(p.preset) ?? base.preset,
+    theme: def(p.theme) ?? def(p.preset) ?? base.theme ?? base.preset,
+    preset: undefined,
     kind: def(p.kind) ?? base.kind,
     name: def(p.projectName) ?? base.name,
     brand: {
@@ -151,12 +154,12 @@ function useFonts(url: string, enabled: boolean) {
 export function Root(props: RootProps) {
   const input = configFromProps(props);
   const key = JSON.stringify(input);
-  const theme = React.useMemo(() => buildTheme(resolveConfig(input)), [key]); // eslint-disable-line react-hooks/exhaustive-deps
-  const mode = theme.config.color.mode;
-  useFonts(theme.fontsUrl, props.loadFonts !== false);
-  const ctx = React.useMemo(() => ({ theme, brand: theme.config.brand }), [theme]);
+  const tokens = React.useMemo(() => buildTokens(resolveConfig(input)), [key]); // eslint-disable-line react-hooks/exhaustive-deps
+  const mode = tokens.config.color.mode;
+  useFonts(tokens.fontsUrl, props.loadFonts !== false);
+  const ctx = React.useMemo(() => ({ tokens, theme: tokens, brand: tokens.config.brand }), [tokens]);
   const style: React.CSSProperties = {
-    ...(props.vars === false ? null : (theme.vars(mode) as React.CSSProperties)),
+    ...(props.vars === false ? null : (tokens.vars(mode) as React.CSSProperties)),
     ...(props.fill ? { height: '100%' } : null),
     ...(props.page !== false ? { background: 'var(--uis-bg)', color: 'var(--uis-ink)' } : null),
     colorScheme: mode,
@@ -164,7 +167,7 @@ export function Root(props: RootProps) {
   };
   return (
     <UISContext.Provider value={ctx}>
-      <div className={cx('uis', props.className)} data-uis-mode={props.vars === false ? undefined : mode} data-uis-motion={theme.config.motion?.enabled === false ? 'off' : undefined} style={style}>
+      <div className={cx('uis', props.className)} data-uis-mode={props.vars === false ? undefined : mode} data-uis-theme={tokens.config.theme} data-uis-motion={tokens.config.motion?.enabled === false ? 'off' : undefined} style={style}>
         {props.children}
       </div>
     </UISContext.Provider>

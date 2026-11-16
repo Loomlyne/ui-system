@@ -1,15 +1,15 @@
-import type { Preset, PresetId } from './config';
+import type { ThemeDefinition, ThemeId } from './config';
 
 /**
- * Presets are ways of designing, not products. Pick one for how it should look (`ledger` round
+ * Themes are ways of designing, not products. Pick one for how it should look (`ledger` round
  * and clean, `atelier` sharp and editorial), pick a kind for what you build (kinds.ts), then put
- * any brand on top. `{ "preset": "atelier" }` in ui.config.json fills everything below, and any
- * key you write yourself still wins. Products that use a preset are listed only in `seenIn`.
+ * any brand on top. `{ "theme": "atelier" }` in ui.config.json fills everything below, and any
+ * key you write yourself still wins. Products that use a theme are listed only in `seenIn`.
  * Pins (`color.pin`, `surface.shadows`, `sizes`, `motion.timing`) hold exact light-mode
  * values measured from the source. `color.pinDark` holds a designed dark mode where a
- * preset has one; anything it leaves out is derived by the engine.
+ * theme has one; anything it leaves out is derived by the engine.
  */
-export const PRESETS: Record<PresetId, Preset> = {
+export const THEMES: Record<ThemeId, ThemeDefinition> = {
   atelier: {
     id: 'atelier',
     label: 'Atelier',
@@ -25,7 +25,7 @@ export const PRESETS: Record<PresetId, Preset> = {
     questions: ['What photo leads each page?', 'What are the collections or categories?', 'What is the one action per page (add to bag, book)?', 'Light only, or dark too?'],
     source: 'Senorita Store Phase 1 storefront and admin CSS (_s_css, _s_err, _a_css) and 01-UI-SPEC.md, 2026-11-07.',
     config: {
-      preset: 'atelier',
+      theme: 'atelier',
       brand: { mark: 'none', variant: 'wordmark', wordmarkCase: 'upper', wordmarkFont: 'display', wordmarkColor: '#7E1F33', caption: '' },
       color: {
         primary: '#2D2A26',
@@ -158,7 +158,7 @@ export const PRESETS: Record<PresetId, Preset> = {
     questions: ['What is the one action on this page?', 'Which numbers must line up?', 'Light, dark, or both?', 'Which status words are used (paid, draft, overdue)?'],
     source: 'Invios decisions D-05 (round radius, light and dark) and D-12 (Poppins), 2026-10-05; .planning/sketches/ui-system-redesign/ui.config.json and ui-theme/theme.json.',
     config: {
-      preset: 'ledger',
+      theme: 'ledger',
       color: {
         primary: '#0d0d0d',
         accent: '#eab308',
@@ -178,3 +178,6 @@ export const PRESETS: Record<PresetId, Preset> = {
     },
   },
 };
+
+/** @deprecated Use THEMES. */
+export const PRESETS = THEMES;

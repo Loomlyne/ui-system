@@ -73,7 +73,7 @@ Install once, then it works in every repo, local or cloud:
 ```
 
 - Say "use UI System" in any UI prompt: the `ui-system` skill loads its critical rules.
-- Run `/ui-system:ui [preset] [kind] [what to build]`: detects the stack, installs `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react`, writes `ui.config.json`, wires the theme, adds the rules to the repo's `CLAUDE.md`, and enables the plugin in `.claude/settings.json` for cloud sessions. On a repo with UI of its own it restyles onto UI System, one conflict at a time.
+- Run `/ui-system:ui [theme] [kind] [what to build]`: detects the stack, installs `@loomlyne/ui-system-core` and `@loomlyne/ui-system-react`, writes `ui.config.json`, wires the theme, adds the rules to the repo's `CLAUDE.md`, and enables the plugin in `.claude/settings.json` for cloud sessions. On a repo with UI of its own it restyles onto UI System, one conflict at a time.
 - Any conflict with a rule: Claude stops and shows two pictures (follows the rule / follows the request) and asks.
 - `npx -p @loomlyne/ui-system-core ui-system check` fails on hard-coded colors, emoji, non-Hugeicons icons, banned motion libraries and fake avatars. Add it as the `ui:check` script.
 - Publishing the packages: run the "Publish packages" workflow (`@loomlyne` npm org; auth moves to trusted publishing, see `.planning/ROADMAP.md` Phase 1).
@@ -96,7 +96,7 @@ Install once, then it works in every repo, local or cloud:
 | `motion.enabled` / `intensity` | boolean / `subtle`, `expressive` | anime.js entrances and counters. |
 | `nav.front` / `nav.back` | `island`, `bar`, `stacked`, `dock`, `minimal` / `sidebar`, `rail`, `inset`, `topbar`, `dock` | Default website nav and app shell. |
 
-Full reference: [docs/config.md](docs/config.md). Presets, ways of designing (`"preset": "ledger"` round, `"atelier"` sharp): [docs/presets.md](docs/presets.md). What you build (`"kind": "app"`): [docs/kinds.md](docs/kinds.md).
+Full reference: [docs/config.md](docs/config.md). Themes, ways of designing (`"theme": "ledger"` round, `"atelier"` sharp): [docs/themes.md](docs/themes.md). What you build (`"kind": "app"`): [docs/kinds.md](docs/kinds.md).
 
 ## Logos
 

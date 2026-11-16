@@ -1,5 +1,5 @@
-import { presetId, resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
-import { PRESETS } from './presets';
+import { themeId, resolveConfig, type Mode, type UIConfig, type UIConfigInput } from './config';
+import { THEMES } from './themes';
 import {
   alpha, bestOn, contrast, hexToOklch, isHex, mix, neutralFrom, scaleFrom, stepWithContrast,
   type NeutralScale, type Scale, type ScaleStep,
@@ -9,7 +9,8 @@ import { googleFontsUrl, resolveType, TYPE_SCALE, type ResolvedType } from './ty
 
 export type Vars = Record<string, string>;
 
-export interface Theme {
+/** Every computed value for one config: scales, colors per mode, radius, type and CSS variables. */
+export interface Tokens {
   config: UIConfig;
   scales: { primary: Scale; accent: Scale; neutral: NeutralScale; success: Scale; warning: Scale; danger: Scale; info: Scale };
   colors: Record<Mode, Vars>;
@@ -47,28 +48,28 @@ function role(seed: string, scale: Scale & { anchor: ScaleStep }, bg: string, su
   return { base, hover, ink, soft, softInk, text };
 }
 
-/** Roles each seed generates; a pin on one of them was measured against the preset's seed. */
+/** Roles each seed generates; a pin on one of them was measured against the theme's seed. */
 const SEEDS = ['primary', 'accent', 'success', 'warning', 'danger', 'info'] as const;
 const NEUTRAL_ROLES = new Set(['bg', 'surface', 'surface-2', 'surface-3', 'line', 'line-strong', 'ink', 'ink-2', 'ink-3', 'inverse', 'inverse-ink', 'scrim', 'float-border', 'search-bg', 'search-border', 'search-border-hover', 'nav-bg']);
 
 /**
- * A preset's pins only hold while its seeds do. When a project changes a seed (primary, accent,
- * neutral…), the preset's own pins on that seed's roles are dropped so the engine derives them
+ * A theme's pins only hold while its seeds do. When a project changes a seed (primary, accent,
+ * neutral…), the theme's own pins on that seed's roles are dropped so the engine derives them
  * again (a cream primary must not keep white text). Pins the project wrote itself always stay.
  */
 function activePins(config: UIConfig, pins: Partial<Record<string, string>>, key: 'pin' | 'pinDark'): Partial<Record<string, string>> {
-  const id = presetId(config.preset);
-  const preset = id ? PRESETS[id] : undefined;
-  const pc = preset?.config.color;
+  const id = themeId(config.theme);
+  const def = id ? THEMES[id] : undefined;
+  const pc = def?.config.color;
   if (!pc) return pins;
   const same = (a?: string, b?: string) => (a ?? '').toLowerCase() === (b ?? '').toLowerCase();
   const changed = SEEDS.filter((s) => pc[s] !== undefined && !same(config.color[s], pc[s]));
   const neutralChanged = pc.neutral !== undefined && !same(config.color.neutral, pc.neutral);
-  const presetPins = (pc[key] ?? {}) as Record<string, string | undefined>;
+  const themePins = (pc[key] ?? {}) as Record<string, string | undefined>;
   const out: Partial<Record<string, string>> = {};
   for (const [k, val] of Object.entries(pins)) {
     const reseeded = changed.some((s) => k === s || k.startsWith(`${s}-`)) || (neutralChanged && NEUTRAL_ROLES.has(k));
-    if (reseeded && same(val, presetPins[k])) continue;
+    if (reseeded && same(val, themePins[k])) continue;
     out[k] = val;
   }
   return out;
@@ -95,7 +96,8 @@ function shadows(depth: keyof typeof SHADOW_K, tint: string, mode: Mode): Vars {
   };
 }
 
-export function buildTheme(input?: UIConfigInput | UIConfig): Theme {
+/** Compute every token for a config (defaults, then its theme, then its own values). */
+export function buildTokens(input?: UIConfigInput | UIConfig): Tokens {
   const config = resolveConfig(input as UIConfigInput);
   const c = config.color;
   const primarySeed = safe(c.primary, '#1C1B19');
@@ -283,7 +285,7 @@ export const TEXT_PAIRS: Array<[fg: string, bg: string]> = [
 export interface ContrastCheck { mode: Mode; fg: string; bg: string; ratio: number; pass: boolean }
 
 /** Every TEXT_PAIRS check in both modes. Gate with `.filter((c) => !c.pass)`. */
-export function contrastReport(theme: Theme, target = 4.5): ContrastCheck[] {
+export function contrastReport(theme: Tokens, target = 4.5): ContrastCheck[] {
   const out: ContrastCheck[] = [];
   for (const mode of ['light', 'dark'] as Mode[]) {
     const v = theme.colors[mode];
@@ -294,3 +296,8 @@ export function contrastReport(theme: Theme, target = 4.5): ContrastCheck[] {
   }
   return out;
 }
+
+/** @deprecated Use Tokens. `Theme` now names a way of designing (see THEMES). */
+export type Theme = Tokens;
+/** @deprecated Use buildTokens. */
+export const buildTheme = buildTokens;

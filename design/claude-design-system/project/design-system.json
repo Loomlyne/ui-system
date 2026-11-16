@@ -829,8 +829,8 @@
   },
   "lastChange": {
     "by": "Koussay Zayani",
-    "at": "2026-11-15T14:20:22.721Z",
+    "at": "2026-11-16T17:02:41.060Z",
     "via": "Claude Code",
-    "note": "Built from github.com/Loomlyne/ui-system"
+    "note": "Themes: preset is now called theme (ledger, atelier); old names still work"
   }
 }

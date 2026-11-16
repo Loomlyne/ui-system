@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { buildTheme, resolveConfig, type BrandConfig, type Placement, type Theme } from '@loomlyne/ui-system-core';
+import { buildTokens, resolveConfig, type BrandConfig, type Placement, type Tokens } from '@loomlyne/ui-system-core';
 
 export interface UISContextValue {
-  theme: Theme;
+  /** Every computed value for the current config (colors, radius, type, CSS variables). */
+  tokens: Tokens;
+  /** @deprecated Use `tokens`. */
+  theme: Tokens;
   brand: BrandConfig;
 }
 
 const fallback: UISContextValue = (() => {
-  const theme = buildTheme();
-  return { theme, brand: theme.config.brand };
+  const tokens = buildTokens();
+  return { tokens, theme: tokens, brand: tokens.config.brand };
 })();
 
 export const UISContext = React.createContext<UISContextValue>(fallback);

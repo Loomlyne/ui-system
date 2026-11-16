@@ -168,8 +168,8 @@ export interface AppShellProps extends BaseBackProps {
   children?: React.ReactNode;
 }
 export function AppShell({ variant, children, header, ...p }: AppShellProps) {
-  const { theme } = useUIS();
-  const v = pick(variant, theme.config.nav.back);
+  const { tokens } = useUIS();
+  const v = pick(variant, tokens.config.nav.back);
   const main = <main className="uis-app__main">{children}</main>;
   const cls = cx('uis-app', `uis-app--${v}`, p.className);
   /* Phones: sidebar and rail shells swap to the dock below 768px (CSS shows one or the other). */

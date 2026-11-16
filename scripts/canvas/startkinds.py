@@ -37,36 +37,36 @@ def q_rows():
     for q, led, atl in PICK:
         rows += '<div style="display: grid; grid-template-columns: 150px 1fr 1fr; gap: 10px; align-items: center;"><span style="font: 600 14px/1.3 Inter, sans-serif;">' + esc(q) + '</span>' + pill(led) + pill(atl) + '</div>'
     return ('<div style="display: grid; grid-template-columns: 150px 1fr 1fr; gap: 10px;"><span></span>' + small('→ ledger') + small('→ atelier') + '</div>' + rows +
-            '<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px; border-top: 1px dashed #B9B5AE;">' + small('Planned presets, not built yet (one at a time, pictures first)') +
+            '<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px; border-top: 1px dashed #B9B5AE;">' + small('Planned themes, not built yet (one at a time, pictures first)') +
             pills([pill(t + ' → ' + i) for t, i in LATER]) + '</div>')
 
-step1 = box(small('Step 1 · preset') + h2('How should it look?') + q_rows() + '<div style="flex-grow: 1;"></div>' +
+step1 = box(small('Step 1 · theme') + h2('How should it look?') + q_rows() + '<div style="flex-grow: 1;"></div>' +
             result('ledger or atelier', 'Mostly round answers: ledger. Mostly sharp: atelier. Then its own questions: ' + ' / '.join(L['questions'][:2]) + ' (ledger); ' + ' / '.join(A['questions'][:2]) + ' (atelier).'))
 step2 = box(small('Step 2 · kind') + h2('What are you building?') +
             pills([pill(k['label'], dark=(kid == 'app')) for kid, k in KINDS.items()]) +
             '<div style="display: flex; flex-direction: column; gap: 6px;">' + small('Then its questions (example: App)') + ul(KINDS['app']['questions']) + '</div>' +
             '<div style="flex-grow: 1;"></div>' + result('App · ' + str(len(KINDS['app']['pages'])) + ' pages', ', '.join(KINDS['app']['pages']) + '. Every kind is on the Kinds page.'))
 step3 = box(small('Step 3 · brand') + h2('Your brand on top') +
-            ul(['Colours: keep the preset\'s, or your own seeds (the engine re-derives shades and keeps 4.5:1).', 'Logo: wordmark, or upload the real one.', 'Fonts: keep the preset\'s, or your own.', 'Light, dark or both.', 'Anything else may change too: the preset is the base, not a cage.']) +
-            '<div style="flex-grow: 1;"></div>' + result('preset + kind + brand', 'Improvements you make inside a product come back as a proposal with a picture; they join the preset only on your yes.'))
+            ul(['Colours: keep the theme\'s, or your own seeds (the engine re-derives shades and keeps 4.5:1).', 'Logo: wordmark, or upload the real one.', 'Fonts: keep the theme\'s, or your own.', 'Light, dark or both.', 'Anything else may change too: the theme is the base, not a cage.']) +
+            '<div style="flex-grow: 1;"></div>' + result('theme + kind + brand', 'Improvements you make inside a product come back as a proposal with a picture; they join the theme only on your yes.'))
 
 W, H = 1440, 1120
 start = (HEAD('Start here') + '<div style="width: ' + str(W) + 'px; height: ' + str(H) + 'px; box-sizing: border-box; padding: 48px 56px; display: flex; flex-direction: column; gap: 28px; background: ' + BG + '; color: ' + INK + '; font-family: Inter, sans-serif;">'
-         '<div style="display: flex; flex-direction: column; gap: 8px;">' + over('Start here · before any design') + h1('Three picks: preset, kind, brand') +
-         p_('A preset is how it looks (a way of designing, not a product). A kind is what you build. The brand goes on top. The session asks these in chat, and ui-system init --preset <id> --kind <id> prints the same questions.') + '</div>'
+         '<div style="display: flex; flex-direction: column; gap: 8px;">' + over('Start here · before any design') + h1('Three picks: theme, kind, brand') +
+         p_('A theme is how it looks (a way of designing, not a product). A kind is what you build. The brand goes on top. The session asks these in chat, and ui-system init --theme <id> --kind <id> prints the same questions.') + '</div>'
          '<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; flex-grow: 1; min-height: 0;">' + step1 + step2 + step3 + '</div>'
          '<div style="display: flex; gap: 16px; align-items: center; padding: 16px 20px; border: 1px dashed #B9B5AE; border-radius: 12px;">' + small('Output') +
          '<code style="font: 400 13px/1.5 ui-monospace, monospace;">{ "preset": "ledger", "kind": "app", "color": { "primary": "[YOUR COLOUR]" }, "brand": { "wordmark": "[NAME]" } }</code></div></div>' + FOOT(W, H))
 open(OUT + '/Start.dc.html', 'w').write(start)
-MADE['Start.dc.html'] = ('Start here · preset, kind, brand', W, H)
+MADE['Start.dc.html'] = ('Start here · theme, kind, brand', W, H)
 
 cols = ''.join(box(small(k['id']) + h2(k['label']) + '<p style="margin: 0; font: 400 14px/1.45 Inter, sans-serif; color: ' + INK2 + ';">' + esc(k['note']) + '</p>' +
                    small('Pages, in order') + '<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font: 500 14px/1.4 Inter, sans-serif;">' + ''.join('<li>' + esc(pg) + '</li>' for pg in k['pages']) + '</ol>' +
                    small('Ask first') + ul(k['questions'])) for k in KINDS.values())
 W2, H2 = 1440, 980
 kinds = (HEAD('Kinds') + '<div style="width: ' + str(W2) + 'px; height: ' + str(H2) + 'px; box-sizing: border-box; padding: 48px 32px; display: flex; flex-direction: column; gap: 28px; background: ' + BG + '; color: ' + INK + '; font-family: Inter, sans-serif;">'
-         '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 24px;">' + over('Kinds · what you build') + h1('Five kinds, any preset') +
-         p_('A kind sets no values. It names the pages to draw first and the questions that narrow scope. Draw its pages in the chosen preset; the preset sheets show App (ledger) and Shop (atelier) as examples.') + '</div>'
+         '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 24px;">' + over('Kinds · what you build') + h1('Five kinds, any theme') +
+         p_('A kind sets no values. It names the pages to draw first and the questions that narrow scope. Draw its pages in the chosen theme; the theme sheets show App (ledger) and Shop (atelier) as examples.') + '</div>'
          '<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; flex-grow: 1; min-height: 0;">' + cols + '</div></div>' + FOOT(W2, H2))
 open(OUT + '/Kinds.dc.html', 'w').write(kinds)
 MADE['Kinds.dc.html'] = ('Kinds · page sets and questions', W2, H2)
