@@ -13,6 +13,7 @@ Every other component reads its CSS variables and brand context. Root computes t
 - Feel: `density` compact|comfortable|spacious, `surface` solid|glass (floating navs and popovers), `shadow` none|soft|medium|deep, `border` hairline|none
 - Brand: `wordmark`, `caption`, `initials`, `logoMark` monogram|ring|spark|stack|orbit|none|custom, `logoVariant` lockup|stacked|mark|wordmark, `logoPlacement` left|center|right, `logoSrc`, `markSrc`, `markSvg`, `wordmarkCase`, `markTone` current|primary
 - Nav defaults: `frontNav` dock|island|bar|stacked|minimal, `backNav` sidebar|rail|inset|topbar|dock
+- Fields: `fieldLabel` float|above [float] (floating labels in every Input, Select and Textarea)
 - Rendering: `config` (a whole ui.config object), `page` [true] paints bg and ink, `fill` stretches to parent height, `vars` [true] writes variables (false = inherit them from tokens.css), `loadFonts` [true]
 
 **Do** set brand props once on Root, never per component. **Don't** hard-code hex values in markup: use `var(--uis-primary)`, `var(--uis-ink)` and the other `--uis-*` variables.

@@ -55,6 +55,8 @@ export interface RootProps {
   avatarStyle?: AvatarStyle;
   motion?: boolean;
   motionIntensity?: MotionIntensity;
+  /** Field labels: 'float' (default, inside the field, rising onto the top border) or 'above'. */
+  fieldLabel?: 'float' | 'above';
   // nav defaults
   frontNav?: FrontNav;
   backNav?: BackNav;
@@ -134,6 +136,7 @@ export function configFromProps(p: RootProps): UIConfigInput {
       enabled: typeof p.motion === 'boolean' ? p.motion : p.motion !== undefined ? String(p.motion) === 'true' : base.motion?.enabled,
       intensity: def(p.motionIntensity) ?? base.motion?.intensity,
     },
+    fields: { ...base.fields, label: def(p.fieldLabel) ?? base.fields?.label },
   };
 }
 

@@ -151,6 +151,11 @@ export interface MotionTiming {
   press?: string;
 }
 
+export interface FieldsConfig {
+  /** Where a field's label sits. 'float' (default): inside the field as its hint, moving up onto the top border on the start side once the field is focused or filled. 'above': a label line over the field. */
+  label: 'float' | 'above';
+}
+
 export interface UIConfig {
   /** Project name, used by exports and docs. */
   name: string;
@@ -173,6 +178,7 @@ export interface UIConfig {
   nav: NavConfig;
   avatars: AvatarConfig;
   motion: MotionConfig;
+  fields: FieldsConfig;
 }
 
 export interface ThemeDefinition {
@@ -228,6 +234,7 @@ export const DEFAULT_CONFIG: UIConfig = {
   nav: { front: 'island', back: 'sidebar' },
   avatars: { style: 'notionists-neutral' },
   motion: { enabled: true, intensity: 'subtle' },
+  fields: { label: 'float' },
 };
 
 /** Named starting points for shape. Pick one, then fine-tune roundness. */

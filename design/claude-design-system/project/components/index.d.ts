@@ -603,6 +603,8 @@ export interface RootProps {
     avatarStyle?: AvatarStyle;
     motion?: boolean;
     motionIntensity?: MotionIntensity;
+    /** Field labels: 'float' (default, inside the field, rising onto the top border) or 'above'. */
+    fieldLabel?: 'float' | 'above';
     frontNav?: FrontNav;
     backNav?: BackNav;
     /** Inject the Google Fonts stylesheet for the active fonts. Default true. */
@@ -855,6 +857,7 @@ export interface BadgeProps {
     children?: React.ReactNode;
 }
 export declare function Badge({ tone, solid, outline, dot, className, style, children }: BadgeProps): React.JSX.Element;
+export type LabelPlacement = 'float' | 'above';
 export interface FieldProps {
     label?: string;
     hint?: string;
@@ -862,9 +865,10 @@ export interface FieldProps {
     id?: string;
     className?: string;
     style?: React.CSSProperties;
-    children?: React.ReactNode;
+    children?: React.ReactNode; /** Keep the one-line hint slot even without a label line (floating labels). */
+    reserveHint?: boolean;
 }
-export declare function Field({ label, hint, error, id, className, style, children }: FieldProps): React.JSX.Element;
+export declare function Field({ label, hint, error, id, className, style, children, reserveHint }: FieldProps): React.JSX.Element;
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
     label?: string;
     hint?: string;
@@ -874,8 +878,10 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     size?: 'sm' | 'md';
     /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in atelier). */
     variant?: 'default' | 'search';
+    /** 'float' (theme default): the label is the hint inside the field and rises onto the top border when typing. 'above': a label line over the field. */
+    labelPlacement?: LabelPlacement;
 }
-export declare function Input({ label, hint, error, icon, kbd, size, variant, id, type, className, style, ...rest }: InputProps): React.JSX.Element;
+export declare function Input({ label, hint, error, icon, kbd, size, variant, labelPlacement, id, type, className, style, placeholder, ...rest }: InputProps): React.JSX.Element;
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
     label?: string;
     hint?: string;
@@ -883,13 +889,15 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
         label: string;
         value: string;
     }>;
+    labelPlacement?: LabelPlacement;
 }
-export declare function Select({ label, hint, options, id, className, style, ...rest }: SelectProps): React.JSX.Element;
+export declare function Select({ label, hint, options, labelPlacement, id, className, style, ...rest }: SelectProps): React.JSX.Element;
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     label?: string;
     hint?: string;
+    labelPlacement?: LabelPlacement;
 }
-export declare function Textarea({ label, hint, id, className, style, ...rest }: TextareaProps): React.JSX.Element;
+export declare function Textarea({ label, hint, labelPlacement, id, className, style, placeholder, ...rest }: TextareaProps): React.JSX.Element;
 export interface ToggleProps {
     label?: string;
     checked?: boolean;

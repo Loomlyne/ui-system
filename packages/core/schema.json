@@ -407,6 +407,20 @@
         "type": "number"
       },
       "description": "Spacing scale in px for token exports."
+    },
+    "fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "enum": [
+            "float",
+            "above"
+          ],
+          "default": "float",
+          "description": "float: the label sits inside the field as its hint and moves up onto the top border (start side) when the field is focused or filled. above: a label line over the field."
+        }
+      }
     }
   }
 }

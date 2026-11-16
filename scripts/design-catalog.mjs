@@ -36,6 +36,7 @@ Every other component reads its CSS variables and brand context. Root computes t
 - Feel: \`density\` compact|comfortable|spacious, \`surface\` solid|glass (floating navs and popovers), \`shadow\` none|soft|medium|deep, \`border\` hairline|none
 - Brand: \`wordmark\`, \`caption\`, \`initials\`, \`logoMark\` monogram|ring|spark|stack|orbit|none|custom, \`logoVariant\` lockup|stacked|mark|wordmark, \`logoPlacement\` left|center|right, \`logoSrc\`, \`markSrc\`, \`markSvg\`, \`wordmarkCase\`, \`markTone\` current|primary
 - Nav defaults: \`frontNav\` dock|island|bar|stacked|minimal, \`backNav\` sidebar|rail|inset|topbar|dock
+- Fields: \`fieldLabel\` float|above [float] (floating labels in every Input, Select and Textarea)
 - Rendering: \`config\` (a whole ui.config object), \`page\` [true] paints bg and ink, \`fill\` stretches to parent height, \`vars\` [true] writes variables (false = inherit them from tokens.css), \`loadFonts\` [true]
 
 **Do** set brand props once on Root, never per component. **Don't** hard-code hex values in markup: use \`var(--uis-primary)\`, \`var(--uis-ink)\` and the other \`--uis-*\` variables.`,
@@ -90,27 +91,31 @@ Use \`light\` and \`glass\` only on photography. One \`primary\` per view. Label
   },
   {
     name: 'Input', group: 'Forms', height: 130,
-    readme: `A text field with optional label, hint, error, leading icon and keyboard hint. \`type="password"\` adds a show/hide eye button on the physical right (also in RTL), 40px hit area, \`aria-pressed\`.
+    readme: `A text field with optional label, hint, error, leading icon and keyboard hint.
+
+**Floating label (default in every theme):** the \`label\` sits inside the field as its hint; when the field is focused or filled it rises onto the top border on the start side (left, right in Arabic), shrinks to 12px and cuts the border. A \`placeholder\` then shows only while focused. Select's label always sits on the border; Textarea's rests on its first line. \`labelPlacement="above"\` on a field, \`fieldLabel="above"\` on Root or \`"fields": { "label": "above" }\` in ui.config.json brings back the label line over the field. Plain CSS: \`<div class="uis-control uis-control--float"><input class="uis-input" placeholder=" " id="e"><label class="uis-flabel" for="e">Email</label></div>\`. \`type="password"\` adds a show/hide eye button on the physical right (also in RTL), 40px hit area, \`aria-pressed\`.
 
 Every labelled field keeps one line under it for the hint or error (\`--uis-hint-reserve\`, \`sizes.hint\`), so fields in a row or column line up whether or not they show a hint. Unlabelled fields reserve nothing, and \`sizes.hint: 0\` removes the slot. **Write hints and errors as one line:** a longer message wraps and pushes what is below it.
 
 Corners follow \`--uis-r-field\`. Focus draws a \`--uis-focus-field\` border and a \`--uis-focus-ring-width\` ring. \`variant="search"\` reads \`--uis-r-search\`, \`--uis-search-bg\`, \`--uis-search-border\` and \`--uis-search-border-hover\` (a grey pill in atelier). **Props:** \`label\`, \`hint\`, \`error\`, \`icon\`, \`kbd\`, \`size\` sm|md, \`variant\` default|search, plus any native input attribute.
 
-Always give a visible \`label\` in forms; a placeholder is not a label.`,
+Always give a visible \`label\` in forms; a placeholder is not a label. **Props:** also \`labelPlacement\` float|above.`,
     preview: `row(h(U.Input, { label: 'Email', placeholder: 'you@example.com', icon: 'mail', hint: 'We reply within a day.', style: { width: 280 } }), h(U.Input, { label: 'Phone', defaultValue: '+971', error: 'Enter a full number.', style: { width: 220 } }), h(U.Input, { size: 'sm', variant: 'search', icon: 'search', placeholder: 'Search', kbd: '⌘K', style: { width: 240 } }), h(U.Input, { label: 'Password', type: 'password', defaultValue: 'example-pass', style: { width: 240 } }))`,
   },
   {
     name: 'Select', group: 'Forms', height: 110,
-    readme: `A native select styled like Input, with a chevron.
+    readme: `A native select styled like Input, with a chevron. With the default floating label, its label always sits on the top border (a select always shows a value).
 
-**Props:** \`label\`, \`hint\`, \`options\` (strings or {label, value}), plus native select attributes.`,
+**Props:** \`label\`, \`hint\`, \`options\` (strings or {label, value}), \`labelPlacement\` float|above, plus native select attributes.`,
     preview: `row(h(U.Select, { label: 'Plan', options: ['Starter', 'Pro', 'Business'], style: { width: 220 } }), h(U.Select, { label: 'Language', options: ['English', 'Arabic', 'French'], style: { width: 220 } }))`,
   },
   {
     name: 'Textarea', group: 'Forms', height: 170,
     readme: `A multi-line field. Its corners cap at 20px so pill mode never produces a lozenge.
 
-**Props:** \`label\`, \`hint\`, plus native textarea attributes.`,
+With the default floating label, the label rests on the first line and rises onto the top border when typing.
+
+**Props:** \`label\`, \`hint\`, \`labelPlacement\` float|above, plus native textarea attributes.`,
     preview: `row(h(U.Textarea, { label: 'Message', placeholder: 'Tell us about the project', style: { width: 420 } }))`,
   },
   {

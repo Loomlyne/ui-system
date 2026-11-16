@@ -103,3 +103,10 @@ People without a photo get a DiceBear avatar seeded by their name (CC0). Pass `s
 | `timing` | `{ fast, base, slow }` ms, `easeOut`, `easeInOut`, `press` | 160 / 280 / 500, engine curves, `translateY(1px)` |
 
 Drives `Reveal` and `CountUp` (anime.js). Visitors with reduced motion always see the final state.
+
+## fields
+| Key | Values | Default |
+| --- | --- | --- |
+| `label` | `float`, `above` | `float` |
+
+`float`: every labelled Input, Select and Textarea shows its label inside the field as the hint; on focus or once filled it rises onto the top border at the start side (left; right in Arabic) and shrinks. `above`: the label line over the field. One field can differ with `labelPlacement`; Root takes `fieldLabel`. Works the same in every theme.

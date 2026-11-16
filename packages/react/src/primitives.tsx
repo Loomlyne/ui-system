@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from './context';
+import { cx, useUIS } from './context';
 import { Icon, type IconName } from './Icon';
 
 type Anchorish = { href?: string; onClick?: React.MouseEventHandler; target?: string };
@@ -74,15 +74,26 @@ const useFieldId = (id?: string) => {
   return id ?? `uis-f${auto.replace(/:/g, '')}`;
 };
 
-export interface FieldProps { label?: string; hint?: string; error?: string; id?: string; className?: string; style?: React.CSSProperties; children?: React.ReactNode }
-export function Field({ label, hint, error, id, className, style, children }: FieldProps) {
+export type LabelPlacement = 'float' | 'above';
+/** The label placement for a field: its own prop, else the theme's fields.label (float by default). */
+const useLabelPlacement = (own?: LabelPlacement): LabelPlacement => {
+  const { tokens } = useUIS();
+  return own ?? tokens.config.fields?.label ?? 'float';
+};
+/** The floating label: sits inside the field as its hint and rises onto the top border (start side) once the field is focused or filled. */
+const FloatLabel = ({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) => (
+  <label className="uis-flabel" htmlFor={htmlFor}><span>{children}</span></label>
+);
+
+export interface FieldProps { label?: string; hint?: string; error?: string; id?: string; className?: string; style?: React.CSSProperties; children?: React.ReactNode; /** Keep the one-line hint slot even without a label line (floating labels). */ reserveHint?: boolean }
+export function Field({ label, hint, error, id, className, style, children, reserveHint }: FieldProps) {
   return (
     <div className={cx('uis-field', className)} style={style}>
       {label ? <label className="uis-label" htmlFor={id}>{label}</label> : null}
       {children}
       {/* A labelled field keeps one line for its hint or error (--uis-hint-reserve), so a hint never moves the fields around it.
           Unlabelled fields reserve nothing; sizes.hint = 0 hides the empty slot (--uis-hint-slot). */}
-      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : label ? <span className="uis-hint" aria-hidden /> : null}
+      {error ? <span className="uis-hint uis-hint--error">{error}</span> : hint ? <span className="uis-hint">{hint}</span> : label || reserveHint ? <span className="uis-hint" aria-hidden /> : null}
     </div>
   );
 }
@@ -96,16 +107,22 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   size?: 'sm' | 'md';
   /** 'search' reads --uis-r-search, --uis-search-bg and --uis-search-border (a grey pill in atelier). */
   variant?: 'default' | 'search';
+  /** 'float' (theme default): the label is the hint inside the field and rises onto the top border when typing. 'above': a label line over the field. */
+  labelPlacement?: LabelPlacement;
 }
-export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', id, type, className, style, ...rest }: InputProps) {
+export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'default', labelPlacement, id, type, className, style, placeholder, ...rest }: InputProps) {
   const fid = useFieldId(id);
+  const placement = useLabelPlacement(labelPlacement);
+  const float = !!label && placement === 'float';
   // Password fields always get a show/hide eye on the physical right, in RTL too.
   const isPassword = type === 'password';
   const [shown, setShown] = React.useState(false);
   const control = (
-    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd', isPassword && 'uis-control--reveal')}>
+    <div className={cx('uis-control', icon && 'uis-control--icon', kbd && 'uis-control--kbd', isPassword && 'uis-control--reveal', float && 'uis-control--float', float && size === 'sm' && 'uis-control--float-sm')}>
       {icon ? <Icon name={icon} /> : null}
-      <input id={fid} type={isPassword && shown ? 'text' : type} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} {...rest} />
+      {/* A floating label needs a placeholder (a space if none) so :placeholder-shown tells empty from filled. */}
+      <input id={fid} type={isPassword && shown ? 'text' : type} className={cx('uis-input', size === 'sm' && 'uis-input--sm', variant === 'search' && 'uis-input--search', error && 'uis-input--invalid')} aria-invalid={error ? true : undefined} placeholder={float ? placeholder || ' ' : placeholder} {...rest} />
+      {float ? <FloatLabel htmlFor={fid}>{label}</FloatLabel> : null}
       {kbd ? <span className="uis-kbd">{kbd}</span> : null}
       {isPassword ? (
         <button type="button" className="uis-reveal" aria-label={shown ? 'Hide password' : 'Show password'} aria-pressed={shown} aria-controls={fid} disabled={rest.disabled} onClick={() => setShown((v) => !v)}>
@@ -115,15 +132,18 @@ export function Input({ label, hint, error, icon, kbd, size = 'md', variant = 'd
     </div>
   );
   if (!label && !hint && !error) return <div className={className} style={style}>{control}</div>;
-  return <Field label={label} hint={hint} error={error} id={fid} className={className} style={style}>{control}</Field>;
+  return <Field label={float ? undefined : label} reserveHint={float} hint={hint} error={error} id={fid} className={className} style={style}>{control}</Field>;
 }
 
-export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> { label?: string; hint?: string; options: Array<string | { label: string; value: string }> }
-export function Select({ label, hint, options, id, className, style, ...rest }: SelectProps) {
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> { label?: string; hint?: string; options: Array<string | { label: string; value: string }>; labelPlacement?: LabelPlacement }
+export function Select({ label, hint, options, labelPlacement, id, className, style, ...rest }: SelectProps) {
   const fid = useFieldId(id);
+  // A select always shows a value, so its floating label always sits on the border.
+  const placement = useLabelPlacement(labelPlacement);
+  const float = !!label && placement === 'float';
   return (
-    <Field label={label} hint={hint} id={fid} className={className} style={style}>
-      <div className="uis-control">
+    <Field label={float ? undefined : label} reserveHint={float} hint={hint} id={fid} className={className} style={style}>
+      <div className={cx('uis-control', float && 'uis-control--float uis-control--filled')}>
         <select id={fid} className="uis-select" {...rest}>
           {options.map((o) => {
             const opt = typeof o === 'string' ? { label: o, value: o } : o;
@@ -131,17 +151,25 @@ export function Select({ label, hint, options, id, className, style, ...rest }: 
           })}
         </select>
         <Icon name="chevron-down" />
+        {float ? <FloatLabel htmlFor={fid}>{label}</FloatLabel> : null}
       </div>
     </Field>
   );
 }
 
-export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { label?: string; hint?: string }
-export function Textarea({ label, hint, id, className, style, ...rest }: TextareaProps) {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { label?: string; hint?: string; labelPlacement?: LabelPlacement }
+export function Textarea({ label, hint, labelPlacement, id, className, style, placeholder, ...rest }: TextareaProps) {
   const fid = useFieldId(id);
+  const placement = useLabelPlacement(labelPlacement);
+  const float = !!label && placement === 'float';
   return (
-    <Field label={label} hint={hint} id={fid} className={className} style={style}>
-      <textarea id={fid} className="uis-textarea" {...rest} />
+    <Field label={float ? undefined : label} reserveHint={float} hint={hint} id={fid} className={className} style={style}>
+      {float ? (
+        <div className="uis-control uis-control--float uis-control--area">
+          <textarea id={fid} className="uis-textarea" placeholder={placeholder || ' '} {...rest} />
+          <FloatLabel htmlFor={fid}>{label}</FloatLabel>
+        </div>
+      ) : <textarea id={fid} className="uis-textarea" placeholder={placeholder} {...rest} />}
     </Field>
   );
 }
