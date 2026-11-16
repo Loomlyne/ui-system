@@ -1,7 +1,7 @@
 /**
  * ui-system CLI
  *
- *   ui-system init [--theme ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]
+ *   ui-system init [--theme neutral|ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]
  *   ui-system build [ui.config.json] [--out ui-theme] [--system]
  *   ui-system check [dir] [--allow path,path]
  *
@@ -73,6 +73,7 @@ function init() {
     if (radius) Object.assign(config.radius, RADIUS_PRESETS[radius]);
     const name = flag('name');
     if (name) { config.name = name; config.brand.wordmark = name; }
+    out.theme = 'neutral';
     Object.assign(out, config);
   }
   writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
@@ -168,7 +169,7 @@ if (cmd === 'init') init();
 else if (cmd === 'build') build();
 else if (cmd === 'check') check();
 else {
-  console.log('ui-system init [--theme ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]');
+  console.log('ui-system init [--theme neutral|ledger|atelier] [--kind shop|app|website|booking|portfolio] [--radius sharp|crisp|soft|rounded|round] [--name "Client"]');
   console.log('ui-system build [ui.config.json] [--out ui-theme] [--system]');
   console.log('ui-system check [dir] [--allow path,path]');
 }

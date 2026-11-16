@@ -12,11 +12,14 @@ export type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none
 export type Placement = 'left' | 'center' | 'right';
 export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
 /**
- * Themes are ways of designing, not products (see themes.ts): `ledger` is round and clean,
- * `atelier` is sharp and editorial. Opt-in: the defaults never change.
- * Themes were called presets until 2026-11-16; every old name below still works.
+ * Themes are ways of designing, not products (see themes.ts). Every project has one:
+ * `neutral` (the default: no opinions, your brand on top), `ledger` (round and clean),
+ * `atelier` (sharp and editorial). Themes were called presets until 2026-11-16; every old
+ * name below still works.
  */
-export type ThemeId = 'atelier' | 'ledger';
+export type ThemeId = 'neutral' | 'atelier' | 'ledger';
+/** The theme a config gets when it names none. */
+export const DEFAULT_THEME: ThemeId = 'neutral';
 /** Old theme names that still resolve. `retail-editorial` was renamed `atelier` on 2026-11-09. */
 export type LegacyThemeId = 'retail-editorial';
 export const THEME_ALIASES: Record<LegacyThemeId, ThemeId> = { 'retail-editorial': 'atelier' };
@@ -151,7 +154,7 @@ export interface MotionTiming {
 export interface UIConfig {
   /** Project name, used by exports and docs. */
   name: string;
-  /** Start from a theme (a way of designing: 'ledger' or 'atelier'); every key below still wins over it. Old names resolve through THEME_ALIASES. */
+  /** The theme (a way of designing: 'neutral' default, 'ledger', 'atelier'); every key below still wins over it. Old names resolve through THEME_ALIASES. */
   theme?: ThemeId | LegacyThemeId;
   /** @deprecated Use `theme`. Still read when `theme` is not set. */
   preset?: ThemeId | LegacyThemeId;
@@ -250,7 +253,7 @@ function merge<T>(base: T, patch: unknown): T {
 
 /** Fill a partial config with defaults, then the named theme, then the input. Safe to call on user JSON. */
 export function resolveConfig(input?: UIConfigInput): UIConfig {
-  const id = themeId(input?.theme ?? input?.preset);
+  const id = themeId(input?.theme ?? input?.preset) ?? DEFAULT_THEME;
   const out = merge(merge(DEFAULT_CONFIG, id ? THEMES[id].config : undefined), input ?? {});
   // A font preset the input picks wins over the theme's own display/body fonts (fonts the input names still win).
   const t = input?.type;
@@ -259,8 +262,7 @@ export function resolveConfig(input?: UIConfigInput): UIConfig {
     if (t.body === undefined) delete out.type.body;
   }
   delete out.preset;
-  if (id) out.theme = id;
-  else delete out.theme;
+  out.theme = id;
   return out;
 }
 

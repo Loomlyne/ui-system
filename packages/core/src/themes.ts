@@ -10,6 +10,21 @@ import type { ThemeDefinition, ThemeId } from './config';
  * theme has one; anything it leaves out is derived by the engine.
  */
 export const THEMES: Record<ThemeId, ThemeDefinition> = {
+  neutral: {
+    id: 'neutral',
+    label: 'Neutral',
+    note: 'The default theme, with no opinions of its own. Ink primary, orange accent, warm greys, roundness 60, Inter Tight over Inter, comfortable density. Your brand seeds, shape and type go on top and decide the look.',
+    seenIn: [],
+    rules: [
+      'Every value comes from the seeds and dials you set: primary, accent, neutral, roundness, font preset, density.',
+      'Pick it when no direction is chosen yet; switch to ledger or atelier once one is.',
+      'Text keeps 4.5:1 contrast in light and dark, whatever seeds you pick.',
+    ],
+    never: ['No hard-coded colours or radii: change the seeds instead.', 'No touch target under 44px.'],
+    questions: ['What are the brand colours (primary, accent)?', 'Sharp or round corners?', 'Which font preset fits the brand?', 'Light, dark, or both?'],
+    source: 'DEFAULT_CONFIG in packages/core/src/config.ts. Named as a theme on 2026-11-16 (owner).',
+    config: { theme: 'neutral' },
+  },
   atelier: {
     id: 'atelier',
     label: 'Atelier',

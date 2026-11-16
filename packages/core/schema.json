@@ -343,14 +343,17 @@
     },
     "theme": {
       "enum": [
+        "neutral",
         "ledger",
         "atelier",
         "retail-editorial"
       ],
-      "description": "Theme: a way of designing, applied between the defaults and your keys. ledger = round and clean, atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/themes.md."
+      "default": "neutral",
+      "description": "Theme: a way of designing, applied between the defaults and your keys. Every project has one. neutral (default) = no opinions, your brand on top; ledger = round and clean; atelier = sharp and editorial. retail-editorial is the old name of atelier. See docs/themes.md."
     },
     "preset": {
       "enum": [
+        "neutral",
         "ledger",
         "atelier",
         "retail-editorial"

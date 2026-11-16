@@ -422,9 +422,9 @@ fam(id='NavBack', title='App navigation parts', page='Nav · App', what='Sidebar
 
 
 # ------------------------------------------------------------------ preset and product rows for the theme boards
-ROWS = [dict(key='Default', tag='no theme · engine defaults', config={}, vars={}),
-        dict(key='ledger', tag='theme · round and clean', config={'preset': 'ledger'}, vars={}),
-        dict(key='atelier', tag='theme · sharp and editorial', config={'preset': 'atelier'}, vars={})]
+ROWS = [dict(key='neutral', tag='theme · the default, no opinions', config={'theme': 'neutral'}, vars={}),
+        dict(key='ledger', tag='theme · round and clean', config={'theme': 'ledger'}, vars={}),
+        dict(key='atelier', tag='theme · sharp and editorial', config={'theme': 'atelier'}, vars={})]
 SKIN_FROM_PRESET = {}
 for ps in PRESET_SHEETS:
     for v in ps['variants']:
@@ -483,8 +483,8 @@ COMMON = {
 }
 # Tweaks (owner, 2026-11-10: simpler and grouped). One Style pick (engine preset or product skin); every other Tweak
 # starts at "style" and changes the look only when you pick a value, so saved panel defaults never fight the style.
-STYLE_OPTS = ['none', 'ledger', 'atelier'] + SKIN_ORDER
-TWEAKS = {"style": {"editor": "enum", "options": STYLE_OPTS, "default": "none", "section": "1 · Style"},
+STYLE_OPTS = ['neutral', 'ledger', 'atelier'] + SKIN_ORDER
+TWEAKS = {"style": {"editor": "enum", "options": STYLE_OPTS, "default": "neutral", "section": "1 · Style"},
           "mode": {"editor": "enum", "options": ["style", "light", "dark"], "default": "style", "section": "1 · Style"},
           "colors": {"editor": "enum", "options": ["style", "custom"], "default": "style", "section": "2 · Colour"},
           "primary": {"editor": "color", "default": "#1C1B19", "section": "2 · Colour", "options": ["#1C1B19", "#2F5D50", "#2F6BD8", "#7A2E3A"]},
@@ -505,9 +505,9 @@ THEME_JS = ("""  theme() {
     const p = this.props, U = window.UIS || {};
     const SK = """ + js_inline(SKINS) + """;
     const SH = """ + js_inline(SHAPES) + """;
-    const st = p.style || 'none';
+    const st = p.style || 'neutral';
     const S = SK[st] || null;
-    const P = !S && st !== 'none' ? st : null;
+    const P = !S ? (st === 'none' ? 'neutral' : st) : null;
     const on = function (v) { return v !== undefined && v !== null && v !== '' && v !== 'style'; };
     // Style first (a product skin config, or an engine preset), then every Tweak you picked on top of it.
     const c = JSON.parse(JSON.stringify(S ? S.config : (P ? { preset: P } : {})));

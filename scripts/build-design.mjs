@@ -83,7 +83,7 @@ type Placement = 'left' | 'center' | 'right';
 type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
-type ThemeId = 'atelier' | 'ledger';
+type ThemeId = 'neutral' | 'atelier' | 'ledger';
 type LegacyThemeId = 'retail-editorial';
 type KindId = 'shop' | 'app' | 'website' | 'booking' | 'portfolio';
 type Density = 'compact' | 'comfortable' | 'spacious';
@@ -202,7 +202,7 @@ write('README.md', `UI System is a brand-agnostic design system. It ships struct
 | part | what it gives you | where |
 |---|---|---|
 | Engine | Three color seeds, a roundness dial, a font preset and a density become every \`--uis-*\` variable, light and dark, contrast-checked at 4.5:1. | Root props, \`ui.config.json\` |
-| Themes | Ways of designing on top of the engine: \`ledger\` (round and clean) and \`atelier\` (sharp and editorial). Not tied to a product. | Root \`theme\` |
+| Themes | Ways of designing on top of the engine: \`neutral\` (the default, no opinions), \`ledger\` (round and clean) and \`atelier\` (sharp and editorial). Not tied to a product. | Root \`theme\` |
 | Kinds | What you build, picked separately: shop, app, website, booking, portfolio. Each names its pages and questions; sets no values. | Root \`kind\` |
 | ${CATALOG.length} components | Buttons, forms, feedback, data, overlays, 6 website navs, 5 app shells, motion. | Components in this design system |
 | Icons | Hugeicons free stroke-rounded set (MIT), ${ICON_COUNT} named icons. | \`UIS.Icon\`, Assets › Icons |
@@ -216,7 +216,7 @@ The working canvas is **UI System · Canvas**: Start here (the theme, kind and b
    \`<x-import component-from-global-scope="UIS.Root" primary="#…" accent="#…" roundness="{{60}}" pill="{{false}}" font-preset="modern" wordmark="Client" logo-mark="monogram" logo-placement="left">…</x-import>\`
 2. Build screens from the real components (\`UIS.NavIsland\`, \`UIS.AppShell\`, \`UIS.Button\`…). Style your own markup with the \`--uis-*\` variables Root writes (\`var(--uis-primary)\`, \`var(--uis-ink-2)\`, \`var(--uis-r-card)\`), never raw hex.
 3. Load fonts with one Google Fonts link in \`<helmet>\`: \`${core.allPresetFontsUrl()}\` (every font preset), or the single URL \`buildTokens(config).fontsUrl\` returns.
-4. Before any design, ask the theme questions (corners square or round, headings condensed caps or calm sans, photos or numbers lead) and the kind questions (see Kinds). Then add \`theme="ledger"\` or \`theme="atelier"\` and \`kind="…"\` on Root; any other prop still wins, and the brand goes on top.
+4. Before any design, ask the theme questions (corners square or round, headings condensed caps or calm sans, photos or numbers lead) and the kind questions (see Kinds). Then add \`theme="neutral"\`, \`theme="ledger"\` or \`theme="atelier"\` and \`kind="…"\` on Root; any other prop still wins, and the brand goes on top.
 5. When the brand is unknown, keep the neutral defaults and write placeholders like [BRAND], [AMOUNT], [DOMAIN]. Never invent figures, testimonials or client names.
 
 The same config drives code: \`ui.config.json\` in the repo builds theme.css, a Tailwind v4 theme and this tokens.json (\`ui-system build\`).
@@ -265,7 +265,7 @@ Styles: \`display-2xl\` 80, \`display-xl\` 64, \`display-l\` 48, \`display-m\` 3
 
 ## Themes
 
-A theme is a way of designing, not a product (color pins, shape, type, sizes, shadows, motion, plus rules and questions). Products appear only as "seen in" examples and may override anything. \`retail-editorial\` is the old name of \`atelier\` and still works. Themes were called presets until 2026-11-16; \`preset\` still works everywhere \`theme\` does. A project opts in with \`theme\` on Root or \`"theme"\` in ui.config.json; every other prop still wins, and the defaults never change. \`color.pin\` holds exact light-mode values and \`color.pinDark\` exact dark-mode values; roles a theme leaves unpinned are derived. A new seed drops the theme's pins for that seed's roles, so the contrast gate still holds.
+A theme is a way of designing, not a product (color pins, shape, type, sizes, shadows, motion, plus rules and questions). Products appear only as "seen in" examples and may override anything. \`retail-editorial\` is the old name of \`atelier\` and still works. Themes were called presets until 2026-11-16; \`preset\` still works everywhere \`theme\` does. Every project has a theme: \`neutral\` (the default, no opinions, your brand on top) unless it sets \`theme\` on Root or \`"theme"\` in ui.config.json; every other prop still wins. \`color.pin\` holds exact light-mode values and \`color.pinDark\` exact dark-mode values; roles a theme leaves unpinned are derived. A new seed drops the theme's pins for that seed's roles, so the contrast gate still holds.
 
 | theme | look | seen in | ask first |
 |---|---|---|---|

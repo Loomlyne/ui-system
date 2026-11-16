@@ -2,10 +2,11 @@
 
 Themes were called presets until 2026-11-16. The old names still work: `"preset"` in ui.config.json, `<Root preset>`, `--preset`, `PRESETS`, `presetId` and `buildTheme` (now `buildTokens`, which returns `Tokens`).
 
-A theme is a way of designing, not a product: colors, shape, type, control sizes, spacing, shadows and motion, plus the rules and questions that come with them. A project opts in; the defaults never change.
+A theme is a way of designing, not a product: colors, shape, type, control sizes, spacing, shadows and motion, plus the rules and questions that come with them. Every project has a theme: `neutral` when it names none, or `ledger` / `atelier` when it picks a direction. No theme means not using UI System (owner, 2026-11-16).
 
 | theme | look | seen in |
 | --- | --- | --- |
+| `neutral` | The default, no opinions: ink primary, orange accent, warm greys, roundness 60, Inter Tight over Inter. Your brand seeds decide the look. | (every project until it picks one) |
 | `ledger` | Round and clean: pill controls, soft 22px cards, Poppins, no shadows, one gold action per page. | Invios, Clickit |
 | `atelier` | Sharp and editorial: square 2px controls, condensed caps headings, 52px dark buttons, photos carry the colour. | Senorita, ALMAR |
 

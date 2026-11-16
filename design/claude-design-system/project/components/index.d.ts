@@ -4,7 +4,7 @@ type Placement = 'left' | 'center' | 'right';
 type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
 type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
-type ThemeId = 'atelier' | 'ledger';
+type ThemeId = 'neutral' | 'atelier' | 'ledger';
 type LegacyThemeId = 'retail-editorial';
 type KindId = 'shop' | 'app' | 'website' | 'booking' | 'portfolio';
 type Density = 'compact' | 'comfortable' | 'spacious';
@@ -567,7 +567,7 @@ export declare function CountUp({ to, from, decimals, prefix, suffix, duration, 
  */
 export interface RootProps {
     config?: UIConfigInput;
-    /** Theme, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+    /** Theme, a way of designing ('neutral' default, 'ledger' round, 'atelier' sharp). Other props still win over it. */
     theme?: ThemeId | LegacyThemeId;
     /** @deprecated Use `theme`. */
     preset?: ThemeId | LegacyThemeId;

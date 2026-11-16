@@ -13,7 +13,7 @@ import { UISContext, cx } from './context';
  */
 export interface RootProps {
   config?: UIConfigInput;
-  /** Theme, a way of designing ('ledger' round, 'atelier' sharp). Other props still win over it. */
+  /** Theme, a way of designing ('neutral' default, 'ledger' round, 'atelier' sharp). Other props still win over it. */
   theme?: ThemeId | LegacyThemeId;
   /** @deprecated Use `theme`. */
   preset?: ThemeId | LegacyThemeId;

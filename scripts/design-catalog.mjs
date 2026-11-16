@@ -28,7 +28,7 @@ export const CATALOG = [
 Every other component reads its CSS variables and brand context. Root computes the whole theme (color scales, contrast-safe text colors, radius roles, fonts, shadows) from a handful of inputs, so one change restyles everything.
 
 **Props (all optional, defaults in brackets)**
-- Theme: \`theme\` ledger|atelier (a way of designing; every other prop still wins. Old names: \`preset\` for the prop, \`retail-editorial\` for atelier)
+- Theme: \`theme\` neutral|ledger|atelier [neutral] (a way of designing; every other prop still wins. Old names: \`preset\` for the prop, \`retail-editorial\` for atelier)
 - Kind: \`kind\` shop|app|website|booking|portfolio (what you build; sets no values)
 - Color: \`primary\` [#1C1B19], \`accent\` [#E0562B], \`neutral\` [#77736B, or 'auto'], \`mode\` light|dark [light]
 - Shape: \`roundness\` 0–100 [60], \`pill\` boolean [false]
