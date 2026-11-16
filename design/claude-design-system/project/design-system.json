@@ -829,8 +829,8 @@
   },
   "lastChange": {
     "by": "Koussay Zayani",
-    "at": "2026-11-16T19:23:29.018Z",
+    "at": "2026-11-16T19:31:17.559Z",
     "via": "Claude Code",
-    "note": "Floating labels, text only (no background), in every theme"
+    "note": "Floating label sits on the top border line, text only (no background), every theme"
   }
 }

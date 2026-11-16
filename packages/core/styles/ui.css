@@ -132,10 +132,10 @@
 .uis-textarea { height: auto; min-height: 104px; padding: 12px 16px; line-height: 1.5; resize: vertical; border-radius: min(var(--uis-r-field), 20px); }
 
 /* Floating label (fields.label "float", the default in every theme). The label is the hint inside the
-   field; on focus or once filled it rises to sit on the top border at the start side and shrinks.
+   field; on focus or once filled it moves onto the top border line at the start side and shrinks.
    Text only: no background patch, so it sits on any page or card. Everything reads theme variables,
    so neutral, ledger and atelier all follow. */
-.uis-control--float { margin-top: 18px; --_fl-bg: var(--uis-surface); --_fl-x: clamp(12px, calc(var(--uis-r-field) / 2), 20px); --_fl-rest-x: 16px; --_fl-size: 15px; }
+.uis-control--float { margin-top: 8px; --_fl-bg: var(--uis-surface); --_fl-x: clamp(12px, calc(var(--uis-r-field) / 2), 20px); --_fl-rest-x: 16px; --_fl-size: 15px; }
 .uis-control--float.uis-control--icon { --_fl-rest-x: 42px; }
 .uis-control--float-sm { --_fl-size: 14px; }
 .uis-flabel {
@@ -151,7 +151,7 @@
 .uis-control--float > :is(.uis-input, .uis-textarea):not(:focus)::placeholder { color: transparent; }
 .uis-control--float > :is(.uis-input, .uis-textarea):is(:focus, :not(:placeholder-shown), :autofill) ~ .uis-flabel,
 .uis-control--filled > .uis-flabel {
-  top: 0; translate: 0 calc(-100% - 3px); inset-inline-start: calc(var(--_fl-x) - 4px); max-width: calc(100% - 24px);
+  top: 0; translate: 0 -50%; inset-inline-start: calc(var(--_fl-x) - 4px); max-width: calc(100% - 24px);
   font-size: 12px; font-weight: 600; color: var(--uis-ink-2);
 }
 .uis-control--float > :is(.uis-input, .uis-select, .uis-textarea):focus ~ .uis-flabel { color: var(--uis-ink); }
