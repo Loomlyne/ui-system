@@ -337,19 +337,18 @@
 .uis-textarea { height: auto; min-height: 104px; padding: 12px 16px; line-height: 1.5; resize: vertical; border-radius: min(var(--uis-r-field), 20px); }
 
 /* Floating label (fields.label "float", the default in every theme). The label is the hint inside the
-   field; on focus or once filled it rises onto the top border at the start side and shrinks. Its bottom
-   half is painted in the field colour so it cuts the border and the focus ring; the top half stays clear,
-   so it sits on any page or card. Everything reads theme variables, so neutral, ledger and atelier all follow. */
-.uis-control--float { margin-top: 8px; --_fl-bg: var(--uis-surface); --_fl-x: clamp(12px, calc(var(--uis-r-field) / 2), 20px); --_fl-rest-x: 16px; --_fl-size: 15px; }
+   field; on focus or once filled it rises to sit on the top border at the start side and shrinks.
+   Text only: no background patch, so it sits on any page or card. Everything reads theme variables,
+   so neutral, ledger and atelier all follow. */
+.uis-control--float { margin-top: 18px; --_fl-bg: var(--uis-surface); --_fl-x: clamp(12px, calc(var(--uis-r-field) / 2), 20px); --_fl-rest-x: 16px; --_fl-size: 15px; }
 .uis-control--float.uis-control--icon { --_fl-rest-x: 42px; }
-.uis-control--float:has(.uis-input--search) { --_fl-bg: var(--uis-search-bg); }
 .uis-control--float-sm { --_fl-size: 14px; }
 .uis-flabel {
   position: absolute; inset-inline-start: calc(var(--_fl-rest-x) - 4px); top: 50%; translate: 0 -50%;
   max-width: calc(100% - var(--_fl-rest-x) - 16px); padding: 0 4px; pointer-events: none;
   font: 400 var(--_fl-size)/1.2 var(--uis-font-body); color: var(--uis-ink-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  background: linear-gradient(to bottom, transparent calc(50% - var(--uis-focus-ring-width, 2px) - 1px), var(--_fl-bg) calc(50% - var(--uis-focus-ring-width, 2px) - 1px));
+  background: none;
   transition: top var(--uis-dur-fast) ease, font-size var(--uis-dur-fast) ease, inset-inline-start var(--uis-dur-fast) ease, color var(--uis-dur-fast) ease, max-width var(--uis-dur-fast) ease;
 }
 .uis-control--reveal > .uis-flabel, .uis-control--kbd > .uis-flabel { max-width: calc(100% - var(--_fl-rest-x) - 56px); }
@@ -357,7 +356,7 @@
 .uis-control--float > :is(.uis-input, .uis-textarea):not(:focus)::placeholder { color: transparent; }
 .uis-control--float > :is(.uis-input, .uis-textarea):is(:focus, :not(:placeholder-shown), :autofill) ~ .uis-flabel,
 .uis-control--filled > .uis-flabel {
-  top: 0; translate: 0 -50%; inset-inline-start: calc(var(--_fl-x) - 4px); max-width: calc(100% - 24px);
+  top: 0; translate: 0 calc(-100% - 3px); inset-inline-start: calc(var(--_fl-x) - 4px); max-width: calc(100% - 24px);
   font-size: 12px; font-weight: 600; color: var(--uis-ink-2);
 }
 .uis-control--float > :is(.uis-input, .uis-select, .uis-textarea):focus ~ .uis-flabel { color: var(--uis-ink); }

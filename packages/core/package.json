@@ -1,6 +1,6 @@
 {
   "name": "@loomlyne/ui-system-core",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "UI System engine: config, OKLCH color scales, radius engine, fonts, CSS/Tailwind/Claude Design exports.",
   "license": "MIT",
   "type": "module",
