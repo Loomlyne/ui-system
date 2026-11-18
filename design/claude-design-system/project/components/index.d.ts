@@ -482,8 +482,10 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name'> {
     size?: number;
     strokeWidth?: number;
     label?: string;
+    /** A direction icon (chevron, arrow) that points along the reading direction: it mirrors in right-to-left. Neutral icons (moon, sun, close, search) leave it off. Renders data-dir. */
+    directional?: boolean;
 }
-export declare function Icon({ name, size, strokeWidth, label, className, style, ...rest }: IconProps): React.JSX.Element;
+export declare function Icon({ name, size, strokeWidth, label, directional, className, style, ...rest }: IconProps): React.JSX.Element;
 export {};
 
 // Logo.d.ts
@@ -989,10 +991,11 @@ export interface StatProps {
     style?: React.CSSProperties;
 }
 export declare function Stat({ label, value, delta, trend, icon, className, style }: StatProps): React.JSX.Element;
+/** align 'left' / 'right' is logical (start / end), so a right-aligned number column stays at the end in right-to-left. */
 export interface TableColumn {
     key: string;
     label: string;
-    align?: 'left' | 'right' | 'center';
+    align?: 'left' | 'right' | 'center' | 'start' | 'end';
     width?: string | number;
 }
 /** A cell is any node, or data: { tone, label } renders a status Badge, { strong } bold text. */
@@ -1041,8 +1044,8 @@ export declare function Scrim({ onClick }: {
 }): React.JSX.Element;
 export interface DrawerProps {
     title?: string;
-    open?: boolean;
-    side?: 'right' | 'left';
+    open?: boolean; /** 'end' (default) or 'start': the side it opens from, mirrored in right-to-left. 'right' and 'left' are the older names for end and start. */
+    side?: 'end' | 'start' | 'right' | 'left';
     floating?: boolean;
     footer?: React.ReactNode;
     onClose?: () => void;

@@ -119,12 +119,12 @@ export function AppTopbar({ links, sections, actions, user, search = true, logoP
     <div className="uis-topbar__end">
       {search ? <Input className="uis-topbar__search" size="sm" variant="search" icon="search" placeholder={typeof search === 'string' ? search : 'Search'} kbd="⌘K" aria-label="Search" /> : null}
       {arr(actions).map((a, i) => <IconButton key={i} icon={a.icon} label={a.label} count={a.count} dot={a.dot} href={a.href} />)}
-      {user ? <Avatar size="sm" name={user.name} initials={user.initials} src={user.src} style={{ marginLeft: 6 }} /> : null}
+      {user ? <Avatar size="sm" name={user.name} initials={user.initials} src={user.src} style={{ marginInlineStart: 6 }} /> : null}
     </div>
   );
   return (
     <header className={cx('uis-topbar', className)} style={style} data-placement={placement === 'center' ? 'center' : undefined}>
-      {placement === 'center' ? <>{nav}{logo}{end}</> : placement === 'right' ? <>{nav}{end}<span style={{ marginLeft: 12 }}>{logo}</span></> : <>{logo}<span className="uis-navsep" />{nav}{end}</>}
+      {placement === 'center' ? <>{nav}{logo}{end}</> : placement === 'right' ? <>{nav}{end}<span style={{ marginInlineStart: 12 }}>{logo}</span></> : <>{logo}<span className="uis-navsep" />{nav}{end}</>}
     </header>
   );
 }
@@ -212,7 +212,7 @@ export function PageHeader({ title, description, crumbs, actions, children, clas
       <div>
         {crumbs && crumbs.length ? (
           <div className="uis-crumbs">
-            {crumbs.map((c, i) => <React.Fragment key={i}>{i > 0 ? <Icon name="chevron-right" /> : null}<a href="#">{c}</a></React.Fragment>)}
+            {crumbs.map((c, i) => <React.Fragment key={i}>{i > 0 ? <Icon name="chevron-right" directional /> : null}<a href="#">{c}</a></React.Fragment>)}
           </div>
         ) : null}
         <h1 className="uis-pagehead__title">{title}</h1>

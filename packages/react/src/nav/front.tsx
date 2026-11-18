@@ -78,10 +78,11 @@ export function NavIsland({ links, actions, cta, logoPlacement, logoVariant, ton
   const L = arr(links), Ac = arr(actions);
   const logo = <Logo variant={logoVariant === 'stacked' ? 'lockup' : logoVariant} size="sm" href="#" />;
   const end = <><Actions actions={Ac} /><Cta cta={cta} /></>;
-  const pad = placement === 'left' ? '6px 6px 6px 18px' : placement === 'right' ? '6px 18px 6px 6px' : '6px';
+  // Extra room on the logo's side: placement is logical (left = start, right = end), so it mirrors in right-to-left.
+  const pad: React.CSSProperties = { paddingBlock: 6, paddingInline: placement === 'left' ? '18px 6px' : placement === 'right' ? '6px 18px' : 6 };
   return (
     <div className={cx('uis-islandlayer', className)} style={style} data-fixed={fixed || undefined} data-tone={tone === 'image' ? 'image' : undefined}>
-      <nav className="uis-float uis-island" aria-label="Main" style={{ padding: pad, width: width ? `min(100%, ${width}px)` : undefined }}>
+      <nav className="uis-float uis-island" aria-label="Main" style={{ ...pad, width: width ? `min(100%, ${width}px)` : undefined }}>
         {placement === 'left' && <><div>{logo}</div><div><Links links={L} /></div><div>{end}</div></>}
         {placement === 'center' && <><div><Links links={L} /></div><div>{logo}</div><div>{end}</div></>}
         {placement === 'right' && <><div>{end}</div><div><Links links={L} /></div><div>{logo}</div></>}
@@ -174,7 +175,7 @@ export function NavMinimal({ links, cta, logoPlacement, logoVariant, tone, open,
   const barTone = !isOpen || menuStyle === 'drawer' ? tone : menuStyle === 'split' ? 'image' : undefined;
   const index = (cls: string) => (
     <nav className={cls} aria-label="Main">
-      {L.map((l, i) => <A key={i} link={l} className=""><span>{String(i + 1).padStart(2, '0')}</span>{l.label}<Icon name="arrow-up-right" /></A>)}
+      {L.map((l, i) => <A key={i} link={l} className=""><span>{String(i + 1).padStart(2, '0')}</span>{l.label}<Icon name="arrow-up-right" directional /></A>)}
     </nav>
   );
 
@@ -277,7 +278,7 @@ export function NavMobile({ variant = 'sheet', links, actions, cta, logoPlacemen
           <Scrim onClick={() => setOpen(false)} />
           <div className="uis-sheet" role="dialog" aria-label="Menu">
             <div className="uis-sheet__handle" />
-            {L.map((l, i) => <A key={i} link={l} className="uis-sheet__link">{l.label}<Icon name="chevron-right" /></A>)}
+            {L.map((l, i) => <A key={i} link={l} className="uis-sheet__link">{l.label}<Icon name="chevron-right" directional /></A>)}
             {cta ? <div className="uis-sheet__foot"><Button block variant={cta.variant ?? 'primary'} href={cta.href ?? '#'}>{cta.label}</Button></div> : null}
           </div>
         </>

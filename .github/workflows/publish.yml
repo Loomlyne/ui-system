@@ -30,6 +30,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm typecheck
+      - run: pnpm test
       # Same job as the build: the tarball must be this build. pnpm 10.28 calls npm publish.
       # Node 24.22.2 leaves process.versions.npm empty (run 43736162443). Call the CLI.
       # Exit below 11.5.1. Do not install npm from the registry in this job.

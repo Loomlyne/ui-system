@@ -100,6 +100,10 @@ Source: .planning/intel/git-history.txt. Not GSD phases; no plan folders.
 **Plans**: TBD
 **UI hint**: yes
 
+## Quick tasks
+
+- [ ] **261118 right-to-left safe ui.css** - logical properties, `--uis-dir`, directional icons, RTL test; release 0.3.3 after the owner's yes (`.planning/quick/261118-rtl-logical-properties/`)
+
 ## Progress
 
 **Execution Order:** 1 → 2 → 3 → 4 → 5

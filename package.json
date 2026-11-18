@@ -12,6 +12,7 @@
     "design": "node scripts/build-design.mjs",
     "assets": "node scripts/build-assets.mjs",
     "dev": "pnpm --filter playground dev",
+    "test": "node --test \"packages/core/test/*.test.mjs\"",
     "playground:build": "pnpm --filter playground build"
   },
   "devDependencies": {

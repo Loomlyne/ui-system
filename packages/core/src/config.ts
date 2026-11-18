@@ -9,6 +9,7 @@ import { THEMES } from './themes';
 export type Mode = 'light' | 'dark';
 export type LogoVariant = 'lockup' | 'stacked' | 'mark' | 'wordmark';
 export type LogoMark = 'monogram' | 'ring' | 'spark' | 'stack' | 'orbit' | 'none' | 'custom';
+/** Logo placement. Logical: 'left' is the start side and 'right' the end side, so right-to-left pages mirror it (docs/rtl.md). */
 export type Placement = 'left' | 'center' | 'right';
 export type FontPresetId = 'modern' | 'geometric' | 'editorial' | 'grotesk' | 'humanist' | 'classic' | 'retail';
 /**
