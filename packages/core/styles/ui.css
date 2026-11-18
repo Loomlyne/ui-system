@@ -379,7 +379,7 @@
 .uis-overlaymenu__links a:hover, .uis-overlaymenu__links a[aria-current="page"] { color: var(--uis-primary-text); }
 .uis-overlaymenu__aside { display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; font: 400 15px/1.6 var(--uis-font-body); color: var(--uis-ink-2); }
 .uis-overlaymenu__links a .uis-icon { width: 0.5em; height: 0.5em; margin-inline-start: auto; opacity: 0; transform: translate(-8px, 8px); transition: opacity var(--uis-dur) var(--uis-ease-out), transform var(--uis-dur) var(--uis-ease-out); align-self: center; }
-[dir="rtl"] .uis-overlaymenu__links a .uis-icon { transform: translate(calc(-8px * var(--uis-dir)), 8px); }
+/* The arrow is data-dir: its scale mirror (applied after transform) also flips this offset in right-to-left. */
 .uis-overlaymenu__links a:hover .uis-icon { opacity: 1; transform: none; }
 .uis-overlaymenu__links a { border-bottom: 1px solid var(--uis-line); padding: 6px 0 10px; }
 /* split: dark index + brand panel */

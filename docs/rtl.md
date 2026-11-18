@@ -29,3 +29,10 @@ So the default config gives the layout Arabic readers expect (logo at the right,
 ## The check
 
 `pnpm test` runs `packages/core/test/rtl.test.mjs`: any physical-side declaration in `ui.css` (`left`, `right`, `margin-left`, `padding-right`, `border-left`, `text-align: left`, an uneven four-value shorthand, `translateX`, an x movement in a keyframe) without a logical form, a `[dir="rtl"]` twin or `var(--uis-dir)` fails, unless it is on the allow-list in `packages/core/test/rtl-audit.mjs` with its reason. Direction icons in the React package must carry `directional`; neutral ones must not. Run the audit table with `node packages/core/test/rtl-audit.mjs`.
+
+## Limits
+
+- Set `dir` to exactly `ltr` or `rtl`. `dir="auto"` does not set `--uis-dir`, so the switch knob and the drawer slide would move the LTR way.
+- An English block inside an Arabic page (`dir="ltr"` inside `dir="rtl"`) is right everywhere except the password field label offset, which follows the outer `rtl`.
+- `Reveal` effects `slide-left` / `slide-right` are physical by name and do not mirror. `Button iconRight="arrow-right"` cannot be marked directional yet. `untitled-ui.css` (third-party) is not covered by the check.
+- 0.3.3 changes nothing in left-to-right. In right-to-left, `Drawer side="right"` / `"left"` and logo placement now follow the reading direction (end / start): an Arabic page that set `side="left"` to get a right-hand drawer should drop it.

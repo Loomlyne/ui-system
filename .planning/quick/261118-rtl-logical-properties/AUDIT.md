@@ -59,10 +59,10 @@ packages/core/styles/ui.css
  482  defect      side       .uis-appdock__search .uis-kbd                                          margin-left: auto
 ```
 
-## After
+## After (head of PR #12, after review fixes)
 ```
 packages/core/styles/ui.css
-8 physical-side declarations (2 defect, 6 intentional)
+9 physical-side declarations (3 defect, 6 intentional)
  126  intentional side       .uis-control--reveal .uis-input                                        padding-right: 48px
  127  intentional side       .uis-control--reveal.uis-control--icon .uis-input                      padding-left: 42px
  128  intentional side       .uis-control--reveal > .uis-icon                                       left: 14px
@@ -70,13 +70,14 @@ packages/core/styles/ui.css
  135  intentional side       .uis-control--reveal > .uis-kbd                                        right: 48px
  136  intentional side       .uis-control--reveal.uis-control--kbd .uis-input                       padding-right: 92px
  371  defect      row-reverse .uis-minimal[data-placement="right"]                                   flex-direction: row-reverse
+ 381  defect      translateX .uis-overlaymenu__links a .uis-icon                                    transform: translate(-8px, 8px)
  451  defect      row-reverse .uis-sidebar__head[data-placement="right"]                             flex-direction: row-reverse
 ```
 
 ## UI System's own audit (packages/core/test/rtl-audit.mjs), after
 ```
 /Users/koss/.t3/worktrees/ui-system/fix-rtl-logical-propert-6bff6c6507567979/packages/core/styles/ui.css
-8 physical-side declarations: 0 without an RTL path, 8 allowed
+9 physical-side declarations: 0 without an RTL path, 9 allowed
  126  allowed  side        .uis-control--reveal .uis-input                                  padding-right: 48px
  127  allowed  side        .uis-control--reveal.uis-control--icon .uis-input                padding-left: 42px
  128  allowed  side        .uis-control--reveal > .uis-icon                                 left: 14px
@@ -84,5 +85,6 @@ packages/core/styles/ui.css
  135  allowed  side        .uis-control--reveal > .uis-kbd                                  right: 48px
  136  allowed  side        .uis-control--reveal.uis-control--kbd .uis-input                 padding-right: 92px
  371  allowed  row-reverse .uis-minimal[data-placement="right"]                             flex-direction: row-reverse
+ 381  allowed  translateX  .uis-overlaymenu__links a .uis-icon                              transform: translate(-8px, 8px)
  451  allowed  row-reverse .uis-sidebar__head[data-placement="right"]                       flex-direction: row-reverse
 ```

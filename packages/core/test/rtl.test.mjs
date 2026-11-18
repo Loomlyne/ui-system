@@ -40,18 +40,39 @@ test("the audit bites: physical sides, text-align, shorthands, translateX and ke
   assert.deepEqual(open("@keyframes k { from { translate: calc(24px * var(--uis-dir, 1)) 0; } }"), []);
   assert.deepEqual(open("@keyframes k { from { transform: translateY(8px) scale(0.9); } }"), []);
   assert.deepEqual(open(".uis-reveal { right: 4px; }"), [], "the password eye is allowed");
+  assert.deepEqual(open(".uis-reveal-x { right: 4px; }"), ["side"], "the allow-list matches whole class names only");
+  assert.deepEqual(open(".a { left: 4px; transform: translateX(4px); } [dir=\"rtl\"] .a { transform: translateX(-4px); }"), ["side"], "a twin covers only the properties it sets");
+  assert.deepEqual(open(".a { border-radius: 8px 0; }"), ["shorthand"]);
+  assert.deepEqual(open(".a { border-radius: 8px 8px 0 0; }"), []);
+  assert.deepEqual(open(".a { transform-origin: left center; }"), ["side-keyword"]);
+  assert.deepEqual(open(".a { background: linear-gradient(to right, red, blue); }"), ["gradient"]);
 });
 
 // Direction icons must be marked; neutral icons must not be.
 const reactSrc = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../react/src");
 const files = readdirSync(reactSrc, { recursive: true }).filter((f) => f.endsWith(".tsx")).map((f) => path.join(reactSrc, f));
-const icons = files.flatMap((f) => [...readFileSync(f, "utf8").matchAll(/<Icon\s+name="([^"]+)"([^>]*)\/>/g)].map((m) => ({ file: path.basename(f), name: m[1], directional: /\bdirectional\b/.test(m[2]) })));
+// Whole <Icon … /> tags, so a prop holding `=>` does not cut the match short.
+const icons = files.flatMap((f) => [...readFileSync(f, "utf8").matchAll(/<Icon\b([\s\S]*?)\/>/g)].map((m) => ({ file: path.basename(f), name: (m[1].match(/\bname="([^"]+)"/) ?? [])[1], directional: /\bdirectional\b/.test(m[1]) })).filter((i) => i.name));
+const DIRECTION_NAMES = ["chevron-left", "chevron-right", "arrow-left", "arrow-right", "arrow-up-right", "arrow-up-left", "arrow-down-right", "arrow-down-left"];
 
 test("direction icons in the React package carry `directional`", () => {
   const DIRECTION = /^(chevron-(left|right)|arrow-(left|right|up-right|up-left|down-right|down-left))$/;
   const missing = icons.filter((i) => DIRECTION.test(i.name) && !i.directional).map((i) => `${i.file}: ${i.name}`);
   assert.deepEqual(missing, []);
   assert.ok(icons.some((i) => i.directional), "at least the crumbs, sheet and menu icons are marked");
+});
+
+test("no direction icon name reaches the React UI any other way (icon=\"…\" props, strings)", () => {
+  const stray = [];
+  for (const f of files.filter((x) => path.basename(x) !== "Icon.tsx")) {
+    const text = readFileSync(f, "utf8");
+    for (const n of DIRECTION_NAMES) {
+      const literals = text.split(`'${n}'`).length - 1 + text.split(`"${n}"`).length - 1;
+      const marked = icons.filter((i) => i.file === path.basename(f) && i.name === n && i.directional).length;
+      if (literals !== marked) stray.push(`${path.basename(f)}: ${n} (${literals} uses, ${marked} marked)`);
+    }
+  }
+  assert.deepEqual(stray, []);
 });
 
 test("neutral icons never mirror", () => {

@@ -78,9 +78,13 @@ function topLevelParts(value) {
 /** Shorthand values with four parts whose left and right part differ (margin, padding, inset, border-radius). */
 function asymmetricShorthand(prop, value) {
   if (!/^(margin|padding|inset|border-radius)$/.test(prop)) return false;
-  const parts = topLevelParts(value);
+  const parts = topLevelParts(value.split("/")[0]);
+  if (prop === "border-radius") {
+    if (parts.length < 2) return false;
+    const [tl, tr = tl, br = tl, bl = tr] = parts; // CSS corner order
+    return tl !== tr || br !== bl;
+  }
   if (parts.length !== 4) return false;
-  if (prop === "border-radius") return parts[0] !== parts[1] || parts[3] !== parts[2];
   return parts[1] !== parts[3];
 }
 
@@ -90,7 +94,8 @@ function asymmetricShorthand(prop, value) {
  * so the list cannot go stale.
  */
 export const ALLOW = [
-  { selector: /\.uis-control--reveal\b|\.uis-reveal\b/, reason: "Password show/hide eye: physical right in every direction (owner rule). The whole password control stays physical so nothing lands on the eye." },
+  { selector: /\.uis-control--reveal(?![\w-])|\.uis-reveal(?![\w-])/, reason: "Password show/hide eye: physical right in every direction (owner rule). The whole password control stays physical so nothing lands on the eye." },
+  { selector: /^\.uis-overlaymenu__links a \.uis-icon$/, kind: "translateX", reason: "The menu arrow is data-dir: its scale mirror, applied after transform, also flips this offset in right-to-left (measured: -8px LTR, +8px RTL)." },
   { selector: /\[data-placement="right"\]/, kind: "row-reverse", reason: "Logo placement is logical (left = start, right = end), docs/rtl.md. row-reverse follows the direction, so it is already right in RTL." },
 ];
 
@@ -99,7 +104,12 @@ const usesDir = (v) => /var\(--uis-dir\b/.test(v);
 /** Every physical-side declaration without an RTL path, with `allowed` set to the ALLOW reason when it is on purpose. */
 export function rtlAudit(cssText) {
   const rules = parseRules(cssText);
-  const twins = new Set(rules.flatMap((r) => r.selectors.filter((s) => RTL_SELECTOR.test(s)).map(stripRtl)));
+  // A twin covers only the properties it sets: selector -> Set(prop).
+  const twins = new Map();
+  for (const r of rules) for (const sel of r.selectors.filter((x) => RTL_SELECTOR.test(x))) {
+    const key = stripRtl(sel); if (!twins.has(key)) twins.set(key, new Set());
+    for (const d of r.decls) twins.get(key).add(d.prop);
+  }
   const found = [];
   for (const rule of rules) {
     if (rule.keyframes !== undefined) {
@@ -111,10 +121,12 @@ export function rtlAudit(cssText) {
       continue;
     }
     for (const selector of rule.selectors) {
-      if (RTL_SELECTOR.test(selector) || twins.has(selector)) continue;
+      if (RTL_SELECTOR.test(selector)) continue;
+      const twinProps = twins.get(selector) ?? new Set();
       const byProp = Object.fromEntries(rule.decls.map((d) => [d.prop, d]));
       const centre = /translate(?:X)?\(\s*-50%/.test(`${byProp.transform?.value ?? ""} ${byProp.translate?.value ?? ""}`);
       for (const d of rule.decls) {
+        if (twinProps.has(d.prop)) continue;
         let kind = null;
         if (SIDE.test(d.prop)) {
           const mate = d.prop.includes("left") ? d.prop.replace("left", "right") : d.prop.replace("right", "left");
@@ -124,6 +136,8 @@ export function rtlAudit(cssText) {
         } else if (d.prop === "text-align" && /^(left|right)$/.test(d.value)) kind = "text-align";
         else if ((d.prop === "float" || d.prop === "clear") && /^(left|right)$/.test(d.value)) kind = "float";
         else if (asymmetricShorthand(d.prop, d.value)) kind = "shorthand";
+        else if (/^(transform-origin|background-position(-x)?|perspective-origin|object-position)$/.test(d.prop) && /\b(left|right)\b/.test(d.value)) kind = "side-keyword";
+        else if (/gradient\(\s*to\s+(?:(?:top|bottom)\s+)?(left|right)\b/.test(d.value)) kind = "gradient";
         else if (/(^|[^a-z])translateX\(/.test(d.value) || /(^|[^a-z])translate3?d?\(\s*-?[\d.]*[1-9][\d.]*(px|em|rem|%)/.test(d.value) || (d.prop === "translate" && /^-?\d/.test(d.value) && !/^0[ p]/.test(d.value))) {
           if (!(centre && /translateX\(-50%\)|translate\(-50%/.test(d.value)) && !usesDir(d.value)) kind = "translateX";
         } else if (d.prop === "flex-direction" && d.value === "row-reverse" && /data-placement/.test(selector)) kind = "row-reverse";

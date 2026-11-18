@@ -19,6 +19,12 @@ Status: built and verified 2026-11-18 10:15 +0400. Owner's answers (question for
 - "Before" render is byte-identical to ALMAR's `rtl/before/8-drawer-768-light.png`, so the before/after pipeline is ALMAR's.
 - `pnpm build`, `pnpm typecheck`, `pnpm design`, `pnpm playground:build` green locally; `ci.yml` and `publish.yml` pass the ci-audit checks locally.
 
+## Review (PR #12)
+
+- Grok 4.7 (jev-review tier standard) failed: Grok usage balance exhausted (402). Fallback per jev-review: Sonnet `reviewer`: approve with nits.
+- Fixed: the RTL twin for the menu arrow double-flipped (scale applies after transform; measured -8px RTL with the twin, +8px without) → twin removed, base offset allow-listed with the reason; audit twins now cover only the properties they set; allow-list matches whole class names; audit also checks uneven border-radius, side keywords (transform-origin, background-position) and side gradients; icon scan reads whole `<Icon … />` tags; new test: no direction icon name reaches the React UI unmarked (e.g. `icon="chevron-left"`). Tests 7/7; LTR proof re-run: 0 px differ. Limits documented in docs/rtl.md (`dir="auto"`, nested ltr password label, Motion slide presets, drawer side change in RTL).
+- Kept: CI runs on PR opened / ready_for_review only (owner CI-minutes rule); later pushes re-run by `workflow_dispatch`.
+
 ## Pictures
 
 Kept outside the repo, because they show ALMAR's brand and Arabic strings (ALMAR's content, not UI System's): `/Users/koss/Developer/ui-system-rtl-pictures-261118/`
