@@ -63,9 +63,11 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name'> {
   size?: number;
   strokeWidth?: number;
   label?: string;
+  /** A direction icon (chevron, arrow) that points along the reading direction: it mirrors in right-to-left. Neutral icons (moon, sun, close, search) leave it off. Renders data-dir. */
+  directional?: boolean;
 }
 
-export function Icon({ name, size, strokeWidth = ICON_STROKE, label, className, style, ...rest }: IconProps) {
+export function Icon({ name, size, strokeWidth = ICON_STROKE, label, directional, className, style, ...rest }: IconProps) {
   // Own keys only: a name like 'constructor' must fall back, not crash.
   const nodes = Object.prototype.hasOwnProperty.call(ICONS, name) ? ICONS[name as IconName] : ICONS.sparkle;
   return (
@@ -75,6 +77,7 @@ export function Icon({ name, size, strokeWidth = ICON_STROKE, label, className, 
       className={cx('uis-icon', className)}
       style={size ? { width: size, height: size, ...style } : style}
       aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label}
+      data-dir={directional ? '' : undefined}
       {...rest}
     >
       {nodes.map(([tag, attrs], i) => React.createElement(tag, { key: i, ...attrs }))}

@@ -68,6 +68,8 @@ Use by name: \`<Icon name="search" />\`. Names: menu, x, search, bell, home, gri
 
 Sizes: 16 in dense tables and badges, 18 in buttons and nav items, 20–24 standalone. Stroke stays 1.5; pass \`strokeWidth\` only for a deliberate heavy style.
 
+**Right-to-left:** a direction icon (a chevron or arrow that points along the reading direction: breadcrumbs, "go" rows, next) takes \`directional\` (plain HTML: \`data-dir\` on the svg) and mirrors under \`dir="rtl"\`. Neutral icons (moon, sun, close, search, up/down chevrons) never mirror. The name alone never decides.
+
 **Do** pair icon-only buttons with a \`label\` and status icons with a word. **Don't** mix in emoji, filled glyphs from another library, or hand-drawn paths.`,
     preview: `row.apply(null, Object.keys(U.ICONS).map(function (n) { return h('span', { key: n, title: n, style: { display: 'inline-grid', placeItems: 'center', width: 36, height: 36, color: 'var(--ink)' } }, h(U.Icon, { name: n, size: 22 })); }))`,
   },
@@ -230,7 +232,7 @@ Effects: \`fade-up\` (default), \`fade\`, \`scale-in\`, \`slide-left\`, \`slide-
     name: 'Drawer', group: 'Overlays', height: 380,
     readme: `A side panel for carts, details and settings, over a scrim. \`floating\` detaches it with panel-radius corners.
 
-**Props:** \`title\`, \`open\`, \`side\` right|left, \`floating\`, \`footer\`, \`onClose\`, \`scrim\`, children. Place it inside a positioned container.`,
+**Props:** \`title\`, \`open\`, \`side\` end|start (opens from the end side by default, so from the left in Arabic; \`right\`|\`left\` are the older names), \`floating\`, \`footer\`, \`onClose\`, \`scrim\`, children. Place it inside a positioned container.`,
     preview: `stage(h(React.Fragment, null, h('div', { style: { padding: 24 } }, h('h2', { className: 'uis-h2' }, 'Page content')), h(U.Drawer, { title: 'Your order', floating: true, footer: h(U.Button, { block: true }, 'Checkout') }, h('p', { className: 'uis-body-s uis-muted' }, 'Your cart is empty. Add items from the menu.'))), 380)`,
   },
   {

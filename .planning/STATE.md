@@ -12,7 +12,8 @@ See: .planning/PROJECT.md (updated 2026-11-15)
 Phase: 1 of 5 (npm publish)
 Plan: 0 of TBD (live steps: ROADMAP Phase 1 Success Criteria, from decisions/2026-11-15-npm-*.md, until `/gsd-plan-phase 1` writes 01-01-PLAN.md)
 Status: Phase 1 publish is done. `0.2.0` (themes rename, neutral default, tokens) published by OIDC in run `43917624097` (`e4a44a2`); `latest` is `0.2.0`, verified by a clean install. `0.1.0` and `0.1.1` stay. Never publish an existing version again
-Last activity: 2026-11-16 21:33 +0400 — 0.2.0 published and installed from npm
+Quick: 261118 right-to-left safe ui.css (`.planning/quick/261118-rtl-logical-properties/`) on `fix/rtl-logical-properties`: owner said "Yes, release" and "Logical" (2026-11-18); PR + 0.3.3 release in progress. Npm `latest` is 0.3.2 until the publish run
+Last activity: 2026-11-18 10:15 +0400 — RTL fix verified (LTR 0 px changed), pictures ready for the owner
 
 Progress: [░░░░░░░░░░] 0%
 

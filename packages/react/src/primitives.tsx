@@ -288,7 +288,9 @@ export function Stat({ label, value, delta, trend = 'up', icon, className, style
   );
 }
 
-export interface TableColumn { key: string; label: string; align?: 'left' | 'right' | 'center'; width?: string | number }
+/** align 'left' / 'right' is logical (start / end), so a right-aligned number column stays at the end in right-to-left. */
+export interface TableColumn { key: string; label: string; align?: 'left' | 'right' | 'center' | 'start' | 'end'; width?: string | number }
+const cellAlign = (a?: TableColumn['align']) => (a === 'left' ? 'start' : a === 'right' ? 'end' : a);
 /** A cell is any node, or data: { tone, label } renders a status Badge, { strong } bold text. */
 export type TableCell = React.ReactNode | { tone: Tone; label: string } | { strong: string };
 export interface TableProps { columns: TableColumn[]; rows: Array<Record<string, TableCell>>; className?: string; style?: React.CSSProperties }
@@ -304,10 +306,10 @@ export function Table({ columns, rows, className, style }: TableProps) {
   return (
     <div className={cx('uis-table-wrap', className)} style={style}>
       <table className="uis-table">
-        <thead><tr>{columns.map((c) => <th key={c.key} style={{ textAlign: c.align, width: c.width }}>{c.label}</th>)}</tr></thead>
+        <thead><tr>{columns.map((c) => <th key={c.key} style={{ textAlign: cellAlign(c.align), width: c.width }}>{c.label}</th>)}</tr></thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i}>{columns.map((c) => <td key={c.key} style={{ textAlign: c.align }}>{renderCell(r[c.key])}</td>)}</tr>
+            <tr key={i}>{columns.map((c) => <td key={c.key} style={{ textAlign: cellAlign(c.align) }}>{renderCell(r[c.key])}</td>)}</tr>
           ))}
         </tbody>
       </table>
@@ -350,13 +352,14 @@ export function Scrim({ onClick }: { onClick?: () => void }) {
   return <div className="uis-scrim" onClick={onClick} aria-hidden />;
 }
 
-export interface DrawerProps { title?: string; open?: boolean; side?: 'right' | 'left'; floating?: boolean; footer?: React.ReactNode; onClose?: () => void; scrim?: boolean; className?: string; style?: React.CSSProperties; children?: React.ReactNode }
-export function Drawer({ title, open = true, side = 'right', floating, footer, onClose, scrim = true, className, style, children }: DrawerProps) {
+export interface DrawerProps { title?: string; open?: boolean; /** 'end' (default) or 'start': the side it opens from, mirrored in right-to-left. 'right' and 'left' are the older names for end and start. */
+  side?: 'end' | 'start' | 'right' | 'left'; floating?: boolean; footer?: React.ReactNode; onClose?: () => void; scrim?: boolean; className?: string; style?: React.CSSProperties; children?: React.ReactNode }
+export function Drawer({ title, open = true, side = 'end', floating, footer, onClose, scrim = true, className, style, children }: DrawerProps) {
   if (!open) return null;
   return (
     <>
       {scrim ? <Scrim onClick={onClose} /> : null}
-      <aside role="dialog" aria-label={title} className={cx('uis-drawer', side === 'left' && 'uis-drawer--left', floating && 'uis-drawer--floating', className)} style={style}>
+      <aside role="dialog" aria-label={title} className={cx('uis-drawer', side === 'left' ? 'uis-drawer--left' : side === 'start' && 'uis-drawer--start', floating && 'uis-drawer--floating', className)} style={style}>
         <div className="uis-drawer__head">
           <h2 className="uis-drawer__title">{title}</h2>
           <IconButton icon="x" label="Close" onClick={onClose} />

@@ -23,7 +23,7 @@ Optional: what you build, `shop`, `app`, `website`, `booking` or `portfolio`. Se
 | `markSrc` | URL | | Mark-only image for rails, docks, favicons and `variant: mark`. |
 | `markSvg` | SVG string | | Inline SVG mark. Use `currentColor` so it follows the text color. |
 | `variant` | `lockup` `stacked` `mark` `wordmark` | `lockup` | Default arrangement. |
-| `placement` | `left` `center` `right` | `left` | Default logo position in every nav. |
+| `placement` | `left` `center` `right` | `left` | Default logo position in every nav. Logical: `left` is the start side, `right` the end side, so Arabic (`dir="rtl"`) mirrors it ([rtl.md](rtl.md)). |
 | `wordmarkCase` | `normal` `upper` | `normal` | Upper adds wide tracking. |
 | `wordmarkFont` | `display` `body` | `display` | |
 | `markTone` | `current` `primary` | `current` | `current` follows the text color (works on photos and dark bars); `primary` fills with the brand color. |

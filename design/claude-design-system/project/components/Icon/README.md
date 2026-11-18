@@ -6,4 +6,6 @@ Use by name: `<Icon name="search" />`. Names: menu, x, search, bell, home, grid,
 
 Sizes: 16 in dense tables and badges, 18 in buttons and nav items, 20–24 standalone. Stroke stays 1.5; pass `strokeWidth` only for a deliberate heavy style.
 
+**Right-to-left:** a direction icon (a chevron or arrow that points along the reading direction: breadcrumbs, "go" rows, next) takes `directional` (plain HTML: `data-dir` on the svg) and mirrors under `dir="rtl"`. Neutral icons (moon, sun, close, search, up/down chevrons) never mirror. The name alone never decides.
+
 **Do** pair icon-only buttons with a `label` and status icons with a word. **Don't** mix in emoji, filled glyphs from another library, or hand-drawn paths.
