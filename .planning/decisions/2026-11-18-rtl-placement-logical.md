@@ -1,6 +1,6 @@
-# 2026-11-18: logo placement "left" / "right" is logical (start / end) — PROPOSED, NOT SIGNED
+# 2026-11-18: logo placement "left" / "right" is logical (start / end) — SIGNED
 
-Status: proposal by the RTL work session. **Not signed.** The owner signs (or picks physical) after seeing `/Users/koss/Developer/ui-system-rtl-pictures-261118/compare/14-placement-right-*.png` and `after/19-nav-placements-*`.
+Status: **signed by the owner, 2026-11-18**, in the question form after seeing the Arabic before/after pictures (`/Users/koss/Developer/ui-system-rtl-pictures-261118/compare/14-placement-right-*.png`, `after/19-nav-placements-*`). His answer, relayed by the ALMAR controller: "Logical".
 
 ## Question
 
@@ -13,4 +13,4 @@ ALMAR RTL defect 14: `data-placement="right"` is built with `flex-direction: row
 
 ## Chosen
 
-Pending the owner's word.
+Option 1, logical (owner, 2026-11-18: "Logical"). Same answer on the pictures: "Yes, release" → 0.3.3.
