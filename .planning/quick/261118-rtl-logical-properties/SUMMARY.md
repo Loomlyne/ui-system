@@ -33,7 +33,14 @@ Kept outside the repo, because they show ALMAR's brand and Arabic strings (ALMAR
 - `ltr-before/`, `ltr-after/`: the 120 + 120 LTR-only pictures of the pixel proof.
 - `rtl-pictures.mjs`: the script (adapted from ALMAR's; reads ALMAR copy read-only).
 
+## Shipped (2026-11-18)
+
+- PR https://github.com/Loomlyne/ui-system/pull/12, reviewed head `92d3aea` (CI run `44263546260`: build, rtl green), squash-merged as `2ee3522`; `main` tree identical to the reviewed head. Tags on GitHub: `archive/main-before-0.3.3` (`8f50b57`), `archive/fix-rtl-logical-properties` (`92d3aea`).
+- Publish run `44285103323` (OIDC, `pnpm test` included) on `2ee3522`: `@loomlyne/ui-system-core@0.3.3` (shasum `cd96e1155d2c130991830b02c60bb60aa6388c52`, 2026-11-18T10:26:54Z) and `@loomlyne/ui-system-react@0.3.3` (shasum `824ced54d58f1dcdbf0c51f76033902f91cd3e0d`, 2026-11-18T10:27:32Z, depends on core `0.3.3`); both provenance-signed, dist-tag `latest`. Registry served both at 14:27:33 +0400 (about 2 minutes of processing lag).
+- Clean install (empty folder, `--ignore-scripts`): both 0.3.3, core deduped; installed `ui.css` byte-identical to `main`; `Icon directional` renders `data-dir`, `Drawer side="start"` → `uis-drawer--start`, `side="left"` still `uis-drawer--left`.
+- Claude Design System (https://claude.ai/artifact/XTKikX3yqayDRfUixvkNrS): live files were identical to 0.3.2 before the sync; version 44 = Icon + Drawer README, bundle.js, bundle.css, index.d.ts; version 45 = index `design-system.json` (only `lastChange` changed, `createdOnFiles` kept).
+
 ## Open
 
-- After merge: run "Publish packages", verify a clean install; sync the Claude Design System (Icon, Drawer README, bundle) and re-copy `tokens.json`/`bundle.*` into the canvas `ds/uis/`.
+- Canvas (https://claude.ai/artifact/SqnaiuSLGdB9Q9GNrau13X): re-copy `tokens.json`, `components/bundle.js`, `components/bundle.css` into `project/ds/uis/` and bump its `designSystems` record. Not done: it rewrites the owner's live canvas index and was not in this ship's list.
 - Not done, recommendation for later: `Button iconRight="arrow-right"` cannot be marked directional (needs a prop); `Reveal` effects `slide-left`/`slide-right` are physical (anime.js); a kbd `⌘K` shows as `K⌘` in RTL (bidi, not CSS sides). `pages.yml` keeps its old CI findings (untouched).
