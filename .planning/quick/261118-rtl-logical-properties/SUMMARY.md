@@ -40,7 +40,9 @@ Kept outside the repo, because they show ALMAR's brand and Arabic strings (ALMAR
 - Clean install (empty folder, `--ignore-scripts`): both 0.3.3, core deduped; installed `ui.css` byte-identical to `main`; `Icon directional` renders `data-dir`, `Drawer side="start"` → `uis-drawer--start`, `side="left"` still `uis-drawer--left`.
 - Claude Design System (https://claude.ai/artifact/XTKikX3yqayDRfUixvkNrS): live files were identical to 0.3.2 before the sync; version 44 = Icon + Drawer README, bundle.js, bundle.css, index.d.ts; version 45 = index `design-system.json` (only `lastChange` changed, `createdOnFiles` kept).
 
+- Canvas (https://claude.ai/artifact/SqnaiuSLGdB9Q9GNrau13X), owner "Yes, copy it" (2026-11-18, relayed by the ALMAR controller): `project/ds/uis/` tokens.json, components/bundle.js, components/bundle.css copied server-side from Design System version 45; `designSystems` record bumped to version `1794997556-6ba1`, `copiedAt` 2026-11-18T10:52:08Z, nothing else in `canvas.json` changed. Canvas version 86 (`1794999142-49d0`). The copied files match `main` (bundle.js `41fe138c`, bundle.css `7e612097`, tokens.json `4c8aa885`).
+- Main checkout `/Users/koss/Developer/ui-system` fast-forwarded to `ea0e55d` (it was clean, with no other session's worktree on it).
+
 ## Open
 
-- Canvas (https://claude.ai/artifact/SqnaiuSLGdB9Q9GNrau13X): re-copy `tokens.json`, `components/bundle.js`, `components/bundle.css` into `project/ds/uis/` and bump its `designSystems` record. Not done: it rewrites the owner's live canvas index and was not in this ship's list.
 - Not done, recommendation for later: `Button iconRight="arrow-right"` cannot be marked directional (needs a prop); `Reveal` effects `slide-left`/`slide-right` are physical (anime.js); a kbd `⌘K` shows as `K⌘` in RTL (bidi, not CSS sides). `pages.yml` keeps its old CI findings (untouched).
